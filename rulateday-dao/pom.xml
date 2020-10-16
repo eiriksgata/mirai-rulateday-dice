@@ -12,5 +12,40 @@
 
     <artifactId>rulateday-dao</artifactId>
 
+    <properties>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <maven.test.skip>true</maven.test.skip>
+
+        <lombok.version>1.18.12</lombok.version>
+
+        <!-- spring cloud -->
+        <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
+        <!-- ja eger -->
+        <!-- docker -->
+        <docker.image.prefix>platform</docker.image.prefix>
+        <dockerfile-maven-version>1.4.13</dockerfile-maven-version>
+        <!-- druid -->
+        <druid.version>1.1.21</druid.version>
+        <druid.boot.version>1.1.21</druid.boot.version>
+        <!-- mybatis -->
+        <mybatis.plus.version>3.2.0</mybatis.plus.version>
+        <pagehelper.version>1.2.13</pagehelper.version>
+    </properties>
+
+    <dependencies>
+        <!-- Driver/Mybatis -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis.plus.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+
 
 </project>
