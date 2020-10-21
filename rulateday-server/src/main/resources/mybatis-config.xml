@@ -23,5 +23,8 @@
         </environment>
     </environments>
 
+    <mappers>
+        <package name="indi.eiriksgata.rulateday.mapper"/>
+    </mappers>
 
 </configuration>
