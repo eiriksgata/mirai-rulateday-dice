@@ -9,6 +9,10 @@ import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.operation.DiceSet;
 import indi.eiriksgata.dice.operation.RollBasics;
 import indi.eiriksgata.dice.reply.CustomText;
+import indi.eiriksgata.rulateday.service.UserTempDataService;
+import indi.eiriksgata.rulateday.service.impl.UserTempDataServiceImpl;
+
+import javax.annotation.Resource;
 
 /**
  * @author: create by Keith
@@ -18,6 +22,12 @@ import indi.eiriksgata.dice.reply.CustomText;
  **/
 @InstructService
 public class DiceInstructions {
+
+    @Resource
+    public static final UserTempDataService userTempDataService = new UserTempDataServiceImpl();
+
+    @Resource
+    public static final DiceSet diceSet = new DiceSet();
 
 
     @InstructReflex(value = {".ra", ".rc"})
@@ -29,13 +39,22 @@ public class DiceInstructions {
 
     @InstructReflex(value = {".st"})
     public String setAttribute(MessageData data) {
-
-        return null;
+        try {
+            userTempDataService.updateUserAttribute(data.getQqID(), data.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return CustomText.getText("dice.set.attribute.fail");
+        }
+        return CustomText.getText("dice.set.attribute.success");
     }
 
 
     @InstructReflex(value = {".r"})
     public String roll(MessageData data) {
+        Integer diceFace = userTempDataService.getUserDiceFace(data.getQqID());
+        if (diceFace != null) {
+            diceSet.setDiceFace(data.getQqID(), diceFace);
+        }
         return new RollBasics().rollRandom(data.getMessage(), data.getQqID());
     }
 
@@ -49,7 +68,8 @@ public class DiceInstructions {
         if (setDiceFace <= Integer.valueOf(DiceConfig.diceSet.getString("dice.face.min"))) {
             throw new DiceInstructException(ExceptionEnum.DICE_SET_FACE_MIN_ERR);
         }
-        new DiceSet().setDiceSet(data.getQqID(), setDiceFace);
+        diceSet.setDiceFace(data.getQqID(), setDiceFace);
+        userTempDataService.updateUserDiceFace(data.getQqID(), setDiceFace);
         return CustomText.getText("dice.set.face.success", setDiceFace);
     }
 
