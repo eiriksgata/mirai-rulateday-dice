@@ -10,8 +10,8 @@ import java.io.Reader;
 
 public class MyBatisUtil {
 
-    public static SqlSessionFactory factory = createSFactory();
-    public static final ThreadLocal<SqlSession> THREAD_LOCAL = new ThreadLocal<>();
+    private static SqlSessionFactory factory = createSFactory();
+    private static final ThreadLocal<SqlSession> THREAD_LOCAL = new ThreadLocal<>();
 
     private static SqlSessionFactory createSFactory() {
         try {
