@@ -5,7 +5,7 @@ public class UserTempData {
 
     private long id;
     private String attribute;
-    private long diceFace;
+    private int diceFace;
 
 
     public long getId() {
@@ -26,11 +26,11 @@ public class UserTempData {
     }
 
 
-    public long getDiceFace() {
+    public int getDiceFace() {
         return diceFace;
     }
 
-    public void setDiceFace(long diceFace) {
+    public void setDiceFace(int diceFace) {
         this.diceFace = diceFace;
     }
 
