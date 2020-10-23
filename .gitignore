@@ -30,4 +30,6 @@ build/
 ### VS Code ###
 .vscode/
 
+### User Custom ###
 *.log
+*.db-journal
