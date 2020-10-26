@@ -7,6 +7,6 @@ public class UserTempData {
 
     private long id;
     private String attribute;
-    private int dice_face;
+    private Integer dice_face;
 
 }
