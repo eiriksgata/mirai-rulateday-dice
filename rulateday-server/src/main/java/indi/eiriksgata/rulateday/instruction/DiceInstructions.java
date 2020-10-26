@@ -7,7 +7,7 @@ import indi.eiriksgata.dice.exception.ExceptionEnum;
 import indi.eiriksgata.dice.injection.InstructService;
 import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.operation.DiceSet;
-import indi.eiriksgata.dice.operation.RollBasics;
+import indi.eiriksgata.dice.operation.RollBasicsImpl;
 import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.rulateday.service.UserTempDataService;
 import indi.eiriksgata.rulateday.service.impl.UserTempDataServiceImpl;
@@ -55,7 +55,7 @@ public class DiceInstructions {
         if (diceFace != null) {
             diceSet.setDiceFace(data.getQqID(), diceFace);
         }
-        return new RollBasics().rollRandom(data.getMessage(), data.getQqID());
+        return new RollBasicsImpl().rollRandom(data.getMessage(), data.getQqID());
     }
 
 
