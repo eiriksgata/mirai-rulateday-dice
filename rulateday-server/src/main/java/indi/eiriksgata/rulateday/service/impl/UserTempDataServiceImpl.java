@@ -15,22 +15,40 @@ import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
 public class UserTempDataServiceImpl implements UserTempDataService {
 
 
+    private static final UserTempDataMapper mapper = MyBatisUtil.getSqlSession().getMapper(UserTempDataMapper.class);
+
     @Override
     public void updateUserAttribute(Long id, String attribute) {
-        UserTempDataMapper mapper = MyBatisUtil.getSqlSession().getMapper(UserTempDataMapper.class);
         if (mapper.selectById(id) == null) {
-            UserTempData userTempData = new UserTempData();
-            userTempData.setId(id);
-            userTempData.setAttribute(attribute);
-            userTempData.setDiceFace(Long.valueOf(
-                    DiceConfig.diceSet.getString(
-                            DiceConfig.diceSet.getString("dice.type") + ".face")
-            ));
-            mapper.insert(userTempData);
-        } else {
-            mapper.updateAttributeById(id, attribute);
+            addUserTempData(id);
         }
+        mapper.updateAttributeById(id, attribute);
     }
 
+    @Override
+    public void updateUserDiceFace(Long id, int diceFace) {
+        if (mapper.selectById(id) == null) {
+            addUserTempData(id);
+        }
+        mapper.updateDiceFaceById(id, diceFace);
+    }
+
+
+    @Override
+    public void addUserTempData(Long id) {
+        UserTempData userTempData = new UserTempData();
+        userTempData.setId(id);
+        userTempData.setAttribute("");
+        userTempData.setDice_face(Integer.valueOf(
+                DiceConfig.diceSet.getString(
+                        DiceConfig.diceSet.getString("dice.type") + ".face")
+        ));
+        mapper.insert(userTempData);
+    }
+
+    @Override
+    public Integer getUserDiceFace(Long id) {
+        return mapper.selectById(id).getDice_face();
+    }
 
 }
