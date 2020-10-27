@@ -124,6 +124,14 @@
 
 
     <build>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources/mirai</directory>
+                <targetPath>META-INF/services/</targetPath>
+            </resource>
+        </resources>
+
         <plugins>
 
             <plugin>
