@@ -5,15 +5,29 @@
 `Mirai-rulateday-dice`插件是实现TRPG骰子系统。
 骰子核心逻辑处理方法项目请移步至另一个项目 `trpg-java-dice`.该项目主要作为集成`Mirai-Console`的调用方法框架模板，用于控制台加载其程序的主要实现，并打包生成jar插件。
 
-**项目体系**
+此模板集合了大部分的 `mirai-console` 插件所需要的配置项，开发者也可以直接使用该模板进行开发。
+
+如果你是一名纯粹的Java+Maven开发者 该项目是一个很好的学习模板。
+
+
+**依赖项目体系**
 * [Mirai](https://github.com/mamoe/mirai)
 * [Mirai-Console](https://github.com/mamoe/mirai-console)
 * [trpg-java-dice](https://github.com/Eiriksgata/trpg-java-dice)
+
+
+**主要开发技术**
+* Java 8+ or OpenJDK 11
+* Maven 
+* SQLite + Mybatis
+
+
 
 **代码结构简易说明**
 
 项目 `trpg-java-dice` 提供了指令注解反射处理。
 因此在当前项目中只需要实现指令的类方法使用即可。
+
 
 
 **拓展**
