@@ -1,5 +1,6 @@
 package indi.eiriksgata.rulateday.instruction;
 
+import indi.eiriksgata.dice.operation.RollBasics;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.dice.config.DiceConfig;
 import indi.eiriksgata.dice.exception.DiceInstructException;
@@ -7,7 +8,7 @@ import indi.eiriksgata.dice.exception.ExceptionEnum;
 import indi.eiriksgata.dice.injection.InstructService;
 import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.operation.DiceSet;
-import indi.eiriksgata.dice.operation.RollBasicsImpl;
+import indi.eiriksgata.dice.operation.impl.RollBasicsImpl;
 import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.rulateday.service.UserTempDataService;
 import indi.eiriksgata.rulateday.service.impl.UserTempDataServiceImpl;
@@ -28,6 +29,9 @@ public class DiceInstructions {
     public static final UserTempDataService userTempDataService = new UserTempDataServiceImpl();
 
     @Resource
+    public static final RollBasics rollBasics = new RollBasicsImpl();
+
+    @Resource
     public static final DiceSet diceSet = new DiceSet();
 
     @InstructReflex(value = {".ra", ".rc"}, priority = 2)
@@ -37,7 +41,7 @@ public class DiceInstructions {
             return CustomText.getText("dice.attribute.error");
         }
         try {
-            return new RollBasicsImpl().attributeCheck(data.getMessage(), attribute);
+            return rollBasics.attributeCheck(data.getMessage(), attribute);
         } catch (DiceInstructException e) {
             e.printStackTrace();
             return CustomText.getText("dice.attribute.error");
@@ -62,7 +66,7 @@ public class DiceInstructions {
         if (diceFace != null) {
             diceSet.setDiceFace(data.getQqID(), diceFace);
         }
-        return new RollBasicsImpl().rollRandom(data.getMessage(), data.getQqID());
+        return rollBasics.rollRandom(data.getMessage(), data.getQqID());
     }
 
 
