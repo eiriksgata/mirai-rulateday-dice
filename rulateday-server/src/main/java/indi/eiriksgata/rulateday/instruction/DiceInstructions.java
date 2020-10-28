@@ -30,11 +30,18 @@ public class DiceInstructions {
     @Resource
     public static final DiceSet diceSet = new DiceSet();
 
-
     @InstructReflex(value = {".ra", ".rc"}, priority = 2)
     public String attributeCheck(MessageData data) {
-
-        return "you input .ra";
+        String attribute = userTempDataService.getUserAttribute(data.getQqID());
+        if (attribute == null) {
+            return CustomText.getText("dice.attribute.error");
+        }
+        try {
+            return new RollBasicsImpl().attributeCheck(data.getMessage(), attribute);
+        } catch (DiceInstructException e) {
+            e.printStackTrace();
+            return CustomText.getText("dice.attribute.error");
+        }
     }
 
     @InstructReflex(value = {".st"})
