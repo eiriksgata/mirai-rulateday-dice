@@ -60,4 +60,14 @@ public class UserTempDataServiceImpl implements UserTempDataService {
         }
     }
 
+    @Override
+    public String getUserAttribute(Long id) {
+        try {
+            return mapper.selectById(id).getAttribute();
+        } catch (NullPointerException ignored) {
+            return null;
+        }
+
+    }
+
 }

@@ -16,4 +16,6 @@ public interface UserTempDataService {
     void addUserTempData(Long id);
 
     Integer getUserDiceFace(Long id);
+
+    String getUserAttribute(Long id);
 }
