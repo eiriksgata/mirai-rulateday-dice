@@ -20,6 +20,7 @@ import javax.annotation.Resource;
  * @description: indi.eiriksgata.dice
  * @date:2020/9/24
  **/
+
 @InstructService
 public class DiceInstructions {
 
@@ -30,9 +31,8 @@ public class DiceInstructions {
     public static final DiceSet diceSet = new DiceSet();
 
 
-    @InstructReflex(value = {".ra", ".rc"})
+    @InstructReflex(value = {".ra", ".rc"}, priority = 2)
     public String attributeCheck(MessageData data) {
-
 
         return "you input .ra";
     }
@@ -43,7 +43,7 @@ public class DiceInstructions {
             userTempDataService.updateUserAttribute(data.getQqID(), data.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            return CustomText.getText("dice.set.attribute.fail");
+            return CustomText.getText("dice.set.attribute.error");
         }
         return CustomText.getText("dice.set.attribute.success");
     }
