@@ -1,5 +1,6 @@
 package indi.eiriksgata.rulateday.utlis;
 
+import indi.eiriksgata.rulateday.mapper.UserTempDataMapper;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -17,7 +18,9 @@ public class MyBatisUtil {
         try {
             Reader reader = Resources.getResourceAsReader("mybatis-config.xml");
             SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
-            return builder.build(reader);
+            SqlSessionFactory sqlSessionFactory = builder.build(reader);
+            sqlSessionFactory.getConfiguration().addMapper(UserTempDataMapper.class);
+            return sqlSessionFactory;
         } catch (IOException e) {
             e.printStackTrace();
         }
