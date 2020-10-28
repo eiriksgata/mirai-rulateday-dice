@@ -127,6 +127,24 @@
 
         <resources>
             <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>mirai/*</exclude>
+                    <exclude>env/dev/*</exclude>
+                    <exclude>env/uat/*</exclude>
+                    <exclude>env/prod/*</exclude>
+                </excludes>
+                <includes>
+                    <include>*</include>
+                    <include>messages/*</include>
+                </includes>
+            </resource>
+
+            <resource>
+                <directory>src/main/resources/env/${profiles.active}</directory>
+            </resource>
+
+            <resource>
                 <directory>src/main/resources/mirai</directory>
                 <targetPath>META-INF/services/</targetPath>
             </resource>
@@ -200,5 +218,29 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <profiles.active>dev</profiles.active>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>uat</id>
+            <properties>
+                <profiles.active>uat</profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <profiles.active>prod</profiles.active>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
