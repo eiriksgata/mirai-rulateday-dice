@@ -5,6 +5,7 @@ import indi.eiriksgata.rulateday.mapper.UserTempDataMapper;
 import indi.eiriksgata.rulateday.pojo.UserTempData;
 import indi.eiriksgata.rulateday.service.UserTempDataService;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @author: create by Keith
@@ -12,10 +13,11 @@ import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
  * @description: indi.eiriksgata.rulateday.service.impl
  * @date:2020/10/22
  **/
+
+
 public class UserTempDataServiceImpl implements UserTempDataService {
 
-
-    private static final UserTempDataMapper mapper = MyBatisUtil.getSqlSession().getMapper(UserTempDataMapper.class);
+    private static UserTempDataMapper mapper = MyBatisUtil.getSqlSession().getMapper(UserTempDataMapper.class);
 
     @Override
     public void updateUserAttribute(Long id, String attribute) {
@@ -23,6 +25,7 @@ public class UserTempDataServiceImpl implements UserTempDataService {
             addUserTempData(id);
         }
         mapper.updateAttributeById(id, attribute);
+        MyBatisUtil.getSqlSession().commit();
     }
 
     @Override
@@ -31,6 +34,7 @@ public class UserTempDataServiceImpl implements UserTempDataService {
             addUserTempData(id);
         }
         mapper.updateDiceFaceById(id, diceFace);
+        MyBatisUtil.getSqlSession().commit();
     }
 
 
@@ -44,11 +48,16 @@ public class UserTempDataServiceImpl implements UserTempDataService {
                         DiceConfig.diceSet.getString("dice.type") + ".face")
         ));
         mapper.insert(userTempData);
+        MyBatisUtil.getSqlSession().commit();
     }
 
     @Override
     public Integer getUserDiceFace(Long id) {
-        return mapper.selectById(id).getDice_face();
+        try {
+            return mapper.selectById(id).getDice_face();
+        } catch (NullPointerException ignored) {
+            return null;
+        }
     }
 
 }
