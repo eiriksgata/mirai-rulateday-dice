@@ -1,9 +1,16 @@
 package indi.eiriksgata.rulateday;
 
+import indi.eiriksgata.dice.message.handle.InstructHandle;
+import indi.eiriksgata.dice.operation.DiceSet;
+import indi.eiriksgata.rulateday.service.UserTempDataService;
+import indi.eiriksgata.rulateday.service.impl.UserTempDataServiceImpl;
 import net.mamoe.mirai.console.extension.PluginComponentStorage;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.Events;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Resource;
 
 /**
  * @author: create by Keith
@@ -40,7 +47,7 @@ public class RulatedayCore extends JavaPlugin {
     }
 
     @Override
-    public void onLoad(PluginComponentStorage $this$onLoad) {
+    public void onLoad(@NotNull PluginComponentStorage $this$onLoad) {
         getLogger().info("Rulateday-Dice loading...");
     }
 }
