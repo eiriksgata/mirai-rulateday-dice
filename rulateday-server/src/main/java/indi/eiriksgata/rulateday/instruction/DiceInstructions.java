@@ -1,6 +1,8 @@
 package indi.eiriksgata.rulateday.instruction;
 
+import indi.eiriksgata.dice.callback.SanCheckCallback;
 import indi.eiriksgata.dice.operation.RollBasics;
+import indi.eiriksgata.dice.utlis.RegularExpressionUtils;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.dice.config.DiceConfig;
 import indi.eiriksgata.dice.exception.DiceInstructException;
@@ -72,6 +74,9 @@ public class DiceInstructions {
 
     @InstructReflex(value = {".MessageData", ".set"})
     public String setDiceFace(MessageData data) throws DiceInstructException {
+        //移除所有的空格
+        data.setMessage(data.getMessage().replaceAll(" ", ""));
+
         int setDiceFace = Integer.valueOf(data.getMessage());
         if (setDiceFace > Integer.valueOf(DiceConfig.diceSet.getString("dice.face.max"))) {
             throw new DiceInstructException(ExceptionEnum.DICE_SET_FACE_MAX_ERR);
@@ -82,6 +87,39 @@ public class DiceInstructions {
         diceSet.setDiceFace(data.getQqID(), setDiceFace);
         userTempDataService.updateUserDiceFace(data.getQqID(), setDiceFace);
         return CustomText.getText("dice.set.face.success", setDiceFace);
+    }
+
+    @InstructReflex(value = {".sc"})
+    public String sanCheck(MessageData data) {
+
+        //优先检测指令是否包含有数值
+        if (data.getMessage().matches("(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+/(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+ [0-9]+")) {
+            //检测到包含数值 进行 空格符 分割 0为计算公式，1为给定的数值
+            String[] tempArr = data.getMessage().split(" ");
+            return rollBasics.sanCheck(tempArr[0], "san" + tempArr[1], (attribute, random, sanValue, calculationProcess, surplus) -> {
+            });
+        }
+
+        //检测用户输入的指令格式是否正确
+        if (data.getMessage().matches("(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+/(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+")) {
+            //查询用户数据
+            String attribute = userTempDataService.getUserAttribute(data.getQqID());
+            String inputData = RegularExpressionUtils.getMatcher("(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+/(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+", data.getMessage());
+
+            //要进行是否有用户属性确认
+            //对于没有属性的用户 返回错误
+            if (attribute == null) {
+                return CustomText.getText("dice.sc.not-found");
+            }
+
+
+            return rollBasics.sanCheck(inputData, attribute, (attribute1, random, sanValue, calculationProcess, surplus) -> {
+                //修改属性
+                userTempDataService.updateUserAttribute(data.getQqID(), attribute);
+            });
+
+        }
+        return CustomText.getText("dice.sc.instruct.error");
     }
 
 
