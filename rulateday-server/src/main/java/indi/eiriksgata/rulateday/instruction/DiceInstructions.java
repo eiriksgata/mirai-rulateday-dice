@@ -113,9 +113,9 @@ public class DiceInstructions {
             }
 
 
-            return rollBasics.sanCheck(inputData, attribute, (attribute1, random, sanValue, calculationProcess, surplus) -> {
+            return rollBasics.sanCheck(inputData, attribute, (resultAttribute, random, sanValue, calculationProcess, surplus) -> {
                 //修改属性
-                userTempDataService.updateUserAttribute(data.getQqID(), attribute);
+                userTempDataService.updateUserAttribute(data.getQqID(), resultAttribute);
             });
 
         }
