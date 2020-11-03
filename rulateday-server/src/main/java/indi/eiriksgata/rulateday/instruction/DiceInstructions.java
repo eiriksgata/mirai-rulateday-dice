@@ -1,6 +1,5 @@
 package indi.eiriksgata.rulateday.instruction;
 
-import indi.eiriksgata.dice.callback.SanCheckCallback;
 import indi.eiriksgata.dice.operation.RollBasics;
 import indi.eiriksgata.dice.utlis.RegularExpressionUtils;
 import indi.eiriksgata.dice.vo.MessageData;
@@ -14,6 +13,7 @@ import indi.eiriksgata.dice.operation.impl.RollBasicsImpl;
 import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.rulateday.service.UserTempDataService;
 import indi.eiriksgata.rulateday.service.impl.UserTempDataServiceImpl;
+import net.mamoe.mirai.Bot;
 
 import javax.annotation.Resource;
 
@@ -36,7 +36,7 @@ public class DiceInstructions {
     @Resource
     public static final DiceSet diceSet = new DiceSet();
 
-    @InstructReflex(value = {".ra", ".rc"}, priority = 2)
+    @InstructReflex(value = {".ra", ".rc", "。ra", "。rc"}, priority = 2)
     public String attributeCheck(MessageData data) {
         String attribute = userTempDataService.getUserAttribute(data.getQqID());
         if (attribute == null) {
@@ -50,7 +50,7 @@ public class DiceInstructions {
         }
     }
 
-    @InstructReflex(value = {".st"})
+    @InstructReflex(value = {".st", "。st"})
     public String setAttribute(MessageData data) {
         try {
             userTempDataService.updateUserAttribute(data.getQqID(), data.getMessage());
@@ -62,7 +62,7 @@ public class DiceInstructions {
     }
 
 
-    @InstructReflex(value = {".r"})
+    @InstructReflex(value = {".r", "。r"})
     public String roll(MessageData data) {
         Integer diceFace = userTempDataService.getUserDiceFace(data.getQqID());
         if (diceFace != null) {
@@ -72,7 +72,7 @@ public class DiceInstructions {
     }
 
 
-    @InstructReflex(value = {".MessageData", ".set"})
+    @InstructReflex(value = {".MessageData", ".set", "。set"})
     public String setDiceFace(MessageData data) throws DiceInstructException {
         //移除所有的空格
         data.setMessage(data.getMessage().replaceAll(" ", ""));
@@ -89,7 +89,7 @@ public class DiceInstructions {
         return CustomText.getText("dice.set.face.success", setDiceFace);
     }
 
-    @InstructReflex(value = {".sc"})
+    @InstructReflex(value = {".sc", "。sc"})
     public String sanCheck(MessageData data) {
 
         //优先检测指令是否包含有数值
@@ -112,7 +112,6 @@ public class DiceInstructions {
                 return CustomText.getText("dice.sc.not-found");
             }
 
-
             return rollBasics.sanCheck(inputData, attribute, (resultAttribute, random, sanValue, calculationProcess, surplus) -> {
                 //修改属性
                 userTempDataService.updateUserAttribute(data.getQqID(), resultAttribute);
@@ -120,6 +119,12 @@ public class DiceInstructions {
 
         }
         return CustomText.getText("dice.sc.instruct.error");
+    }
+
+    @InstructReflex(value = {".rh", "。rh"}, priority = 3)
+    public String rollHide(MessageData data) {
+        Bot.getBotInstances().get(0).getFriend(2353686862L).sendMessage("test");
+        return "ok";
     }
 
 
