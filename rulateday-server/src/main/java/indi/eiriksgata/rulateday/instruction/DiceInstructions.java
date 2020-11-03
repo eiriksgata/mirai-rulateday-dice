@@ -39,6 +39,7 @@ public class DiceInstructions {
     @InstructReflex(value = {".ra", ".rc", "。ra", "。rc"}, priority = 2)
     public String attributeCheck(MessageData data) {
         String attribute = userTempDataService.getUserAttribute(data.getQqID());
+        data.setMessage(data.getMessage().replaceAll(" ", ""));
         if (attribute == null) {
             return CustomText.getText("dice.attribute.error");
         }
@@ -67,6 +68,9 @@ public class DiceInstructions {
         Integer diceFace = userTempDataService.getUserDiceFace(data.getQqID());
         if (diceFace != null) {
             diceSet.setDiceFace(data.getQqID(), diceFace);
+        }
+        if (data.getMessage().equals("") || data.getMessage().equals(" ")) {
+            data.setMessage("d");
         }
         return rollBasics.rollRandom(data.getMessage(), data.getQqID());
     }
@@ -123,8 +127,8 @@ public class DiceInstructions {
 
     @InstructReflex(value = {".rh", "。rh"}, priority = 3)
     public String rollHide(MessageData data) {
-        Bot.getBotInstances().get(0).getFriend(2353686862L).sendMessage("test");
-        return "ok";
+        Bot.getBotInstances().get(0).getFriend(2353686862L).sendMessage(roll(data));
+        return CustomText.getText("coc7.roll.hide");
     }
 
 
