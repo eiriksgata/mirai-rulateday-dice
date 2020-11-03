@@ -56,19 +56,14 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
                 return ListeningStatus.LISTENING;
             }
             result = e.getErrMsg();
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
             e.printStackTrace();
-            result = "非法访问异常";
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-            result = "实例化异常";
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-            result = "反射架构异常";
+            result = e.getMessage();
         }
+        event.getGroup().sendMessage(new At(event.getSender()) + result);
 
-        final QuoteReply quoteReply = new QuoteReply(event.getSource());
-        event.getGroup().sendMessage(quoteReply.plus(result));
+        //final QuoteReply quoteReply = new QuoteReply(event.getSource());
+        //event.getGroup().sendMessage(quoteReply.plus(result));
 
 //        if (msgString.contains(".rh")) {
 //            event.getSender().sendMessage("暂无该功能");
