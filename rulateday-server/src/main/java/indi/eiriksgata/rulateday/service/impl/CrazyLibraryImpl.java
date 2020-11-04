@@ -22,12 +22,14 @@ public class CrazyLibraryImpl implements CrazyLibraryService {
     private static CrazyDescribeMapper crazyMapper = MyBatisUtil.getSqlSession().getMapper(CrazyDescribeMapper.class);
     private static CrazyOverDescribeMapper overMapper = MyBatisUtil.getSqlSession().getMapper(CrazyOverDescribeMapper.class);
 
+    @Override
     public String getRandomCrazyDescribe() {
         List<CrazyDescribe> result = crazyMapper.selectAll();
         int random = RandomUtils.nextInt(0, result.size());
         return result.get(random).getDescribe();
     }
 
+    @Override
     public String getCrazyOverDescribe() {
         List<CrazyOverDescribe> result = overMapper.selectAll();
         int random = RandomUtils.nextInt(0, result.size());
