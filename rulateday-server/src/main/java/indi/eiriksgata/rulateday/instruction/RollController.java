@@ -25,7 +25,7 @@ import javax.annotation.Resource;
  **/
 
 @InstructService
-public class DiceInstructions {
+public class RollController {
 
     @Resource
     public static final UserTempDataService userTempDataService = new UserTempDataServiceImpl();
