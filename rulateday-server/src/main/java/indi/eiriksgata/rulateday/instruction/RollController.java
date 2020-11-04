@@ -62,7 +62,6 @@ public class RollController {
         return CustomText.getText("dice.set.attribute.success");
     }
 
-
     @InstructReflex(value = {".r", "。r"})
     public String roll(MessageData data) {
         Integer diceFace = userTempDataService.getUserDiceFace(data.getQqID());
@@ -95,7 +94,6 @@ public class RollController {
 
     @InstructReflex(value = {".sc", "。sc"})
     public String sanCheck(MessageData data) {
-
         //优先检测指令是否包含有数值
         if (data.getMessage().matches("(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+/(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+ [0-9]+")) {
             //检测到包含数值 进行 空格符 分割 0为计算公式，1为给定的数值
@@ -113,7 +111,7 @@ public class RollController {
             //要进行是否有用户属性确认
             //对于没有属性的用户 返回错误
             if (attribute == null) {
-                return CustomText.getText("dice.sc.not-found");
+                return CustomText.getText("dice.sc.not-found.error");
             }
 
             return rollBasics.sanCheck(inputData, attribute, (resultAttribute, random, sanValue, calculationProcess, surplus) -> {
