@@ -42,7 +42,11 @@ public class QueryController {
 
     @InstructReflex(value = {".rule", "。rule"})
     public String queryRule(MessageData data) {
+        data.setMessage(data.getMessage().replaceAll(" ", ""));
         RuleBook result = ruleService.selectRule(data.getMessage());
+        if (result == null) {
+            return "找不到规则书内容";
+        }
         return result.getTitle() + "\n" + result.getContent();
     }
 
