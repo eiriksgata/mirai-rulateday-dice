@@ -4,8 +4,6 @@ import indi.eiriksgata.dice.exception.DiceInstructException;
 import indi.eiriksgata.dice.exception.ExceptionEnum;
 import indi.eiriksgata.dice.message.handle.InstructHandle;
 import indi.eiriksgata.dice.vo.MessageData;
-import indi.eiriksgata.rulateday.mapper.UserTempDataMapper;
-import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
 import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.ListeningStatus;
@@ -13,17 +11,10 @@ import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.message.FriendMessageEvent;
 import net.mamoe.mirai.message.GroupMessageEvent;
 import net.mamoe.mirai.message.data.*;
-import net.mamoe.mirai.utils.MiraiLogger;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
 
-/**
- * @author: create by Keith
- * @version: v1.0
- * @description: indi.eiriksgata.rulateday
- * @date:2020/10/15
- **/
 public class DiceMessageEventHandle extends SimpleListenerHost {
 
     public static InstructHandle instructHandle = new InstructHandle();
@@ -60,7 +51,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             e.printStackTrace();
             result = e.getMessage();
         }
-        event.getGroup().sendMessage(new At(event.getSender()) + result);
+        event.getGroup().sendMessage(new At(event.getSender()).plus(result));
 
         //final QuoteReply quoteReply = new QuoteReply(event.getSource());
         //event.getGroup().sendMessage(quoteReply.plus(result));
