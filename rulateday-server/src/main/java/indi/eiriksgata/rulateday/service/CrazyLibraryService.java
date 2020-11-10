@@ -7,4 +7,7 @@ package indi.eiriksgata.rulateday.service;
  * date: 2020/11/4
  **/
 public interface CrazyLibraryService {
+    String getRandomCrazyDescribe();
+
+    String getCrazyOverDescribe();
 }
