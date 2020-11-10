@@ -5,15 +5,6 @@ import indi.eiriksgata.rulateday.mapper.UserTempDataMapper;
 import indi.eiriksgata.rulateday.pojo.UserTempData;
 import indi.eiriksgata.rulateday.service.UserTempDataService;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
-import org.apache.ibatis.annotations.Mapper;
-
-/**
- * @author: create by Keith
- * @version: v1.0
- * @description: indi.eiriksgata.rulateday.service.impl
- * @date:2020/10/22
- **/
-
 
 public class UserTempDataServiceImpl implements UserTempDataService {
 
