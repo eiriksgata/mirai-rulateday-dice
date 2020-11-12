@@ -1,6 +1,8 @@
 package indi.eiriksgata.rulateday.instruction;
 
 import indi.eiriksgata.dice.operation.RollBasics;
+import indi.eiriksgata.dice.operation.RollRole;
+import indi.eiriksgata.dice.operation.impl.RollRoleImpl;
 import indi.eiriksgata.dice.utlis.RegularExpressionUtils;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.dice.config.DiceConfig;
@@ -35,6 +37,9 @@ public class RollController {
 
     @Resource
     public static final DiceSet diceSet = new DiceSet();
+
+    @Resource
+    public static final RollRole rollRole = new RollRoleImpl();
 
     @InstructReflex(value = {".ra", ".rc", "。ra", "。rc"}, priority = 2)
     public String attributeCheck(MessageData data) {
@@ -141,6 +146,16 @@ public class RollController {
         data.setMessage(data.getMessage().replaceAll(" ", ""));
         String attribute = userTempDataService.getUserAttribute(data.getQqID());
         return rollBasics.rollBonus(data.getMessage(), attribute, false);
+    }
+
+    @InstructReflex(value = {".coc", "。coc"})
+    public String randomCocRole(MessageData data) {
+        return rollRole.createCocRole(Integer.valueOf(data.getMessage()));
+    }
+
+    @InstructReflex(value = {".dnd", "。dnd"})
+    public String randomDndRole(MessageData data) {
+        return rollRole.createDndRole(Integer.valueOf(data.getMessage()));
     }
 
 
