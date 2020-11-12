@@ -22,12 +22,20 @@
 * SQLite + Mybatis
 
 
+**已经实现的指令**
+* [基础骰子类型](https://github.com/Eiriksgata/mirai-rulateday-dice/blob/master/rulateday-server/src/main/java/indi/eiriksgata/rulateday/instruction/RollController.java)
+* [查询功能类型](https://github.com/Eiriksgata/mirai-rulateday-dice/blob/master/rulateday-server/src/main/java/indi/eiriksgata/rulateday/instruction/QueryController.java)
+* [More](https://github.com/Eiriksgata/mirai-rulateday-dice/tree/master/rulateday-server/src/main/java/indi/eiriksgata/rulateday/instruction)
+
 
 **代码结构简易说明**
-
 项目 `trpg-java-dice` 提供了指令注解反射处理。
 因此在当前项目中只需要实现指令的类方法使用即可。
 
+
+**文件说明**
+* `ruleteday.db` 为 SQLite的数据库文件，其中主要用于保存用户的骰子属性数据以及规则书和疯狂状态的描述内容。
+* `mirai-ruleteday.log` 日志文件
 
 
 **拓展**
