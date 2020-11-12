@@ -29,6 +29,7 @@
 
 
 **代码结构简易说明**
+
 项目 `trpg-java-dice` 提供了指令注解反射处理。
 因此在当前项目中只需要实现指令的类方法使用即可。
 
@@ -43,3 +44,7 @@
 同时该模块还可以负责插件载入块处理，DTO、作为Server 等处理。因为SpringBoot运行消耗过量的内存，因此这里暂时不使用。
 
 现以加入 `Mybatis + SQLite` 项目依赖项，作为数据存储的持久层使用。
+
+
+## [trpg-java-dice](https://github.com/Eiriksgata/trpg-java-dice) ##
+
