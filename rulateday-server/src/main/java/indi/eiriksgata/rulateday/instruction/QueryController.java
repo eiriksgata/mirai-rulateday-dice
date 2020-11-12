@@ -51,21 +51,5 @@ public class QueryController {
     }
 
 
-    @InstructReflex(value = {".rb", "。rb"})
-    public String rollBonus(MessageData data) {
-
-
-        return null;
-    }
-
-
-    @InstructReflex(value = {".rp", "。rp"})
-    public String rollPunishment() {
-
-
-        return null;
-
-    }
-
 
 }
