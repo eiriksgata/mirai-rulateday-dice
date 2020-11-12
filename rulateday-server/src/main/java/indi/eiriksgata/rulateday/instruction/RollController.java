@@ -134,14 +134,14 @@ public class RollController {
         return CustomText.getText("coc7.roll.hide");
     }
 
-    @InstructReflex(value = {".rb", "。rb", ",rb"})
+    @InstructReflex(value = {".rb", "。rb", ",rb"}, priority = 3)
     public String rollBonusDice(MessageData data) {
         data.setMessage(data.getMessage().replaceAll(" ", ""));
         String attribute = userTempDataService.getUserAttribute(data.getQqID());
         return rollBasics.rollBonus(data.getMessage(), attribute, true);
     }
 
-    @InstructReflex(value = {".rp", "。rp", ",rp"})
+    @InstructReflex(value = {".rp", "。rp", ",rp"}, priority = 3)
     public String rollPunishment(MessageData data) {
         data.setMessage(data.getMessage().replaceAll(" ", ""));
         String attribute = userTempDataService.getUserAttribute(data.getQqID());
