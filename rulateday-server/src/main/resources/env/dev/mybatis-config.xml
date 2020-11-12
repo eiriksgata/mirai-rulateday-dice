@@ -26,6 +26,9 @@
 
     <mappers>
         <mapper class="indi.eiriksgata.rulateday.mapper.UserTempDataMapper"/>
+        <mapper class="indi.eiriksgata.rulateday.mapper.CrazyDescribeMapper"/>
+        <mapper class="indi.eiriksgata.rulateday.mapper.CrazyOverDescribeMapper"/>
+        <mapper class="indi.eiriksgata.rulateday.mapper.RuleBookMapper"/>
     </mappers>
 
     <!--<mappers>-->
