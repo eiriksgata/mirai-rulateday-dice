@@ -23,6 +23,22 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
 
     @EventHandler()
     public ListeningStatus onFriendMessage(FriendMessageEvent event) {
+        MessageData messageData = new MessageData();
+        messageData.setMessage(event.getMessage().contentToString());
+        messageData.setQqID(event.getSender().getId());
+        String result;
+        try {
+            result = instructHandle.instructCheck(messageData);
+        } catch (DiceInstructException e) {
+            if (e.getErrCode().equals(ExceptionEnum.DICE_INSTRUCT_NOT_FOUND.getErrCode())) {
+                return ListeningStatus.LISTENING;
+            }
+            result = e.getErrMsg();
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            e.printStackTrace();
+            result = e.getMessage();
+        }
+        event.getFriend().sendMessage(event.getSender().getNick() + result);
         //私聊消息的回复
         return ListeningStatus.LISTENING;
     }
@@ -70,7 +86,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             e.printStackTrace();
             result = e.getMessage();
         }
-        // event.getGroup().sendMessage(new At(event.getSender()).plus(result));
-        event.getGroup().sendMessage(result);
+        event.getGroup().sendMessage(new At(event.getSender()).plus(result));
+        // event.getGroup().sendMessage(event.getSender().getNameCard() + result);
     }
 }
