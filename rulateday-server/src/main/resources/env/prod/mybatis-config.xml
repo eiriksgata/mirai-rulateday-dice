@@ -23,8 +23,19 @@
         </environment>
     </environments>
 
+
+    <mappers>
+        <mapper class="indi.eiriksgata.rulateday.mapper.UserTempDataMapper"/>
+        <mapper class="indi.eiriksgata.rulateday.mapper.CrazyDescribeMapper"/>
+        <mapper class="indi.eiriksgata.rulateday.mapper.CrazyOverDescribeMapper"/>
+        <mapper class="indi.eiriksgata.rulateday.mapper.RuleBookMapper"/>
+        <mapper class="indi.eiriksgata.rulateday.mapper.Dnd5eSkillLibMapper"/>
+        <mapper class="indi.eiriksgata.rulateday.mapper.SpeakersGroupListMapper"/>
+
+    </mappers>
+
     <!--<mappers>-->
-        <!--<package name="indi.eiriksgata.rulateday.mapper"/>-->
+    <!--<package name="indi.eiriksgata.rulateday.mapper"/>-->
     <!--</mappers>-->
 
 </configuration>
