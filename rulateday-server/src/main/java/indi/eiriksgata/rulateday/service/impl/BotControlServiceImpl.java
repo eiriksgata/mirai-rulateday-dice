@@ -27,6 +27,7 @@ public class BotControlServiceImpl implements BotControlService {
         } else {
             speakersGroupListMapper.updateIsEnableById(groupId, true);
         }
+        MyBatisUtil.getSqlSession().commit();
     }
 
     @Override
@@ -36,6 +37,7 @@ public class BotControlServiceImpl implements BotControlService {
         } else {
             speakersGroupListMapper.updateIsEnableById(groupId, false);
         }
+        MyBatisUtil.getSqlSession().commit();
     }
 
 }
