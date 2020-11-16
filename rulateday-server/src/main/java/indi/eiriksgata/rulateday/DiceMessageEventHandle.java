@@ -18,8 +18,8 @@ import java.lang.reflect.InvocationTargetException;
 
 public class DiceMessageEventHandle extends SimpleListenerHost {
 
-    public static final InstructHandle instructHandle = new InstructHandle();
-    public static final BotController botControl = new BotController();
+    private static final InstructHandle instructHandle = new InstructHandle();
+    private static final BotController botControl = new BotController();
 
     @EventHandler()
     public ListeningStatus onFriendMessage(FriendMessageEvent event) {
@@ -34,13 +34,26 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
     //需要考虑并发安全
     @EventHandler()
     public ListeningStatus onGroupMessage(GroupMessageEvent event) {
+        groupMessageHandle(event);
+        //保持监听
+        return ListeningStatus.LISTENING;
+    }
+
+    //处理在处理事件中发生的未捕获异常
+    @Override
+    public void handleException(@NotNull CoroutineContext context, @NotNull Throwable exception) {
+        throw new RuntimeException("在事件处理中发生异常", exception);
+    }
+
+
+    private static void groupMessageHandle(GroupMessageEvent event) {
         //群消息的回复
         //回复群的筛选
         if (botControl.groupBotOff(event) || botControl.groupBotOn(event)) {
-            return ListeningStatus.LISTENING;
+            return;
         }
         if (!botControl.isSpeakers(event)) {
-            return ListeningStatus.LISTENING;
+            return;
         }
         MessageData messageData = new MessageData();
         messageData.setMessage(event.getMessage().contentToString());
@@ -50,22 +63,14 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             result = instructHandle.instructCheck(messageData);
         } catch (DiceInstructException e) {
             if (e.getErrCode().equals(ExceptionEnum.DICE_INSTRUCT_NOT_FOUND.getErrCode())) {
-                return ListeningStatus.LISTENING;
+                return;
             }
             result = e.getErrMsg();
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
             e.printStackTrace();
             result = e.getMessage();
         }
-        event.getGroup().sendMessage(new At(event.getSender()).plus(result));
-
-        //保持监听
-        return ListeningStatus.LISTENING;
-    }
-
-    //处理在处理事件中发生的未捕获异常
-    @Override
-    public void handleException(@NotNull CoroutineContext context, @NotNull Throwable exception) {
-        throw new RuntimeException("在事件处理中发生异常", exception);
+        // event.getGroup().sendMessage(new At(event.getSender()).plus(result));
+        event.getGroup().sendMessage(result);
     }
 }
