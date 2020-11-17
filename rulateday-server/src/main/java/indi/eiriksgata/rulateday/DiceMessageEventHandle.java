@@ -38,7 +38,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             e.printStackTrace();
             result = e.getMessage();
         }
-        event.getFriend().sendMessage(event.getSender().getNick() + result);
+        event.getFriend().sendMessage(result);
         //私聊消息的回复
         return ListeningStatus.LISTENING;
     }
@@ -86,7 +86,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             e.printStackTrace();
             result = e.getMessage();
         }
-        event.getGroup().sendMessage(new At(event.getSender()).plus(result));
+        event.getGroup().sendMessage(new At(event.getSender()).plus("\n" + result));
         // event.getGroup().sendMessage(event.getSender().getNameCard() + result);
     }
 }
