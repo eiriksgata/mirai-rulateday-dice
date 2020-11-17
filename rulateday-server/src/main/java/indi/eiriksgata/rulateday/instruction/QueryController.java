@@ -58,12 +58,12 @@ public class QueryController {
     @InstructReflex(value = {".dr", "。dr", ".d5er"})
     public String queryDnd5eRule(MessageData data) {
         Dnd5ESkillLib result = dnd5eLibService.findName(data.getMessage());
-        return "\n" + result.getName() + "\n" + result.getDescribe();
+        return result.getName() + "\n" + result.getDescribe().replaceAll("\n\n", "\n");
     }
 
     @InstructReflex(value = {".help", "。help"})
     public String help(MessageData data) {
-        return "插件名称:Rulateday\n" +
+        return "插件名称:Rulateda v0.1.0 by Eiriksgata\n" +
                 "Github：https://github.com/Eiriksgata/mirai-rulateday-dice\n" +
                 "所有指令：.help指令";
     }
