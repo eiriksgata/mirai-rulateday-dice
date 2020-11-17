@@ -38,7 +38,7 @@
 
 
 **使用说明**
-* 该项目是建立在Mirai-Console的框架下运行的插件，因此需要先了解构造出一个 Mirai-Console 的运行程序。如果不懂如何使用的，可以和我联系。
+* 该项目是建立在Mirai-Console的框架下运行的插件，因此需要先了解构造出一个 Mirai-Console 的运行程序[点击查看详细搭建说明](https://github.com/mamoe/mirai-console/blob/master/docs/Run.md)。如果实在不懂如何使用的，可以和我联系。
 * 该项目是由Java编写，因此可以通过相应的IDE生成jar文件，然后放入到 Mirai-Console的插件目录下即可。
 * 如果需要自定义返回文本，则可以通过7z等解压程序打开 jar文件 然后将其里面的 custom-text.properties 文件复制出来进行修改，然后添加到jar里面进行覆盖。
 * 此外其他的配置文件也是如此修改(后续可能会考虑特殊的情况再进行设置项修改)
