@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * date: 2020/11/13
  **/
 
-public class BotController {
+public class BotServiceControl {
 
     @Resource
     public final static BotControlService botControl = new BotControlServiceImpl();
