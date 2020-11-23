@@ -53,7 +53,6 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             }
             event.getFriend().sendMessage(e.getErrMsg());
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            e.printStackTrace();
             event.getFriend().sendMessage(e.getMessage());
         }
         return ListeningStatus.LISTENING;
