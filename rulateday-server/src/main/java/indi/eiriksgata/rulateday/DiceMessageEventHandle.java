@@ -4,11 +4,12 @@ import indi.eiriksgata.dice.exception.DiceInstructException;
 import indi.eiriksgata.dice.exception.ExceptionEnum;
 import indi.eiriksgata.dice.message.handle.InstructHandle;
 import indi.eiriksgata.dice.vo.MessageData;
-import indi.eiriksgata.rulateday.instruction.BotController;
+import indi.eiriksgata.rulateday.instruction.BotServiceControl;
 import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.ListeningStatus;
 import net.mamoe.mirai.event.SimpleListenerHost;
+import net.mamoe.mirai.event.events.BotInvitedJoinGroupRequestEvent;
 import net.mamoe.mirai.message.FriendMessageEvent;
 import net.mamoe.mirai.message.GroupMessageEvent;
 import net.mamoe.mirai.message.data.*;
@@ -19,7 +20,14 @@ import java.lang.reflect.InvocationTargetException;
 public class DiceMessageEventHandle extends SimpleListenerHost {
 
     private static final InstructHandle instructHandle = new InstructHandle();
-    private static final BotController botControl = new BotController();
+    private static final BotServiceControl botControl = new BotServiceControl();
+
+    @EventHandler()
+    public ListeningStatus onBotRequest(BotInvitedJoinGroupRequestEvent event) {
+        //收到邀请自动加入
+        event.accept();
+        return ListeningStatus.LISTENING;
+    }
 
     @EventHandler()
     public ListeningStatus onFriendMessage(FriendMessageEvent event) {
@@ -29,17 +37,25 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         String result;
         try {
             result = instructHandle.instructCheck(messageData);
+            //对于私聊的消息需要进行分割长度发送
+            while (true) {
+                if (result.length() > 200) {
+                    event.getFriend().sendMessage(result.substring(0, 200));
+                    result = result.substring(200);
+                } else {
+                    event.getFriend().sendMessage(result);
+                    break;
+                }
+            }
         } catch (DiceInstructException e) {
             if (e.getErrCode().equals(ExceptionEnum.DICE_INSTRUCT_NOT_FOUND.getErrCode())) {
                 return ListeningStatus.LISTENING;
             }
-            result = e.getErrMsg();
+            event.getFriend().sendMessage(e.getErrMsg());
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
             e.printStackTrace();
-            result = e.getMessage();
+            event.getFriend().sendMessage(e.getMessage());
         }
-        event.getFriend().sendMessage(result);
-        //私聊消息的回复
         return ListeningStatus.LISTENING;
     }
 
