@@ -1,16 +1,14 @@
 ## Mirai-rulateday-dice ##
 
-本项目是Mirai-Console的插件项目。
-
-`Mirai-rulateday-dice`插件是实现TRPG骰子系统。
-骰子核心逻辑处理方法项目请移步至另一个项目 `trpg-java-dice`.该项目主要作为集成`Mirai-Console`的调用方法框架模板，用于控制台加载其程序的主要实现，并打包生成jar插件。
-
-此模板集合了大部分的 `mirai-console` 插件所需要的配置项，开发者也可以直接使用该模板进行开发。
-
-如果你是一名纯粹的 Java+Maven 开发者 该项目是一个很好的学习模板。
+**本项目是Mirai-Console的插件项目**
+* `Mirai-rulateday-dice`插件是实现TRPG骰子系统。
+* 骰子核心逻辑处理方法项目请移步至另一个项目 `trpg-java-dice`.该项目主要作为集成`Mirai-Console`的调用方法框架模板，用于控制台加载其程序的主要实现，并打包生成jar插件。
+* 同时该项目也负责了主要的查询功能实现：DND5e法术详细、COC7技能规则、抽取疯狂症状等。
+* 此模板集合了大部分的 `mirai-console` 插件所需要的配置项，开发者也可以直接使用该模板进行开发。
+* 如果你是一名纯粹的 Java+Maven 开发者 该项目是一个很好的学习模板。
 
 
-**依赖项目体系**
+**依赖项目**
 * [Mirai](https://github.com/mamoe/mirai)
 * [Mirai-Console](https://github.com/mamoe/mirai-console)
 * [trpg-java-dice](https://github.com/Eiriksgata/trpg-java-dice)
@@ -40,18 +38,15 @@
 **使用说明**
 * 该项目是建立在Mirai-Console的框架下运行的插件，因此需要先了解构造出一个 Mirai-Console 的运行程序[点击查看详细搭建说明](https://github.com/mamoe/mirai-console/blob/master/docs/Run.md)。如果实在不懂如何使用的，可以和我联系。
 * 该项目是由Java编写，因此可以通过相应的IDE生成jar文件，然后放入到 Mirai-Console的插件目录下即可。
-* 如果需要自定义返回文本，则可以通过7z等解压程序打开 jar文件 然后将其里面的 custom-text.properties 文件复制出来进行修改，然后添加到jar里面进行覆盖。
+* 如果需要自定义返回文本，则可以通过7z等解压程序打开jar文件，然后将其里面的 custom-text.properties 文件复制出来进行修改，然后添加到jar里面进行覆盖。
 * 此外其他的配置文件也是如此修改(后续可能会考虑特殊的情况再进行设置项修改)
 * `ruleteday.db`文件需要放置在 Mirai-Console 的当前程序目录下 (日后还会更改成单独的插件文件夹使用)
 
-**编译好的jar文件**
-
+**编译jar文件**
 * 暂无(当前项目处于快速迭代阶段，因此暂时不发布，请等待v1.0.0版本发布)
 
 **构建说明**
-
 * 暂无
-
 
 **拓展**
 
@@ -60,6 +55,5 @@
 现以加入 `Mybatis + SQLite` 项目依赖项，作为数据存储的持久层使用。
 
 **快速导航**
-## [trpg-java-dice](https://github.com/Eiriksgata/trpg-java-dice) ##
 
 
