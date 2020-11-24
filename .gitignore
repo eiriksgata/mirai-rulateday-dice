@@ -33,3 +33,4 @@ build/
 ### User Custom ###
 *.log
 *.db-journal
+data/rulateday/*
