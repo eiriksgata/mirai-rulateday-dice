@@ -12,6 +12,13 @@
 
     <artifactId>rulateday-server</artifactId>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://www.jitpack.io</url>
+        </repository>
+    </repositories>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <encoding>UTF-8</encoding>
@@ -35,10 +42,15 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+        <!--<dependency>-->
+            <!--<groupId>indi.eiriksgata</groupId>-->
+            <!--<artifactId>trpg-java-dice</artifactId>-->
+            <!--<version>1.0-SNAPSHOT</version>-->
+        <!--</dependency>-->
         <dependency>
-            <groupId>indi.eiriksgata</groupId>
+            <groupId>com.github.Eiriksgata</groupId>
             <artifactId>trpg-java-dice</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0-alpha</version>
         </dependency>
 
         <!--https://bintray.com/him188moe/mirai/mirai-console-->
