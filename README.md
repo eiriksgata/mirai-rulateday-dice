@@ -7,6 +7,9 @@
 * 此模板集合了大部分的 `mirai-console` 插件所需要的配置项，开发者也可以直接使用该模板进行开发。
 * 如果你是一名纯粹的 Java+Maven 开发者 该项目是一个很好的学习模板。
 
+**快速使用**
+* 在以构建好的Mirai-Console的应用程序目录下 将 [rulateday-server-1.0-SNAPSHOT-jar-with-dependencies.jar](https://github.com/Eiriksgata/mirai-rulateday-dice/releases/tag/v0.1.0) 放入 plugins 文件夹中即可
+* Mirai-Console程序目录下 libs文件夹需要包含的文件以及版本: mirai-console-1.0.0+  & mirai-core-all.1.3.3+ | ~mirai-console-terminal-1.0.0+~
 
 **依赖项目**
 * [Mirai](https://github.com/mamoe/mirai)
@@ -46,7 +49,7 @@
 
 
 **编译jar文件**
-* 暂无(当前项目处于快速迭代阶段，因此暂时不发布，请等待v1.0.0版本发布)
+* [Rulateday 0.1.0-alpha](https://github.com/Eiriksgata/mirai-rulateday-dice/releases/tag/v0.1.0)
 
 **构建说明**
 * 暂无
