@@ -23,6 +23,7 @@
 **已经实现的指令**
 * [基础骰子类型](https://github.com/Eiriksgata/mirai-rulateday-dice/blob/master/rulateday-server/src/main/java/indi/eiriksgata/rulateday/instruction/RollController.java)
 * [查询功能类型](https://github.com/Eiriksgata/mirai-rulateday-dice/blob/master/rulateday-server/src/main/java/indi/eiriksgata/rulateday/instruction/QueryController.java)
+* 开关骰子指令：.boton | .botoff （可以@机器人.bot on 指定该机器人启动或者关闭）
 * [More](https://github.com/Eiriksgata/mirai-rulateday-dice/tree/master/rulateday-server/src/main/java/indi/eiriksgata/rulateday/instruction)
 
 
@@ -40,7 +41,9 @@
 * 该项目是由Java编写，因此可以通过相应的IDE生成jar文件，然后放入到 Mirai-Console的插件目录下即可。
 * 如果需要自定义返回文本，则可以通过7z等解压程序打开jar文件，然后将其里面的 custom-text.properties 文件复制出来进行修改，然后添加到jar里面进行覆盖。
 * 此外其他的配置文件也是如此修改(后续可能会考虑特殊的情况再进行设置项修改)
-* `ruleteday.db`文件需要放置在 Mirai-Console 的当前程序目录下 (日后还会更改成单独的插件文件夹使用)
+* `ruleteday.db`数据库文件会在程序初次运行时检测，如果该文件不在在控制台目录`/data/rulateday/`中，那么将会自动创建一个新的数据库文件。如果已经存在那么将不会自动创建
+（如果本插件有明显的功能升级，需要将该文件删除）
+
 
 **编译jar文件**
 * 暂无(当前项目处于快速迭代阶段，因此暂时不发布，请等待v1.0.0版本发布)
