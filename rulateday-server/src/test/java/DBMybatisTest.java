@@ -1,10 +1,17 @@
-import indi.eiriksgata.rulateday.mapper.UserTempDataMapper;
-import indi.eiriksgata.rulateday.pojo.UserTempData;
+
+import indi.eiriksgata.rulateday.mapper.CrazyDescribeMapper;
+import indi.eiriksgata.rulateday.mapper.CrazyOverDescribeMapper;
+import indi.eiriksgata.rulateday.pojo.CrazyDescribe;
+import indi.eiriksgata.rulateday.pojo.CrazyOverDescribe;
+import indi.eiriksgata.rulateday.service.impl.Dnd5eLibServiceImpl;
+import indi.eiriksgata.rulateday.utlis.LoadDatabaseFile;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
-import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
+
 
 /**
  * @author: create by Keith
@@ -16,10 +23,26 @@ public class DBMybatisTest {
 
     @Test
     void dbTest() {
+        CrazyOverDescribeMapper mapper = MyBatisUtil.getSqlSession().getMapper(CrazyOverDescribeMapper.class);
+        List<CrazyOverDescribe> list = mapper.selectAll();
 
-        UserTempDataMapper userTempDataMapper = MyBatisUtil.getSqlSession().getMapper(UserTempDataMapper.class);
-        UserTempData userTempData = userTempDataMapper.selectById(1L);
-        System.out.println(userTempData.getAttribute());
+        list.forEach((temp) -> {
+            System.out.println(temp.getDescribe());
+        });
+
+    }
+
+
+    @Test
+    void dnd5eSkill() {
+        new Dnd5eLibServiceImpl().findAllSkill();
+
+    }
+
+    @Test
+    void file() throws IOException {
+
+        LoadDatabaseFile.createDatabaseFile();
 
 
     }
