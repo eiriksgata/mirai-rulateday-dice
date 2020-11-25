@@ -127,12 +127,20 @@
         </dependency>
 
 
+
     </dependencies>
 
 
     <build>
 
         <resources>
+            <!-- 加入数据库文件 -->
+            <resource>
+                <directory>src/main/resources/template/</directory>
+                <!--<targetPath>rulateday.db</targetPath>-->
+            </resource>
+
+            <!-- 加入不同阶段的配置 -->
             <resource>
                 <directory>src/main/resources</directory>
                 <excludes>
@@ -146,15 +154,17 @@
                     <include>messages/*</include>
                 </includes>
             </resource>
-
             <resource>
                 <directory>src/main/resources/env/${profiles.active}</directory>
             </resource>
 
+            <!-- 加入mirai-console 启动类文件 -->
             <resource>
                 <directory>src/main/resources/mirai</directory>
                 <targetPath>META-INF/services/</targetPath>
             </resource>
+
+
         </resources>
 
         <plugins>
