@@ -14,16 +14,16 @@ import java.util.List;
  * date: 2020/11/13
  **/
 @Mapper
-public interface Dnd5eSkillLibMapper {
+public interface Dnd5eSkillMapper {
 
-    @Select("select * from dnd5e_skill_lib")
+    @Select("select * from dnd5e_skill_phb")
     List<Dnd5ESkillLib> selectAll();
 
-    @Select("select * from dnd5e_skill_lib where name like #{name}")
+    @Select("select * from dnd5e_skill_phb where name like #{name}")
     Dnd5ESkillLib selectByName(@Param("name") String name);
 
 
-    @Select("select * from dnd5e_skill_lib where id =#{id}")
+    @Select("select * from dnd5e_skill_phb where id =#{id}")
     Dnd5ESkillLib selectById(@Param("id") long id);
 
 }
