@@ -15,7 +15,7 @@ import java.util.List;
 @Mapper
 public interface CrazyDescribeMapper {
 
-    @Select("select * from crazy_describe")
+    @Select("select * from coc7_crazy_describe")
     List<CrazyDescribe> selectAll();
 
 }
