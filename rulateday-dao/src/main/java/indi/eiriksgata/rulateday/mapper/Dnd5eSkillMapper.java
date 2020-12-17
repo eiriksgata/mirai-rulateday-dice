@@ -22,7 +22,6 @@ public interface Dnd5eSkillMapper {
     @Select("select * from dnd5e_skill_phb where name like #{name}")
     Dnd5ESkillLib selectByName(@Param("name") String name);
 
-
     @Select("select * from dnd5e_skill_phb where id =#{id}")
     Dnd5ESkillLib selectById(@Param("id") long id);
 
