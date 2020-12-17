@@ -25,7 +25,7 @@
         <mapper class="indi.eiriksgata.rulateday.mapper.CrazyDescribeMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.CrazyOverDescribeMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.RuleBookMapper"/>
-        <mapper class="indi.eiriksgata.rulateday.mapper.Dnd5eSkillLibMapper"/>
+        <mapper class="indi.eiriksgata.rulateday.mapper.Dnd5eSkillMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.SpeakersGroupListMapper"/>
     </mappers>
 
