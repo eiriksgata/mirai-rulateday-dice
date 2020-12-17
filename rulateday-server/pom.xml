@@ -28,7 +28,7 @@
         <mainClass>com.github.plexpt.miraipoem.MyPluginBase</mainClass>
 
         <lombok.version>1.18.4</lombok.version>
-        <mica.http.version>1.2.2</mica.http.version>
+        <mica.http.version>2.1.0-GA</mica.http.version>
         <commons.lang3.version>3.9</commons.lang3.version>
         <fastjson.version>1.2.60</fastjson.version>
     </properties>
