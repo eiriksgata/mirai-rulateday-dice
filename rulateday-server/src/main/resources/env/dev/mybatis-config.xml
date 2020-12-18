@@ -24,10 +24,10 @@
         <mapper class="indi.eiriksgata.rulateday.mapper.CrazyDescribeMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.CrazyOverDescribeMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.RuleBookMapper"/>
-        <mapper class="indi.eiriksgata.rulateday.mapper.Dnd5eSkillMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.SpeakersGroupListMapper"/>
-        <mapper class="indi.eiriksgata.rulateday.mapper.Dnd5eArmorWeaponPhbMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.Dnd5ePhbTestBaseMapper"/>
+
+        <mapper class="indi.eiriksgata.rulateday.mapper.Dnd5ePhbDataMapper"/>
 
     </mappers>
 
