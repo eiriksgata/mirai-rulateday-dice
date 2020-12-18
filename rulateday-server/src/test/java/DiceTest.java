@@ -87,10 +87,18 @@ public class DiceTest {
         MessageData messageData = new MessageData();
         messageData.setQqID(123456789L);
         InstructHandle instruct = new InstructHandle();
-
         messageData.setMessage(".rp3 san 30");
         System.out.println(instruct.instructCheck(messageData));
 
+    }
+
+    @Test
+    void d5r() throws Exception {
+        MessageData messageData = new MessageData();
+        messageData.setQqID(123456789L);
+        InstructHandle instruct = new InstructHandle();
+        messageData.setMessage(".dr吟游诗人:职业特性");
+        System.out.println(instruct.instructCheck(messageData));
     }
 
 }

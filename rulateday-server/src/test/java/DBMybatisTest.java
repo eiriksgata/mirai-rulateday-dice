@@ -1,15 +1,12 @@
 
-import indi.eiriksgata.rulateday.mapper.CrazyDescribeMapper;
 import indi.eiriksgata.rulateday.mapper.CrazyOverDescribeMapper;
-import indi.eiriksgata.rulateday.pojo.CrazyDescribe;
 import indi.eiriksgata.rulateday.pojo.CrazyOverDescribe;
 import indi.eiriksgata.rulateday.service.impl.Dnd5eLibServiceImpl;
 import indi.eiriksgata.rulateday.utlis.LoadDatabaseFile;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 
@@ -35,7 +32,6 @@ public class DBMybatisTest {
 
     @Test
     void dnd5eSkill() {
-        new Dnd5eLibServiceImpl().findAllSkill();
 
     }
 
@@ -46,4 +42,9 @@ public class DBMybatisTest {
 
 
     }
+
+
+
+
+
 }
