@@ -4,6 +4,7 @@ import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.injection.InstructService;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.pojo.Dnd5ESkillLib;
+import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 import indi.eiriksgata.rulateday.pojo.RuleBook;
 import indi.eiriksgata.rulateday.service.CrazyLibraryService;
 import indi.eiriksgata.rulateday.service.Dnd5eLibService;
@@ -13,6 +14,7 @@ import indi.eiriksgata.rulateday.service.impl.Dnd5eLibServiceImpl;
 import indi.eiriksgata.rulateday.service.impl.RuleServiceImpl;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * author: create by Keith
@@ -57,9 +59,21 @@ public class QueryController {
 
     @InstructReflex(value = {".dr", "。dr", ".d5er"})
     public String queryDnd5eRule(MessageData data) {
-        Dnd5ESkillLib result = dnd5eLibService.findName(data.getMessage());
-        return result.getName() + "\n" + result.getDescribe().replaceAll("\n\n", "\n");
+        List<QueryDataBase> result = dnd5eLibService.findName(data.getMessage());
+        if (result.size() > 1) {
+            StringBuilder text = new StringBuilder("查询结果存在多个，请完善查询关键字直到存在1个才回显示详细信息\n查询吻合关键字:");
+            for (QueryDataBase temp : result) {
+                text.append("\n").append(temp.getName());
+            }
+            return text.toString();
+        } else {
+            if (result.size() == 0) {
+                return "查询不到结果";
+            }
+            return result.get(0).getName() + "\n" + result.get(0).getDescribe().replaceAll("\n\n", "\n");
+        }
     }
+
 
     @InstructReflex(value = {".help", "。help"})
     public String help(MessageData data) {
