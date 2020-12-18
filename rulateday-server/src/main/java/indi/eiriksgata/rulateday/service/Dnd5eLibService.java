@@ -1,6 +1,7 @@
 package indi.eiriksgata.rulateday.service;
 
 import indi.eiriksgata.rulateday.pojo.Dnd5ESkillLib;
+import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 
 import java.util.List;
 
@@ -11,9 +12,10 @@ import java.util.List;
  * date: 2020/11/13
  **/
 public interface Dnd5eLibService {
-    List<Dnd5ESkillLib> findAllSkill();
 
-    Dnd5ESkillLib findName(String name);
+    List<QueryDataBase> findName(String name);
 
-    Dnd5ESkillLib findById(long id);
+    QueryDataBase findById(long id);
+
+
 }
