@@ -36,7 +36,23 @@ public interface Dnd5ePhbTestBaseMapper {
     @Insert("insert into dnd5e_tools_phb (id,name,describe) values (#{id},#{name},#{describe})")
     void insertTools(QueryDataBase dataBase);
 
-    
+    @Insert("insert into dnd5e_spell_list_phb (id,name,describe) values (#{id},#{name},#{describe})")
+    void insertSpellList(QueryDataBase dataBase);
+
+    @Insert("insert into dnd5e_magic_items_dmg (id,name,describe) values (#{id},#{name},#{describe})")
+    void insertMagicItemsDmg(QueryDataBase dataBase);
+
+    @Insert("insert into dnd5e_rule_dmg (id,name,describe) values (#{id},#{name},#{describe})")
+    void insertRuleDmg(QueryDataBase dataBase);
+
+    @Insert("insert into dnd5e_mm (id,name,describe) values (#{id},#{name},#{describe})")
+    void insertMM(QueryDataBase dataBase);
+
+    @Insert("insert into dnd5e_background_phb (id,name,describe) values (#{id},#{name},#{describe})")
+    void insertBackgroundPhb(QueryDataBase dataBase);
+
+    @Insert("insert into dnd5e_creature_phb_dmg (id,name,describe) values (#{id},#{name},#{describe})")
+    void insertCreaturePhbDmg(QueryDataBase dataBase);
 
 
 
