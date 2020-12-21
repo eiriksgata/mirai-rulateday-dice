@@ -44,7 +44,7 @@
         <dependency>
             <groupId>com.github.Eiriksgata</groupId>
             <artifactId>trpg-java-dice</artifactId>
-            <version>1.0.0-alpha</version>
+            <version>1.1.0-alpha</version>
         </dependency>
 
         <!--https://bintray.com/him188moe/mirai/mirai-console-->
@@ -169,7 +169,6 @@
                 <directory>src/main/resources/mirai</directory>
                 <targetPath>META-INF/services/</targetPath>
             </resource>
-
 
         </resources>
 
