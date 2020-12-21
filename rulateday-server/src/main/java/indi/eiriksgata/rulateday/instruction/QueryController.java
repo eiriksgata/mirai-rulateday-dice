@@ -70,8 +70,14 @@ public class QueryController {
         List<QueryDataBase> result = dnd5eLibService.findName(data.getMessage());
         if (result.size() > 1) {
             StringBuilder text = new StringBuilder("查询结果存在多个，请完善查询关键字直到存在1个才回显示详细信息\n查询吻合关键字:");
+            int count = 0;
             for (QueryDataBase temp : result) {
-                text.append("\n").append(temp.getName());
+                if (count >= 20) {
+                    text.append("最多显示20条数据。如果需要查询更多信息，请前往网站查询：https://eiriksgata.github.io/rulateday-dnd5e-wiki/#/");
+                } else {
+                    text.append("\n").append(temp.getName());
+                }
+                count++;
             }
             return text.toString();
         } else {
@@ -86,8 +92,9 @@ public class QueryController {
     @InstructReflex(value = {".help", "。help"})
     public String help(MessageData data) {
         return "插件名称:Rulateda v0.1.0 by Eiriksgata\n" +
-                "Github：https://github.com/Eiriksgata/mirai-rulateday-dice\n" +
-                "所有指令：.help指令";
+                "反馈联系Github：https://github.com/Eiriksgata/mirai-rulateday-dice\n" +
+                "所有指令：.help指令\n" +
+                "DND5eWiki:https://eiriksgata.github.io/rulateday-dnd5e-wiki/#/";
     }
 
     @InstructReflex(value = {".help指令", "。help指令"}, priority = 3)
@@ -97,7 +104,7 @@ public class QueryController {
                 ".ra|.rc 属性检测\n" +
                 ".rb 奖励骰|.rp惩罚骰\n" +
                 ".cr coc7规则书查询\n" +
-                ".dr dnd5e法术查询\n" +
+                ".dr dnd5e信息查询\n" +
                 ".ti 随机获取发疯情况\n" +
                 ".li 发疯后总结\n" +
                 ".sc 理智检测\n" +
@@ -107,7 +114,7 @@ public class QueryController {
                 ".dnd 随机dnd5e角色属性\n" +
                 ".r 随机数生成\n" +
                 ".rd 默认骰数值生成\n" +
-                ".botoff | .boton 启用骰子开关";
+                ".botoff | .boton 启用骰子开关\n";
     }
 
 

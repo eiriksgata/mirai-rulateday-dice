@@ -13,11 +13,13 @@ import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.operation.DiceSet;
 import indi.eiriksgata.dice.operation.impl.RollBasicsImpl;
 import indi.eiriksgata.dice.reply.CustomText;
+import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 import indi.eiriksgata.rulateday.service.UserTempDataService;
 import indi.eiriksgata.rulateday.service.impl.UserTempDataServiceImpl;
 import net.mamoe.mirai.Bot;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author: create by Keith
@@ -112,7 +114,6 @@ public class RollController {
             //查询用户数据
             String attribute = userTempDataService.getUserAttribute(data.getQqID());
             String inputData = RegularExpressionUtils.getMatcher("(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+/(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+", data.getMessage());
-
             //要进行是否有用户属性确认
             //对于没有属性的用户 返回错误
             if (attribute == null) {
@@ -157,6 +158,8 @@ public class RollController {
     public String randomDndRole(MessageData data) {
         return rollRole.createDndRole(Integer.valueOf(data.getMessage()));
     }
+
+
 
 
 }
