@@ -1,10 +1,11 @@
 package indi.eiriksgata.rulateday.service.impl;
 
-import indi.eiriksgata.rulateday.mapper.Dnd5eSkillMapper;
-import indi.eiriksgata.rulateday.pojo.Dnd5ESkillLib;
+import indi.eiriksgata.rulateday.mapper.Dnd5ePhbDataMapper;
+import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 import indi.eiriksgata.rulateday.service.Dnd5eLibService;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,24 +16,31 @@ import java.util.List;
  **/
 public class Dnd5eLibServiceImpl implements Dnd5eLibService {
 
-
     @Override
-    public List<Dnd5ESkillLib> findAllSkill() {
-        Dnd5eSkillMapper skillMapper = MyBatisUtil.getSqlSession().getMapper(Dnd5eSkillMapper.class);
-        return skillMapper.selectAll();
+    public List<QueryDataBase> findName(String name) {
+        
+        List<QueryDataBase> result = new ArrayList<>();
+        Dnd5ePhbDataMapper mapper = MyBatisUtil.getSqlSession().getMapper(Dnd5ePhbDataMapper.class);
+        result.addAll(mapper.selectSkillPhb("%" + name + "%"));
+        result.addAll(mapper.selectArmorWeapon("%" + name + "%"));
+        result.addAll(mapper.selectClasses("%" + name + "%"));
+        result.addAll(mapper.selectFeat("%" + name + "%"));
+        result.addAll(mapper.selectRaces("%" + name + "%"));
+        result.addAll(mapper.selectRule("%" + name + "%"));
+        result.addAll(mapper.selectTools("%" + name + "%"));
+        result.addAll(mapper.selectSpellList("%" + name + "%"));
+        result.addAll(mapper.selectMagicItemsDmg("%" + name + "%"));
+        result.addAll(mapper.selectRuleDmg("%" + name + "%"));
+        result.addAll(mapper.selectMM("%" + name + "%"));
+        result.addAll(mapper.selectBackgroundPhb("%" + name + "%"));
+        result.addAll(mapper.selectCreaturePhbDmg("%" + name + "%"));
+        return result;
     }
 
-
     @Override
-    public Dnd5ESkillLib findName(String name) {
-        Dnd5eSkillMapper skillMapper = MyBatisUtil.getSqlSession().getMapper(Dnd5eSkillMapper.class);
-        return skillMapper.selectByName("%" + name + "%");
-    }
-
-    @Override
-    public Dnd5ESkillLib findById(long id) {
-        Dnd5eSkillMapper skillMapper = MyBatisUtil.getSqlSession().getMapper(Dnd5eSkillMapper.class);
-        return skillMapper.selectById(id);
+    public QueryDataBase findById(long id) {
+        Dnd5ePhbDataMapper mapper = MyBatisUtil.getSqlSession().getMapper(Dnd5ePhbDataMapper.class);
+        return mapper.selectSkillPhbById(id);
     }
 
 
