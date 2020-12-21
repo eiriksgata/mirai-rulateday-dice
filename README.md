@@ -7,6 +7,7 @@
 * 此模板集合了大部分的 `mirai-console` 插件所需要的配置项，开发者也可以直接使用该模板进行开发。
 * 如果你是一名纯粹的 Java+Maven 开发者 该项目是一个很好的学习模板。
 * 本项目中的一些查询数据文档: **[Rulateday-Dnd5e Wiki](https://eiriksgata.github.io/rulateday-dnd5e-wiki/)**
+- 如果你有什么疑问或者讨论方案，可以选择在在[discussions](https://github.com/Eiriksgata/mirai-rulateday-dice/discussions)进行
 
 **快速使用**
 * 在以构建好的Mirai-Console的应用程序目录下 将 [rulateday-server-1.0-SNAPSHOT-jar-with-dependencies.jar](https://github.com/Eiriksgata/mirai-rulateday-dice/releases/tag/v0.1.0) 放入 plugins 文件夹中即可
