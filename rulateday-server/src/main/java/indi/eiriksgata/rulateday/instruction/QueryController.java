@@ -59,6 +59,14 @@ public class QueryController {
 
     @InstructReflex(value = {".dr", "。dr", ".d5er"})
     public String queryDnd5eRule(MessageData data) {
+        //如果输入的数据是无关键字的
+        if (data.getMessage().equals("")) {
+            return "请输入关键字参数";
+        }
+        if (data.getMessage().equals(" ")) {
+            return "请输入关键字参数";
+        }
+
         List<QueryDataBase> result = dnd5eLibService.findName(data.getMessage());
         if (result.size() > 1) {
             StringBuilder text = new StringBuilder("查询结果存在多个，请完善查询关键字直到存在1个才回显示详细信息\n查询吻合关键字:");
