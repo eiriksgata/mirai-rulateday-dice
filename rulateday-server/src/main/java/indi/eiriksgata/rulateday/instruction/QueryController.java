@@ -73,7 +73,7 @@ public class QueryController {
             int count = 0;
             for (QueryDataBase temp : result) {
                 if (count >= 20) {
-                    text.append("最多显示20条数据。如果需要查询更多信息，请前往网站查询：https://eiriksgata.github.io/rulateday-dnd5e-wiki/#/");
+                    text.append("\n最多显示20条数据。如果需要查询更多信息，请前往网站查询：https://eiriksgata.github.io/rulateday-dnd5e-wiki/#/");
                     break;
                 } else {
                     text.append("\n").append(temp.getName());
