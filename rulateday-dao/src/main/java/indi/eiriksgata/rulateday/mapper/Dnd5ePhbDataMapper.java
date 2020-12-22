@@ -32,6 +32,15 @@ public interface Dnd5ePhbDataMapper {
     @Select("select * from dnd5e_magic_items_dmg")
     List<QueryDataBase> selectAllMagicItemsDmg();
 
+    @Select("select * from dnd5e_mm")
+    List<QueryDataBase> selectAllMM();
+
+    @Select("select * from dnd5e_spell_list_phb")
+    List<QueryDataBase> selectAllSpellListPhb();
+
+    @Select("select * from dnd5e_tools_phb")
+    List<QueryDataBase> selectAllToolsPhb();
+
     @Select("select * from dnd5e_armor_weapon_phb where name like #{name}")
     List<QueryDataBase> selectArmorWeapon(@Param("name") String name);
 
