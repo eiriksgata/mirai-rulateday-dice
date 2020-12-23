@@ -44,8 +44,14 @@
         <dependency>
             <groupId>com.github.Eiriksgata</groupId>
             <artifactId>trpg-java-dice</artifactId>
-            <version>1.1.0-alpha</version>
+            <version>1.1.1-alpha</version>
         </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>indi.eiriksgata</groupId>-->
+            <!--<artifactId>trpg-java-dice</artifactId>-->
+            <!--<version>1.1.1-SNAPSHOT</version>-->
+        <!--</dependency>-->
 
         <!--https://bintray.com/him188moe/mirai/mirai-console-->
         <dependency>
@@ -153,11 +159,11 @@
                     <exclude>env/dev/*</exclude>
                     <exclude>env/uat/*</exclude>
                     <exclude>env/prod/*</exclude>
+                    <exclude>query/*</exclude>
                 </excludes>
                 <includes>
                     <include>*</include>
                     <include>messages/*</include>
-                    <include>query/*</include>
                 </includes>
             </resource>
             <resource>
