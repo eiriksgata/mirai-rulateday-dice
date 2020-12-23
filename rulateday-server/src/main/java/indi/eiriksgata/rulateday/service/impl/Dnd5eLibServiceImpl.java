@@ -18,7 +18,6 @@ public class Dnd5eLibServiceImpl implements Dnd5eLibService {
 
     @Override
     public List<QueryDataBase> findName(String name) {
-        
         List<QueryDataBase> result = new ArrayList<>();
         Dnd5ePhbDataMapper mapper = MyBatisUtil.getSqlSession().getMapper(Dnd5ePhbDataMapper.class);
         result.addAll(mapper.selectSkillPhb("%" + name + "%"));
@@ -33,7 +32,6 @@ public class Dnd5eLibServiceImpl implements Dnd5eLibService {
         result.addAll(mapper.selectRuleDmg("%" + name + "%"));
         result.addAll(mapper.selectMM("%" + name + "%"));
         result.addAll(mapper.selectBackgroundPhb("%" + name + "%"));
-        result.addAll(mapper.selectCreaturePhbDmg("%" + name + "%"));
         return result;
     }
 
