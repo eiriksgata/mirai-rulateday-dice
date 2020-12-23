@@ -11,8 +11,11 @@ import indi.eiriksgata.rulateday.service.RuleService;
 import indi.eiriksgata.rulateday.service.impl.CrazyLibraryImpl;
 import indi.eiriksgata.rulateday.service.impl.Dnd5eLibServiceImpl;
 import indi.eiriksgata.rulateday.service.impl.RuleServiceImpl;
+import net.mamoe.mirai.message.FriendMessageEvent;
+import net.mamoe.mirai.message.GroupMessageEvent;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -67,6 +70,7 @@ public class QueryController {
         }
 
         List<QueryDataBase> result = dnd5eLibService.findName(data.getMessage());
+
         if (result.size() > 1) {
             StringBuilder text = new StringBuilder("查询结果存在多个，请完善查询关键字直到存在1个才回显示详细信息\n查询吻合关键字:");
             int count = 0;
@@ -84,6 +88,16 @@ public class QueryController {
             if (result.size() == 0) {
                 return "查询不到结果";
             }
+            if (result.get(0).getName().substring(0, 5).equals("怪物图鉴:")) {
+                String mmNameFileName = result.get(0).getName().substring(5) + ".png";
+                if (data.getEvent().getClass() == GroupMessageEvent.class) {
+                    ((GroupMessageEvent) data.getEvent()).getGroup().sendMessage(((GroupMessageEvent) data.getEvent()).getGroup().uploadImage(new File("data\\rulateday\\dnd5eMMImage\\" + mmNameFileName)));
+                }
+                if (data.getEvent().getClass() == FriendMessageEvent.class) {
+                    ((FriendMessageEvent) data.getEvent()).getFriend().sendMessage(((GroupMessageEvent) data.getEvent()).getGroup().uploadImage(new File("data\\rulateday\\dnd5eMMImage\\" + mmNameFileName)));
+                }
+            }
+
             return result.get(0).getName() + "\n" + result.get(0).getDescribe().replaceAll("\n\n", "\n");
         }
     }
