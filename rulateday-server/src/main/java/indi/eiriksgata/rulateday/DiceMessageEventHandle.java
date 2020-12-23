@@ -31,9 +31,10 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
 
     @EventHandler()
     public ListeningStatus onFriendMessage(FriendMessageEvent event) {
-        MessageData messageData = new MessageData();
+        MessageData<FriendMessageEvent> messageData = new MessageData<>();
         messageData.setMessage(event.getMessage().contentToString());
         messageData.setQqID(event.getSender().getId());
+        messageData.setEvent(event);
         String result;
         try {
             result = instructHandle.instructCheck(messageData);
@@ -78,6 +79,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
 
 
     private static void groupMessageHandle(GroupMessageEvent event) {
+
         //群消息的回复
         //回复群的筛选
         if (botControl.groupBotOff(event) || botControl.groupBotOn(event)) {
@@ -86,9 +88,10 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         if (!botControl.isSpeakers(event)) {
             return;
         }
-        MessageData messageData = new MessageData();
+        MessageData<GroupMessageEvent> messageData = new MessageData<>();
         messageData.setMessage(event.getMessage().contentToString());
         messageData.setQqID(event.getSender().getId());
+        messageData.setEvent(event);
         String result;
         try {
             result = instructHandle.instructCheck(messageData);
