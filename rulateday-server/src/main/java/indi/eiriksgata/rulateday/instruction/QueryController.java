@@ -102,9 +102,10 @@ public class QueryController {
                 if (data.getEvent().getClass() == FriendMessageEvent.class) {
                     File imageFile = new File("data\\rulateday\\dnd5eMMImage\\" + mmNameFileName);
                     if (imageFile.exists()) {
-                        ((FriendMessageEvent) data.getEvent()).getFriend().sendMessage(
-                                ((GroupMessageEvent) data.getEvent())
-                                        .getGroup().uploadImage(imageFile));
+                        ((FriendMessageEvent) data.getEvent()).getFriend()
+                                .sendMessage(
+                                        ((FriendMessageEvent) data.getEvent())
+                                                .getFriend().uploadImage(imageFile));
                     }
 
                 }
