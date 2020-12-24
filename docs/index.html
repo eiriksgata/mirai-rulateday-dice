@@ -18,36 +18,34 @@
   <div id="app">数据加载中</div>
   <script>
 
-
     window.$docsify = {
       name: 'Mirai-rulateday-dice',
       repo: 'https://github.com/Eiriksgata/mirai-rulateday-dice',
       loadSidebar: true,
       subMaxLevel: 2,
       search: 'auto',
-      // plugins: [
-      //   EditOnGithubPlugin.create("https://github.com/Eiriksgata/rulateday-dnd5e-wiki/tree/master/docs/", null, "编辑当前页")
-      // ],
+      plugins: [
+        EditOnGithubPlugin.create("https://github.com/Eiriksgata/mirai-rulateday-dice/tree/master/docs", null, "编辑当前页")
+      ],
       pagination: {
         previousText: '上一章节',
         nextText: '下一章节',
         crossChapter: true,
         crossChapterText: true
       }
-
     };
 
-    // const gitalk = new Gitalk({
-    //   id: 'Wiki Document Comment',
-    //   clientID: 'a2303cf56e47391f6340',
-    //   clientSecret: '25b73006bebdc323422f0a300ef7e809a500815d',
-    //   repo: 'rulateday-dnd5e-wiki',
-    //   owner: 'Eiriksgata',
-    //   admin: ['Eiriksgata'],
-    //   // facebook-like distraction free mode
-    //   distractionFreeMode: false,
-    //   title: 'RulatedayDnd5eWiki-Comment'
-    // });
+    const gitalk = new Gitalk({
+      id: 'Document Comment',
+      clientID: '20686d5f88f212400795',
+      clientSecret: 'e129568ad6b73bfc7e7e8692e097e0c9421637e7',
+      repo: 'mirai-rulateday-dice',
+      owner: 'Eiriksgata',
+      admin: ['Eiriksgata'],
+      // facebook-like distraction free mode
+      distractionFreeMode: false,
+      title: 'Rulateday Dice Comment'
+    });
 
   </script>
   <!-- Docsify v4 -->
@@ -57,7 +55,6 @@
   <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
-
   <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/gitalk.min.js"></script>
 
 </body>
