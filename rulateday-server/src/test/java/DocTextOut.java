@@ -21,7 +21,7 @@ public class DocTextOut {
         List<QueryDataBase> result = mapper.selectAllArmorWeapon();
         for (QueryDataBase temp : result) {
             System.out.println("## " + temp.getName());
-            System.out.println(temp.getDescribe());
+            System.out.println(temp.getDescribe().replaceAll("\n", "\n\n") + "\n\n");
         }
     }
 
@@ -31,7 +31,8 @@ public class DocTextOut {
         List<QueryDataBase> result = mapper.selectAllMagicItemsDmg();
         for (QueryDataBase temp : result) {
             System.out.println("## " + temp.getName());
-            System.out.println(temp.getDescribe());
+            System.out.println(temp.getDescribe().replaceAll("\n", "\n\n") + "\n\n");
+
         }
     }
 
@@ -41,7 +42,17 @@ public class DocTextOut {
         List<QueryDataBase> result = mapper.selectAllMM();
         for (QueryDataBase temp : result) {
             System.out.println("## " + temp.getName());
-            System.out.println(temp.getDescribe());
+
+            if (temp.getName().length() > 5) {
+                if (temp.getName().substring(0, 5).equals("怪物图鉴:")) {
+                    String mmName = temp.getName().substring(5);
+                    System.out.println("![" + mmName + "]" + "(../mm-image/" + mmName + ".png ':size=30%')\n\n");
+                }
+            }
+
+
+            System.out.println(temp.getDescribe().replaceAll("\n", "\n\n") + "\n\n");
+
         }
     }
 
@@ -51,7 +62,7 @@ public class DocTextOut {
         List<QueryDataBase> result = mapper.selectAllToolsPhb();
         for (QueryDataBase temp : result) {
             System.out.println("## " + temp.getName());
-            System.out.println(temp.getDescribe());
+            System.out.println(temp.getDescribe().replaceAll("\n", "\n\n") + "\n\n");
         }
     }
 
