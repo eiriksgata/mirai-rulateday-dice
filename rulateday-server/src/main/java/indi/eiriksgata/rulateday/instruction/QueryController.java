@@ -16,6 +16,8 @@ import net.mamoe.mirai.message.GroupMessageEvent;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -90,11 +92,28 @@ public class QueryController {
             }
             if (result.get(0).getName().substring(0, 5).equals("怪物图鉴:")) {
                 String mmNameFileName = result.get(0).getName().substring(5) + ".png";
-                if (data.getEvent().getClass() == GroupMessageEvent.class) {
-                    ((GroupMessageEvent) data.getEvent()).getGroup().sendMessage(((GroupMessageEvent) data.getEvent()).getGroup().uploadImage(new File("data\\rulateday\\dnd5eMMImage\\" + mmNameFileName)));
+                try {
+                    mmNameFileName = URLEncoder.encode(mmNameFileName, "utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
                 }
+                if (data.getEvent().getClass() == GroupMessageEvent.class) {
+                    File imageFile = new File("data\\rulateday\\dnd5eMMImage\\" + mmNameFileName);
+                    if (imageFile.exists()) {
+                        ((GroupMessageEvent) data.getEvent()).getGroup()
+                                .sendMessage(((GroupMessageEvent) data.getEvent())
+                                        .getGroup().uploadImage(imageFile));
+                    }
+                }
+
                 if (data.getEvent().getClass() == FriendMessageEvent.class) {
-                    ((FriendMessageEvent) data.getEvent()).getFriend().sendMessage(((GroupMessageEvent) data.getEvent()).getGroup().uploadImage(new File("data\\rulateday\\dnd5eMMImage\\" + mmNameFileName)));
+                    File imageFile = new File("data\\rulateday\\dnd5eMMImage\\" + mmNameFileName);
+                    if (imageFile.exists()) {
+                        ((FriendMessageEvent) data.getEvent()).getFriend().sendMessage(
+                                ((GroupMessageEvent) data.getEvent())
+                                        .getGroup().uploadImage(imageFile));
+                    }
+
                 }
             }
 
