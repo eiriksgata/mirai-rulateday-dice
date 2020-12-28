@@ -10,12 +10,14 @@
 * 如果你有什么疑问或者讨论方案，可以选择在在[discussions](https://github.com/Eiriksgata/mirai-rulateday-dice/discussions)进行
 * 本项目文档地址:[mirai-rulateday-dice Document](https://eiriksgata.github.io/mirai-rulateday-dice/)
 
+
 **快速使用**
 * 在以构建好的Mirai-Console的应用程序目录下将最新版[rulateday-server-SNAPSHOT-jar-with-dependencies.jar](https://github.com/Eiriksgata/mirai-rulateday-dice/releases) 放入 plugins 文件夹中即可
 * Mirai-Console程序目录下 libs文件夹需要包含的文件以及版本: mirai-console-1.0.0+  & mirai-core-all.1.3.3 & mirai-console-terminal-1.0.0
-* 怪物图片库下载:[mm-image](https://github.com/Eiriksgata/rulateday-dnd5e-wiki/tree/master/docs/mm-image)下载怪物的图片后需要将其放在**Mirai-Console**目录下的`data\rulateday\dnd5eMMImage`文件夹里面
+* 怪物图片库下载:[mm-image](https://github.com/Eiriksgata/rulateday-dnd5e-wiki/tree/master/docs/mm-image)下载怪物的图片后需要将其放在**Mirai-Console**目录下的`data\rulateday\dnd5eMMImage`文件夹里面。
+> 如果你没有下载也没有关系，图片会从网络服务器中拉取到本地，然后再由本地发送出去（网络不好的状况需要较长的时间处理）。
 
-参考文件目录结构:(如果没有dnd5eMMImage文件夹则需要自己创建)
+参考文件目录结构:
 ```text
 └── mirai-console
     ├── config
