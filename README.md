@@ -71,7 +71,7 @@
 
 
 **编译jar文件**
-* [Rulateday 0.1.0-alpha](https://github.com/Eiriksgata/mirai-rulateday-dice/releases/tag/v0.1.0)
+* [Rulateday 0.2.0](https://github.com/Eiriksgata/mirai-rulateday-dice/releases/tag/v0.2.0)
 
 **构建说明**
 * 暂无
