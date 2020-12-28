@@ -9,7 +9,7 @@
 * 本项目中的一些查询数据文档: **[Rulateday-Dnd5e Wiki](https://eiriksgata.github.io/rulateday-dnd5e-wiki/)**
 * 如果你有什么疑问或者讨论方案，可以选择在在[discussions](https://github.com/Eiriksgata/mirai-rulateday-dice/discussions)进行
 * 本项目文档地址:[mirai-rulateday-dice Document](https://eiriksgata.github.io/mirai-rulateday-dice/)
-
+* 如果想直接使用QQ机器人请添加QQ:`209135855`
 
 **快速使用**
 * 在以构建好的Mirai-Console的应用程序目录下将最新版[rulateday-server-SNAPSHOT-jar-with-dependencies.jar](https://github.com/Eiriksgata/mirai-rulateday-dice/releases) 放入 plugins 文件夹中即可
