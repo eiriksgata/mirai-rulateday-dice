@@ -11,11 +11,14 @@ import indi.eiriksgata.rulateday.service.RuleService;
 import indi.eiriksgata.rulateday.service.impl.CrazyLibraryImpl;
 import indi.eiriksgata.rulateday.service.impl.Dnd5eLibServiceImpl;
 import indi.eiriksgata.rulateday.service.impl.RuleServiceImpl;
+import indi.eiriksgata.rulateday.utlis.FileUtil;
 import net.mamoe.mirai.message.FriendMessageEvent;
 import net.mamoe.mirai.message.GroupMessageEvent;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -84,30 +87,43 @@ public class QueryController {
                 count++;
             }
             return text.toString();
+
         } else {
             if (result.size() == 0) {
                 return "查询不到结果";
             }
-            if (result.get(0).getName().substring(0, 5).equals("怪物图鉴:")) {
-                String mmNameFileName = result.get(0).getName().substring(5) + ".png";
-                if (data.getEvent().getClass() == GroupMessageEvent.class) {
-                    File imageFile = new File("data\\rulateday\\dnd5eMMImage\\" + mmNameFileName);
-                    if (imageFile.exists()) {
-                        ((GroupMessageEvent) data.getEvent()).getGroup()
-                                .sendMessage(((GroupMessageEvent) data.getEvent())
-                                        .getGroup().uploadImage(imageFile));
-                    }
-                }
 
-                if (data.getEvent().getClass() == FriendMessageEvent.class) {
-                    File imageFile = new File("data\\rulateday\\dnd5eMMImage\\" + mmNameFileName);
-                    if (imageFile.exists()) {
-                        ((FriendMessageEvent) data.getEvent()).getFriend()
-                                .sendMessage(
-                                        ((FriendMessageEvent) data.getEvent())
-                                                .getFriend().uploadImage(imageFile));
-                    }
 
+            if (result.get(0).getName().length() > 5) {
+                if (result.get(0).getName().substring(0, 5).equals("怪物图鉴:")) {
+                    String mmNameFileName = result.get(0).getName().substring(5) + ".png";
+                    String mmName = result.get(0).getName().substring(5) + ".png";
+                    try {
+                        mmNameFileName = URLEncoder.encode(mmNameFileName, "utf-8");
+                    } catch (UnsupportedEncodingException e) {
+                        return "怪物名称解析出错";
+                    }
+                    String url = "http://120.48.22.128/resources/mm-images/" + mmNameFileName;
+                    File imageFile = new File("data\\rulateday\\mm-images\\" + mmName);
+
+                    if (!imageFile.exists()) {
+                        FileUtil.downLoadFromUrl(url, "data\\rulateday\\mm-images\\" + mmName);
+                    }
+                    if (data.getEvent().getClass() == GroupMessageEvent.class) {
+                        if (imageFile.exists()) {
+                            ((GroupMessageEvent) data.getEvent()).getGroup()
+                                    .sendMessage(((GroupMessageEvent) data.getEvent())
+                                            .getGroup().uploadImage(imageFile));
+                        }
+                    }
+                    if (data.getEvent().getClass() == FriendMessageEvent.class) {
+                        if (imageFile.exists()) {
+                            ((FriendMessageEvent) data.getEvent()).getFriend()
+                                    .sendMessage(
+                                            ((FriendMessageEvent) data.getEvent())
+                                                    .getFriend().uploadImage(imageFile));
+                        }
+                    }
                 }
             }
 
