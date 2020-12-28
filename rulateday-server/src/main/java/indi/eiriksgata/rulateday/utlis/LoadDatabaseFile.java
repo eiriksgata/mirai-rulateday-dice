@@ -27,11 +27,17 @@ public class LoadDatabaseFile {
         String path = "data//rulateday";
         File file = new File(path + "//rulateday.db");
         File mkdir = new File(path);
+        File mmImages = new File(path + "//mm-images");
+        if (!mkdir.exists()) {
+            mkdir.mkdirs();
+            //RulatedayCore.INSTANCE.getLogger().info("Detecting no database file, creating..");
+        }
+        if (!mmImages.exists()){
+            mmImages.mkdirs();
+        }
         if (!file.exists()) {
-            if (!mkdir.exists()) {
-                mkdir.mkdirs();
-                RulatedayCore.INSTANCE.getLogger().info("Detecting no database file, creating..");
-            }
+
+
             OutputStream output = new FileOutputStream(file);
             byte[] bytes = new byte[1];
             while (inputStream.read(bytes) != -1) {
