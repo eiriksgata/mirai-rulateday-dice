@@ -97,8 +97,21 @@ public class DiceTest {
         MessageData messageData = new MessageData();
         messageData.setQqID(123456789L);
         InstructHandle instruct = new InstructHandle();
-        messageData.setMessage(".dr吟游诗人:职业特性");
+        messageData.setMessage(".dr牧师:神圣领域");
         System.out.println(instruct.instructCheck(messageData));
     }
 
+
+    @Test
+    void rd() throws Exception {
+        MessageData messageData = new MessageData();
+        messageData.setQqID(123456789L);
+        InstructHandle instruct = new InstructHandle();
+        messageData.setMessage(".rd+2d+2d3");
+        System.out.println(instruct.instructCheck(messageData));
+        messageData.setMessage(".set20");
+        System.out.println(instruct.instructCheck(messageData));
+        messageData.setMessage(".rd+2d+2d3");
+        System.out.println(instruct.instructCheck(messageData));
+    }
 }
