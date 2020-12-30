@@ -104,10 +104,10 @@ public class QueryController {
                         return "怪物名称解析出错";
                     }
                     String url = "http://120.48.22.128/resources/mm-images/" + mmNameFileName;
-                    File imageFile = new File("data\\rulateday\\mm-images\\" + mmName);
+                    File imageFile = new File("data//rulateday//mm-images//" + mmName);
 
                     if (!imageFile.exists()) {
-                        FileUtil.downLoadFromUrl(url, "data\\rulateday\\mm-images\\" + mmName);
+                        FileUtil.downLoadFromUrl(url, "data//rulateday//mm-images//" + mmName);
                     }
                     if (data.getEvent().getClass() == GroupMessageEvent.class) {
                         if (imageFile.exists()) {
