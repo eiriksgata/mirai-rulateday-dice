@@ -10,8 +10,11 @@ import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.ListeningStatus;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.BotInvitedJoinGroupRequestEvent;
+import net.mamoe.mirai.event.events.NewFriendRequestEvent;
+import net.mamoe.mirai.event.events.TempMessagePreSendEvent;
 import net.mamoe.mirai.message.FriendMessageEvent;
 import net.mamoe.mirai.message.GroupMessageEvent;
+import net.mamoe.mirai.message.TempMessageEvent;
 import net.mamoe.mirai.message.data.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,11 +26,81 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
     private static final BotServiceControl botControl = new BotServiceControl();
 
     @EventHandler()
-    public ListeningStatus onBotRequest(BotInvitedJoinGroupRequestEvent event) {
+    public ListeningStatus onBotGroupRequest(BotInvitedJoinGroupRequestEvent event) {
         //收到邀请自动加入
         event.accept();
         return ListeningStatus.LISTENING;
     }
+
+
+    @EventHandler()
+    public ListeningStatus onFriendRequest(NewFriendRequestEvent event) {
+        event.accept();
+        return ListeningStatus.LISTENING;
+    }
+
+
+    @EventHandler()
+    public ListeningStatus onFriendRequest(TempMessageEvent event) {
+        MessageData<TempMessageEvent> messageData = new MessageData<>();
+        messageData.setMessage(event.getMessage().contentToString());
+        messageData.setQqID(event.getSender().getId());
+        messageData.setEvent(event);
+        String result;
+        try {
+            result = instructHandle.instructCheck(messageData);
+            //对于私聊的消息需要进行分割长度发送
+            while (true) {
+                if (result.length() > 200) {
+                    event.getSender().sendMessage(result.substring(0, 200));
+                    result = result.substring(200);
+                } else {
+                    event.getSender().sendMessage(result);
+                    break;
+                }
+            }
+        } catch (DiceInstructException e) {
+            if (e.getErrCode().equals(ExceptionEnum.DICE_INSTRUCT_NOT_FOUND.getErrCode())) {
+                return ListeningStatus.LISTENING;
+            }
+            event.getSender().sendMessage(e.getErrMsg());
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            event.getSender().sendMessage(e.getMessage());
+        }
+        return ListeningStatus.LISTENING;
+    }
+
+
+    @EventHandler()
+    public ListeningStatus OnTempGroupPrivateMessage(TempMessagePreSendEvent event) {
+        MessageData<TempMessagePreSendEvent> messageData = new MessageData<>();
+        messageData.setMessage(event.getMessage().contentToString());
+        messageData.setQqID(event.getTarget().getId());
+        messageData.setEvent(event);
+        String result;
+        try {
+            result = instructHandle.instructCheck(messageData);
+            //对于私聊的消息需要进行分割长度发送
+            while (true) {
+                if (result.length() > 200) {
+                    event.getTarget().sendMessage(result.substring(0, 200));
+                    result = result.substring(200);
+                } else {
+                    event.getTarget().sendMessage(result);
+                    break;
+                }
+            }
+        } catch (DiceInstructException e) {
+            if (e.getErrCode().equals(ExceptionEnum.DICE_INSTRUCT_NOT_FOUND.getErrCode())) {
+                return ListeningStatus.LISTENING;
+            }
+            event.getTarget().sendMessage(e.getErrMsg());
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            event.getTarget().sendMessage(e.getMessage());
+        }
+        return ListeningStatus.LISTENING;
+    }
+
 
     @EventHandler()
     public ListeningStatus onFriendMessage(FriendMessageEvent event) {
@@ -79,7 +152,6 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
 
 
     private static void groupMessageHandle(GroupMessageEvent event) {
-
         //群消息的回复
         //回复群的筛选
         if (botControl.groupBotOff(event) || botControl.groupBotOn(event)) {
@@ -107,4 +179,5 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         event.getGroup().sendMessage(new At(event.getSender()).plus("\n" + result));
         // event.getGroup().sendMessage(event.getSender().getNameCard() + result);
     }
+
 }
