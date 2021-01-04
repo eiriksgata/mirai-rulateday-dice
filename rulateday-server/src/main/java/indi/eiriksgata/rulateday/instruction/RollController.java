@@ -48,7 +48,7 @@ public class RollController {
         String attribute = userTempDataService.getUserAttribute(data.getQqID());
         data.setMessage(data.getMessage().replaceAll(" ", ""));
         if (attribute == null) {
-            return CustomText.getText("dice.attribute.error");
+            attribute = "";
         }
         try {
             return rollBasics.attributeCheck(data.getMessage(), attribute);
@@ -101,6 +101,14 @@ public class RollController {
 
     @InstructReflex(value = {".sc", "。sc"})
     public String sanCheck(MessageData data) {
+        //检查指令前缀空格符
+        for (int i = 0; i < data.getMessage().length(); i++) {
+            if (data.getMessage().charAt(i) != ' ') {
+                data.setMessage(data.getMessage().substring(i));
+                break;
+            }
+        }
+
         //优先检测指令是否包含有数值
         if (data.getMessage().matches("(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+/(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+ [0-9]+")) {
             //检测到包含数值 进行 空格符 分割 0为计算公式，1为给定的数值
@@ -158,8 +166,6 @@ public class RollController {
     public String randomDndRole(MessageData data) {
         return rollRole.createDndRole(Integer.valueOf(data.getMessage()));
     }
-
-
 
 
 }
