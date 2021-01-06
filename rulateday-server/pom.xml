@@ -5,7 +5,7 @@
     <parent>
         <artifactId>mirai-rulateday-dice</artifactId>
         <groupId>indi.eiriksgata</groupId>
-        <version>0.2.1-SNAPSHOT</version>
+        <version>0.2.2-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -26,7 +26,6 @@
         <java.version>1.8</java.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <mainClass>com.github.plexpt.miraipoem.MyPluginBase</mainClass>
 
         <lombok.version>1.18.16</lombok.version>
         <mica.http.version>1.2.2</mica.http.version>
@@ -223,7 +222,6 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>${mainClass}</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
