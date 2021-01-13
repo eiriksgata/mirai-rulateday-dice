@@ -15,7 +15,7 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface RuleBookMapper {
 
-    @Select("select * from coc_rule_book where title like #{title} ")
+    @Select("select * from coc7_rule_book where title like #{title} ")
     RuleBook selectByTitle(@Param("title") String title);
 
 
