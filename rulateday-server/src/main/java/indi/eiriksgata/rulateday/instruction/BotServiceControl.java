@@ -4,7 +4,7 @@ import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.rulateday.service.BotControlService;
 import indi.eiriksgata.rulateday.service.impl.BotControlServiceImpl;
 import net.mamoe.mirai.Bot;
-import net.mamoe.mirai.message.GroupMessageEvent;
+import net.mamoe.mirai.event.events.GroupMessageEvent;
 
 import javax.annotation.Resource;
 
@@ -21,7 +21,7 @@ public class BotServiceControl {
     public final static BotControlService botControl = new BotControlServiceImpl();
 
     public boolean groupBotOff(GroupMessageEvent event) {
-        long id = Bot.getBotInstances().get(0).getSelfQQ().getId();
+        long id = Bot.getInstances().get(0).getId();
         String regex = ".*\\[mirai:at:" + id + ",@.*]\\.botoff";
         String messageSource = event.getMessage().toString().replaceAll(" ", "");
         String messageContent = event.getMessage().contentToString().replaceAll(" ", "");
@@ -34,7 +34,7 @@ public class BotServiceControl {
     }
 
     public boolean groupBotOn(GroupMessageEvent event) {
-        long id = Bot.getBotInstances().get(0).getSelfQQ().getId();
+        long id = Bot.getInstances().get(0).getId();
         String regex = ".*\\[mirai:at:" + id + ",@.*]\\.boton";
         String messageSource = event.getMessage().toString().replaceAll(" ", "");
         String messageContent = event.getMessage().contentToString().replaceAll(" ", "");

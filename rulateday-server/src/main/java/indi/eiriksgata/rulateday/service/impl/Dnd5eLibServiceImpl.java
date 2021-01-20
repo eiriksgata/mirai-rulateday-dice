@@ -42,4 +42,12 @@ public class Dnd5eLibServiceImpl implements Dnd5eLibService {
     }
 
 
+    @Override
+    public QueryDataBase getRandomMMData() {
+        Dnd5ePhbDataMapper mapper = MyBatisUtil.getSqlSession().getMapper(Dnd5ePhbDataMapper.class);
+        MyBatisUtil.getSqlSession().clearCache();
+        return mapper.selectRandomMM();
+    }
+
+
 }

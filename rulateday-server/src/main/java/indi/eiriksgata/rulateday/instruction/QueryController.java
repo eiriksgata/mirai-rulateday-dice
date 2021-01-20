@@ -3,6 +3,7 @@ package indi.eiriksgata.rulateday.instruction;
 import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.injection.InstructService;
 import indi.eiriksgata.dice.vo.MessageData;
+import indi.eiriksgata.rulateday.RulatedayCore;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 import indi.eiriksgata.rulateday.pojo.RuleBook;
 import indi.eiriksgata.rulateday.service.CrazyLibraryService;
@@ -12,14 +13,16 @@ import indi.eiriksgata.rulateday.service.impl.CrazyLibraryImpl;
 import indi.eiriksgata.rulateday.service.impl.Dnd5eLibServiceImpl;
 import indi.eiriksgata.rulateday.service.impl.RuleServiceImpl;
 import indi.eiriksgata.rulateday.utlis.FileUtil;
-import net.mamoe.mirai.message.FriendMessageEvent;
-import net.mamoe.mirai.message.GroupMessageEvent;
+import net.mamoe.mirai.event.events.FriendMessageEvent;
+import net.mamoe.mirai.event.events.GroupMessageEvent;
+import net.mamoe.mirai.utils.ExternalResource;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * author: create by Keith
@@ -39,6 +42,9 @@ public class QueryController {
 
     @Resource
     private RuleService ruleService = new RuleServiceImpl();
+
+    private String imagesUrl = ResourceBundle.getBundle("resources").getString("resources.mm.images.url");
+    private String localPath = ResourceBundle.getBundle("resources").getString("resources.mm.images.path");
 
     //发疯状态确认
     @InstructReflex(value = {".ti", "。ti"})
@@ -92,10 +98,9 @@ public class QueryController {
             if (result.size() == 0) {
                 return "查询不到结果";
             }
-
-
             if (result.get(0).getName().length() > 5) {
                 if (result.get(0).getName().substring(0, 5).equals("怪物图鉴:")) {
+
                     String mmNameFileName = result.get(0).getName().substring(5) + ".png";
                     String mmName = result.get(0).getName().substring(5) + ".png";
                     try {
@@ -103,17 +108,22 @@ public class QueryController {
                     } catch (UnsupportedEncodingException e) {
                         return "怪物名称解析出错";
                     }
-                    String url = "http://120.48.22.128/resources/mm-images/" + mmNameFileName;
-                    File imageFile = new File("data//rulateday//mm-images//" + mmName);
+                    String url = imagesUrl + mmNameFileName;
+                    File imageFile = new File(localPath + mmName);
 
                     if (!imageFile.exists()) {
-                        FileUtil.downLoadFromUrl(url, "data//rulateday//mm-images//" + mmName);
+                        try {
+                            FileUtil.downLoadFromUrl(url, localPath + mmName);
+                        } catch (Exception e) {
+                            RulatedayCore.INSTANCE.getLogger().info("下载" + result.get(0).getName().substring(5) + "图片失败，服务器可能没有该资源");
+                        }
                     }
                     if (data.getEvent().getClass() == GroupMessageEvent.class) {
                         if (imageFile.exists()) {
                             ((GroupMessageEvent) data.getEvent()).getGroup()
                                     .sendMessage(((GroupMessageEvent) data.getEvent())
-                                            .getGroup().uploadImage(imageFile));
+                                            .getGroup().uploadImage(ExternalResource.create(imageFile)));
+
                         }
                     }
                     if (data.getEvent().getClass() == FriendMessageEvent.class) {
@@ -121,12 +131,12 @@ public class QueryController {
                             ((FriendMessageEvent) data.getEvent()).getFriend()
                                     .sendMessage(
                                             ((FriendMessageEvent) data.getEvent())
-                                                    .getFriend().uploadImage(imageFile));
+                                                    .getFriend().uploadImage(ExternalResource.create(imageFile)));
                         }
                     }
+
                 }
             }
-
             return result.get(0).getName() + "\n" + result.get(0).getDescribe().replaceAll("\n\n", "\n");
         }
     }
@@ -157,7 +167,63 @@ public class QueryController {
                 ".dnd 随机dnd5e角色属性\n" +
                 ".r 随机数生成\n" +
                 ".rd 默认骰数值生成\n" +
-                ".botoff | .boton 启用骰子开关\n";
+                ".botoff | .boton 启用骰子开关\n" +
+                "更多的指令详情请查看:https://eiriksgata.github.io/mirai-rulateday-dice/#/instruction\n";
+    }
+
+    @InstructReflex(value = {".rmm", "。rmm"})
+    public String rollMM(MessageData data) {
+        QueryDataBase result = dnd5eLibService.getRandomMMData();
+
+
+
+        String mmNameFileName = result.getName().substring(5) + ".png";
+        String mmName = result.getName().substring(5) + ".png";
+        try {
+            mmNameFileName = URLEncoder.encode(mmNameFileName, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            return "怪物名称解析出错";
+        }
+        String url = imagesUrl + mmNameFileName;
+        File imageFile = new File(localPath + mmName);
+        if (!imageFile.exists()) {
+            try {
+                FileUtil.downLoadFromUrl(url, localPath + mmName);
+            } catch (Exception e) {
+                RulatedayCore.INSTANCE.getLogger().info("下载" + result.getName().substring(5) + "图片失败，服务器可能没有该资源");
+            }
+        }
+        if (data.getEvent().getClass() == GroupMessageEvent.class) {
+            if (imageFile.exists()) {
+                ((GroupMessageEvent) data.getEvent()).getGroup()
+                        .sendMessage(((GroupMessageEvent) data.getEvent())
+                                .getGroup().uploadImage(ExternalResource.create(imageFile)));
+            }
+        }
+        if (data.getEvent().getClass() == FriendMessageEvent.class) {
+            if (imageFile.exists()) {
+                ((FriendMessageEvent) data.getEvent()).getFriend()
+                        .sendMessage(
+                                ((FriendMessageEvent) data.getEvent())
+                                        .getFriend().uploadImage(ExternalResource.create(imageFile)));
+            }
+        }
+        return result.getName() + "\n" + result.getDescribe().replaceAll("\n\n", "\n");
+    }
+
+    @InstructReflex(value = {".rmi", "。rmi"})
+    public String rollMagicItem() {
+        return "null";
+    }
+
+    @InstructReflex(value = {".rt", "。rt"})
+    public String rollTool() {
+        return "null";
+    }
+
+    @InstructReflex(value = {".drw", "。drw"})
+    public String rollWeapone() {
+        return "null";
     }
 
 

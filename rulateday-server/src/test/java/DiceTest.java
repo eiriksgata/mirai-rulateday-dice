@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * @author: create by Keith
@@ -58,13 +59,7 @@ public class DiceTest {
 
         InstructHandle instruct = new InstructHandle();
 
-        messageData.setMessage(".set20");
-        System.out.println(instruct.instructCheck(messageData));
-
-        messageData.setMessage(".sc1d5/2d3");
-        System.out.println(instruct.instructCheck(messageData));
-
-        messageData.setMessage(".stsan50");
+        messageData.setMessage(".cr人类学");
         System.out.println(instruct.instructCheck(messageData));
     }
 
@@ -107,11 +102,15 @@ public class DiceTest {
         MessageData messageData = new MessageData();
         messageData.setQqID(123456789L);
         InstructHandle instruct = new InstructHandle();
-        messageData.setMessage(".rd+2d+2d3");
+        messageData.setMessage(".raSan");
         System.out.println(instruct.instructCheck(messageData));
-        messageData.setMessage(".set20");
-        System.out.println(instruct.instructCheck(messageData));
-        messageData.setMessage(".rd+2d+2d3");
-        System.out.println(instruct.instructCheck(messageData));
+    }
+
+    @Test
+    void fileRead() {
+        String imagesUrl = ResourceBundle.getBundle("resources").getString("resources.mm.images.url");
+        String localPath = ResourceBundle.getBundle("resources").getString("resources.mm.images.path");
+        System.out.println(imagesUrl);
+        System.out.println(localPath);
     }
 }

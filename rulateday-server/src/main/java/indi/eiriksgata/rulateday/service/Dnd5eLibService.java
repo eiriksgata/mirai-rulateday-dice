@@ -18,4 +18,5 @@ public interface Dnd5eLibService {
     QueryDataBase findById(long id);
 
 
+    QueryDataBase getRandomMMData();
 }

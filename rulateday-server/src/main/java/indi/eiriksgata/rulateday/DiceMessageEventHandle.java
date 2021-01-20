@@ -9,13 +9,8 @@ import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.ListeningStatus;
 import net.mamoe.mirai.event.SimpleListenerHost;
-import net.mamoe.mirai.event.events.BotInvitedJoinGroupRequestEvent;
-import net.mamoe.mirai.event.events.NewFriendRequestEvent;
-import net.mamoe.mirai.event.events.TempMessagePreSendEvent;
-import net.mamoe.mirai.message.FriendMessageEvent;
-import net.mamoe.mirai.message.GroupMessageEvent;
-import net.mamoe.mirai.message.TempMessageEvent;
-import net.mamoe.mirai.message.data.*;
+import net.mamoe.mirai.event.events.*;
+import net.mamoe.mirai.message.data.At;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
@@ -39,10 +34,9 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         return ListeningStatus.LISTENING;
     }
 
-
     @EventHandler()
-    public ListeningStatus onFriendRequest(TempMessageEvent event) {
-        MessageData<TempMessageEvent> messageData = new MessageData<>();
+    public ListeningStatus OnGroupTempMessageEvent(GroupTempMessageEvent event) {
+        MessageData<GroupTempMessageEvent> messageData = new MessageData<>();
         messageData.setMessage(event.getMessage().contentToString());
         messageData.setQqID(event.getSender().getId());
         messageData.setEvent(event);
@@ -66,37 +60,6 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             event.getSender().sendMessage(e.getErrMsg());
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
             event.getSender().sendMessage(e.getMessage());
-        }
-        return ListeningStatus.LISTENING;
-    }
-
-
-    @EventHandler()
-    public ListeningStatus OnTempGroupPrivateMessage(TempMessagePreSendEvent event) {
-        MessageData<TempMessagePreSendEvent> messageData = new MessageData<>();
-        messageData.setMessage(event.getMessage().contentToString());
-        messageData.setQqID(event.getTarget().getId());
-        messageData.setEvent(event);
-        String result;
-        try {
-            result = instructHandle.instructCheck(messageData);
-            //对于私聊的消息需要进行分割长度发送
-            while (true) {
-                if (result.length() > 200) {
-                    event.getTarget().sendMessage(result.substring(0, 200));
-                    result = result.substring(200);
-                } else {
-                    event.getTarget().sendMessage(result);
-                    break;
-                }
-            }
-        } catch (DiceInstructException e) {
-            if (e.getErrCode().equals(ExceptionEnum.DICE_INSTRUCT_NOT_FOUND.getErrCode())) {
-                return ListeningStatus.LISTENING;
-            }
-            event.getTarget().sendMessage(e.getErrMsg());
-        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            event.getTarget().sendMessage(e.getMessage());
         }
         return ListeningStatus.LISTENING;
     }
@@ -176,7 +139,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             e.printStackTrace();
             result = e.getMessage();
         }
-        event.getGroup().sendMessage(new At(event.getSender()).plus("\n" + result));
+        event.getGroup().sendMessage(new At(event.getSender().getId()).plus("\n" + result));
         // event.getGroup().sendMessage(event.getSender().getNameCard() + result);
     }
 

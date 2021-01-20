@@ -139,7 +139,7 @@ public class RollController {
 
     @InstructReflex(value = {".rh", "。rh"}, priority = 3)
     public String rollHide(MessageData data) {
-        Bot.getBotInstances().get(0).getFriend(data.getQqID()).sendMessage(roll(data));
+        Bot.getInstances().get(0).getFriend(data.getQqID()).sendMessage(roll(data));
         return CustomText.getText("coc7.roll.hide");
     }
 
