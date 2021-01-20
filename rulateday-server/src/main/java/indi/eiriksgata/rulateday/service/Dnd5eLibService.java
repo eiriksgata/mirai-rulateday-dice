@@ -1,6 +1,6 @@
 package indi.eiriksgata.rulateday.service;
 
-import indi.eiriksgata.rulateday.pojo.Dnd5ESkillLib;
+import indi.eiriksgata.rulateday.exception.RulatedayException;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 
 import java.util.List;
@@ -17,6 +17,7 @@ public interface Dnd5eLibService {
 
     QueryDataBase findById(long id);
 
-
     QueryDataBase getRandomMMData();
+
+    void sendMMImage(Object event, QueryDataBase result) throws RulatedayException;
 }
