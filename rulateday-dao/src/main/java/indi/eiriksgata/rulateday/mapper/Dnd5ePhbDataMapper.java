@@ -35,11 +35,20 @@ public interface Dnd5ePhbDataMapper {
     @Select("select * from dnd5e_mm")
     List<QueryDataBase> selectAllMM();
 
+    @Select("select * from dnd5e_mm where name like '怪物图鉴:%' ORDER BY RANDOM() LIMIT 1")
+    QueryDataBase selectRandomMM();
+
     @Select("select * from dnd5e_spell_list_phb")
     List<QueryDataBase> selectAllSpellListPhb();
 
+    @Select("select * from dnd5e_tools_phb ORDER BY RANDOM() LIMIT 1")
+    QueryDataBase selectRandomTool();
+
     @Select("select * from dnd5e_tools_phb")
     List<QueryDataBase> selectAllToolsPhb();
+
+    @Select("select * from dnd5e_armor_weapon_phb ORDER BY RANDOM() LIMIT 1")
+    QueryDataBase selectRandomArmorWeapon();
 
     @Select("select * from dnd5e_armor_weapon_phb where name like #{name}")
     List<QueryDataBase> selectArmorWeapon(@Param("name") String name);
@@ -61,6 +70,9 @@ public interface Dnd5ePhbDataMapper {
 
     @Select("select * from dnd5e_spell_list_phb where name like #{name}")
     List<QueryDataBase> selectSpellList(@Param("name") String name);
+
+    @Select("select * from dnd5e_magic_items_dmg ORDER BY RANDOM() LIMIT 1")
+    QueryDataBase selectRandomMagicItemsDmg();
 
     @Select("select * from dnd5e_magic_items_dmg where name like #{name}")
     List<QueryDataBase> selectMagicItemsDmg(@Param("name") String name);
