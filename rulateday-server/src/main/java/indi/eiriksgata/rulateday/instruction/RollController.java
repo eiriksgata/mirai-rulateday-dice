@@ -164,7 +164,7 @@ public class RollController {
 
     @InstructReflex(value = {".dnd", "。dnd"})
     public String randomDndRole(MessageData data) {
-        return rollRole.createDndRole(Integer.valueOf(data.getMessage().equals("")?"1":data.getMessage()));
+        return rollRole.createDndRole(data.getMessage().equals("")?1:Integer.valueOf(data.getMessage()));
     }
 
 
