@@ -7,13 +7,13 @@
 * 此模板集合了大部分的 `mirai-console` 插件所需要的配置项，开发者也可以直接使用该模板进行开发。
 * 如果你是一名纯粹的 Java+Maven 开发者 该项目是一个很好的学习模板。
 * 本项目中的一些查询数据文档: **[Rulateday-Dnd5e Wiki](https://eiriksgata.github.io/rulateday-dnd5e-wiki/)**
-* 如果你有什么疑问或者讨论方案，可以选择在在[discussions](https://github.com/Eiriksgata/mirai-rulateday-dice/discussions)进行
+* 如果你有什么疑问或者讨论方案，可以选择在在[Discussions](https://github.com/Eiriksgata/mirai-rulateday-dice/discussions)进行
 * 本项目文档地址:[mirai-rulateday-dice Document](https://eiriksgata.github.io/mirai-rulateday-dice/)
 * 如果想直接使用QQ机器人请添加QQ:`209135855`
 
 **快速使用**
+* 推荐使用MCL(mirai-console-loader)项目来自动下载最新Mirai运行所需文件。[releases](https://github.com/iTXTech/mirai-console-loader/releases),下载解压完毕后运行 **mcl.cmd**
 * 在以构建好的Mirai-Console的应用程序目录下将最新版[rulateday-server-SNAPSHOT-jar-with-dependencies.jar](https://github.com/Eiriksgata/mirai-rulateday-dice/releases) 放入 plugins 文件夹中即可
-* Mirai-Console程序目录下 libs文件夹需要包含的文件以及版本: mirai-console-1.0.0+  & mirai-core-all.1.3.3 & mirai-console-terminal-1.0.0
 * 怪物图片库下载:[mm-image](https://github.com/Eiriksgata/rulateday-dnd5e-wiki/tree/master/docs/mm-image)下载怪物的图片后需要将其放在**Mirai-Console**目录下的`data\rulateday\dnd5eMMImage`文件夹里面。
 > 如果你没有下载也没有关系，图片会从网络服务器中拉取到本地，然后再由本地发送出去（网络不好的状况需要较长的时间处理）。
 
@@ -25,7 +25,7 @@
         └── image
 		└── record
 		└── rulateday
-			└── rulateday.db
+			└── rulateday.db (该文件为数据库文件)
 			└── dnd5eMMImage
 				└── 阿尔法穴居攫怪.png
 				└── 阿兰寇拉鹰人.png
