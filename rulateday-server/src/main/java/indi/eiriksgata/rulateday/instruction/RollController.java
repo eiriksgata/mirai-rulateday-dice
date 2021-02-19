@@ -159,12 +159,12 @@ public class RollController {
 
     @InstructReflex(value = {".coc", "。coc"})
     public String randomCocRole(MessageData data) {
-        return rollRole.createCocRole(Integer.valueOf(data.getMessage()));
+        return rollRole.createCocRole(data.getMessage().equals("")?1:Integer.valueOf(data.getMessage()));
     }
 
     @InstructReflex(value = {".dnd", "。dnd"})
     public String randomDndRole(MessageData data) {
-        return rollRole.createDndRole(Integer.valueOf(data.getMessage()));
+        return rollRole.createDndRole(data.getMessage().equals("")?1:Integer.valueOf(data.getMessage()));
     }
 
 
