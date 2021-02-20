@@ -7,6 +7,7 @@
     <!-- 加载数据库配置 -->
     <properties resource="db.properties"/>
 
+
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
