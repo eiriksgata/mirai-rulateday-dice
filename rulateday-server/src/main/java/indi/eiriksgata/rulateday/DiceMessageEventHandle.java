@@ -58,9 +58,13 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
                 return ListeningStatus.LISTENING;
             }
             event.getSender().sendMessage(e.getErrMsg());
-        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+        } catch (IllegalAccessException | InstantiationException e) {
             event.getSender().sendMessage(e.getMessage());
+        } catch (InvocationTargetException e) {
+            event.getSender().sendMessage(e.getCause().toString());
         }
+
+
         return ListeningStatus.LISTENING;
     }
 
@@ -89,8 +93,10 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
                 return ListeningStatus.LISTENING;
             }
             event.getFriend().sendMessage(e.getErrMsg());
-        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+        } catch (IllegalAccessException | InstantiationException e) {
             event.getFriend().sendMessage(e.getMessage());
+        } catch (InvocationTargetException e) {
+            event.getFriend().sendMessage(e.getCause().toString());
         }
         return ListeningStatus.LISTENING;
     }
@@ -113,7 +119,6 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         throw new RuntimeException("在事件处理中发生异常", exception);
     }
 
-
     private static void groupMessageHandle(GroupMessageEvent event) {
         //群消息的回复
         //回复群的筛选
@@ -135,12 +140,13 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
                 return;
             }
             result = e.getErrMsg();
-        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException | InstantiationException e) {
+            //e.printStackTrace();
             result = e.getMessage();
+        } catch (InvocationTargetException e) {
+            result = e.getCause().toString();
         }
         event.getGroup().sendMessage(new At(event.getSender().getId()).plus("\n" + result));
-        // event.getGroup().sendMessage(event.getSender().getNameCard() + result);
     }
 
 }
