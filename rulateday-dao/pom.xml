@@ -21,7 +21,7 @@
 
         <!-- spring cloud -->
         <spring-cloud.version>Hoxton.SR1</spring-cloud.version>
-        <!-- ja eger -->
+
         <!-- docker -->
         <docker.image.prefix>platform</docker.image.prefix>
         <dockerfile-maven-version>1.4.13</dockerfile-maven-version>
