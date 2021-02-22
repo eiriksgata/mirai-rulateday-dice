@@ -5,6 +5,7 @@ import indi.eiriksgata.dice.exception.ExceptionEnum;
 import indi.eiriksgata.dice.message.handle.InstructHandle;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.instruction.BotServiceControl;
+import indi.eiriksgata.rulateday.service.impl.UserConversationImpl;
 import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.ListeningStatus;
@@ -40,6 +41,12 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         messageData.setMessage(event.getMessage().contentToString());
         messageData.setQqID(event.getSender().getId());
         messageData.setEvent(event);
+        //检测对话模式，具有最高优先级
+        String conversationResult = UserConversationImpl.checkInputQuery(messageData);
+        if (conversationResult != null) {
+            event.getSender().sendMessage(conversationResult);
+            return ListeningStatus.LISTENING;
+        }
         String result;
         try {
             result = instructHandle.instructCheck(messageData);
@@ -63,8 +70,6 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         } catch (InvocationTargetException e) {
             event.getSender().sendMessage(e.getCause().toString());
         }
-
-
         return ListeningStatus.LISTENING;
     }
 
@@ -75,6 +80,12 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         messageData.setMessage(event.getMessage().contentToString());
         messageData.setQqID(event.getSender().getId());
         messageData.setEvent(event);
+        //检测对话模式，具有最高优先级
+        String conversationResult = UserConversationImpl.checkInputQuery(messageData);
+        if (conversationResult != null) {
+            event.getSender().sendMessage(conversationResult);
+            return ListeningStatus.LISTENING;
+        }
         String result;
         try {
             result = instructHandle.instructCheck(messageData);
@@ -132,6 +143,12 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         messageData.setMessage(event.getMessage().contentToString());
         messageData.setQqID(event.getSender().getId());
         messageData.setEvent(event);
+        //检测对话模式，具有最高优先级
+        String conversationResult = UserConversationImpl.checkInputQuery(messageData);
+        if (conversationResult != null) {
+            event.getGroup().sendMessage(conversationResult);
+            return;
+        }
         String result;
         try {
             result = instructHandle.instructCheck(messageData);

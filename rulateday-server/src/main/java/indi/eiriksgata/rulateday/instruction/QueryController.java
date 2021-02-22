@@ -3,25 +3,21 @@ package indi.eiriksgata.rulateday.instruction;
 import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.injection.InstructService;
 import indi.eiriksgata.dice.vo.MessageData;
-import indi.eiriksgata.rulateday.RulatedayCore;
 import indi.eiriksgata.rulateday.exception.RulatedayException;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 import indi.eiriksgata.rulateday.pojo.RuleBook;
+import indi.eiriksgata.rulateday.pojo.UserConversation;
 import indi.eiriksgata.rulateday.service.CrazyLibraryService;
 import indi.eiriksgata.rulateday.service.Dnd5eLibService;
 import indi.eiriksgata.rulateday.service.RuleService;
+import indi.eiriksgata.rulateday.service.UserConversationService;
 import indi.eiriksgata.rulateday.service.impl.CrazyLibraryImpl;
 import indi.eiriksgata.rulateday.service.impl.Dnd5eLibServiceImpl;
 import indi.eiriksgata.rulateday.service.impl.RuleServiceImpl;
-import indi.eiriksgata.rulateday.utlis.FileUtil;
-import net.mamoe.mirai.event.events.FriendMessageEvent;
-import net.mamoe.mirai.event.events.GroupMessageEvent;
-import net.mamoe.mirai.utils.ExternalResource;
+import indi.eiriksgata.rulateday.service.impl.UserConversationImpl;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,6 +38,9 @@ public class QueryController {
 
     @Resource
     private RuleService ruleService = new RuleServiceImpl();
+
+    @Resource
+    private UserConversationService conversationService = new UserConversationImpl();
 
 
     //发疯状态确认
@@ -76,20 +75,24 @@ public class QueryController {
             return "请输入关键字参数";
         }
 
-        List<QueryDataBase> result = dnd5eLibService.findName(data.getMessage());
-
+        //先进行模糊查询
+        List<QueryDataBase> result = dnd5eLibService.findName("%" + data.getMessage() + "%");
+        List<QueryDataBase> saveData = new ArrayList<>();
         if (result.size() > 1) {
-            StringBuilder text = new StringBuilder("查询结果存在多个，请完善查询关键字直到存在1个才回显示详细信息\n查询吻合关键字:");
+            StringBuilder text = new StringBuilder("查询结果存在多个，请在3分钟以内回复清单的数字来查阅内容:");
             int count = 0;
             for (QueryDataBase temp : result) {
                 if (count >= 20) {
                     text.append("\n最多显示20条数据。如果需要查询更多信息，请前往网站查询：https://eiriksgata.github.io/rulateday-dnd5e-wiki/#/");
                     break;
                 } else {
-                    text.append("\n").append(temp.getName());
+                    text.append("\n").append(count).append(". ").append(temp.getName());
+                    saveData.add(temp);
                 }
                 count++;
             }
+            //将记录暂时存入数据库
+            conversationService.saveConversation(data.getQqID(), saveData);
             return text.toString();
 
         } else {

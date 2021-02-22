@@ -15,6 +15,7 @@ import net.mamoe.mirai.utils.ExternalResource;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -35,18 +36,18 @@ public class Dnd5eLibServiceImpl implements Dnd5eLibService {
     public List<QueryDataBase> findName(String name) {
         List<QueryDataBase> result = new ArrayList<>();
         Dnd5ePhbDataMapper mapper = MyBatisUtil.getSqlSession().getMapper(Dnd5ePhbDataMapper.class);
-        result.addAll(mapper.selectSkillPhb("%" + name + "%"));
-        result.addAll(mapper.selectArmorWeapon("%" + name + "%"));
-        result.addAll(mapper.selectClasses("%" + name + "%"));
-        result.addAll(mapper.selectFeat("%" + name + "%"));
-        result.addAll(mapper.selectRaces("%" + name + "%"));
-        result.addAll(mapper.selectRule("%" + name + "%"));
-        result.addAll(mapper.selectTools("%" + name + "%"));
-        result.addAll(mapper.selectSpellList("%" + name + "%"));
-        result.addAll(mapper.selectMagicItemsDmg("%" + name + "%"));
-        result.addAll(mapper.selectRuleDmg("%" + name + "%"));
-        result.addAll(mapper.selectMM("%" + name + "%"));
-        result.addAll(mapper.selectBackgroundPhb("%" + name + "%"));
+        result.addAll(mapper.selectSkillPhb(name));
+        result.addAll(mapper.selectArmorWeapon(name));
+        result.addAll(mapper.selectClasses(name));
+        result.addAll(mapper.selectFeat(name));
+        result.addAll(mapper.selectRaces(name));
+        result.addAll(mapper.selectRule(name));
+        result.addAll(mapper.selectTools(name));
+        result.addAll(mapper.selectSpellList(name));
+        result.addAll(mapper.selectMagicItemsDmg(name));
+        result.addAll(mapper.selectRuleDmg(name));
+        result.addAll(mapper.selectMM(name));
+        result.addAll(mapper.selectBackgroundPhb(name));
         return result;
     }
 
@@ -69,11 +70,7 @@ public class Dnd5eLibServiceImpl implements Dnd5eLibService {
     public void sendMMImage(Object event, QueryDataBase result) throws RulatedayException {
         String mmNameFileName = result.getName().substring(5) + ".png";
         String mmName = result.getName().substring(5) + ".png";
-        try {
-            mmNameFileName = URLEncoder.encode(mmNameFileName, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RulatedayException(ExceptionEnum.DND5E_MM_NAME_DECODE_ERR);
-        }
+        mmNameFileName = URLEncoder.encode(mmNameFileName, StandardCharsets.UTF_8);
         String url = imagesUrl + mmNameFileName;
         File imageFile = new File(localPath + mmName);
 
