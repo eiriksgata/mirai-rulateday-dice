@@ -36,6 +36,14 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+      
+    ## setup-java
+    - name: Setup java version
+      uses: actions/setup-java@v1
+      with: 
+        java-version: '11' # The JDK version to make available on the path.
+        java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
+        architecture: x64 # (x64 or x86) - defaults to x64
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
