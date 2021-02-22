@@ -1,5 +1,6 @@
 package indi.eiriksgata.rulateday.mapper;
 
+import indi.eiriksgata.rulateday.pojo.UserConversation;
 import indi.eiriksgata.rulateday.pojo.UserTempData;
 import org.apache.ibatis.annotations.*;
 
@@ -24,4 +25,5 @@ public interface UserTempDataMapper {
 
     @Update("update user_temp_data set dice_face = #{diceFace} where id=#{id}")
     void updateDiceFaceById(@Param("id") Long id, @Param("diceFace") int diceFace);
+
 }
