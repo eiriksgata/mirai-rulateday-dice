@@ -26,4 +26,16 @@ public interface UserTempDataMapper {
     @Update("update user_temp_data set dice_face = #{diceFace} where id=#{id}")
     void updateDiceFaceById(@Param("id") Long id, @Param("diceFace") int diceFace);
 
+    @Update("create table user_temp_data\n" +
+            "(\n" +
+            "  id        bigint not null\n" +
+            "    primary key,\n" +
+            "  attribute varchar,\n" +
+            "  dice_face int default 100 not null\n" +
+            ");\n" +
+            "\n" +
+            "create unique index user_temp_data_id_uindex\n" +
+            "  on user_temp_data (id);")
+    void createTable();
+
 }

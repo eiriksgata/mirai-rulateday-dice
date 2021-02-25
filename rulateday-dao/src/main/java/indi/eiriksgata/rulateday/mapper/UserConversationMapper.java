@@ -25,5 +25,16 @@ public interface UserConversationMapper {
     @Delete("delete from user_conversation where id=#{id}")
     void deleteById(@Param("id") Long id);
 
+    @Update("create table user_conversation\n" +
+            "(\n" +
+            "  id        bigint\n" +
+            "    primary key,\n" +
+            "  data      varchar,\n" +
+            "  timestamp bigint\n" +
+            ");\n" +
+            "\n" +
+            "create unique index user_conversation_id_uindex\n" +
+            "  on user_conversation (id);\n")
+    void createTable();
 
 }

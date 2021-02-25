@@ -20,4 +20,16 @@ public interface SpeakersGroupListMapper {
     @Update("update speakers_group_list set is_enable=#{isEnable} where id=#{id}")
     void updateIsEnableById(@Param("id") long id, @Param("isEnable") boolean isEnable);
 
+    @Update("create table speakers_group_list\n" +
+            "(\n" +
+            "  id        bigint not null\n" +
+            "    primary key,\n" +
+            "  is_enable boolean\n" +
+            ");\n" +
+            "\n" +
+            "create unique index speakers_group_list_id_uindex\n" +
+            "  on speakers_group_list (id);")
+    void createTable();
+
+
 }
