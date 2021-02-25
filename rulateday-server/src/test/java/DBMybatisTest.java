@@ -1,7 +1,7 @@
 
 import indi.eiriksgata.rulateday.mapper.CrazyOverDescribeMapper;
+import indi.eiriksgata.rulateday.mapper.SpeakersGroupListMapper;
 import indi.eiriksgata.rulateday.pojo.CrazyOverDescribe;
-import indi.eiriksgata.rulateday.service.impl.Dnd5eLibServiceImpl;
 import indi.eiriksgata.rulateday.utlis.LoadDatabaseFile;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
 import org.junit.jupiter.api.Test;
@@ -32,6 +32,15 @@ public class DBMybatisTest {
 
     @Test
     void dnd5eSkill() {
+        SpeakersGroupListMapper mapper = MyBatisUtil.getSqlSession().getMapper(SpeakersGroupListMapper.class);
+        mapper.createTable();
+        MyBatisUtil.getSqlSession().commit();
+
+    }
+
+    @Test
+    void create() {
+
 
     }
 
@@ -42,9 +51,6 @@ public class DBMybatisTest {
 
 
     }
-
-
-
 
 
 }

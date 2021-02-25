@@ -7,14 +7,10 @@ import indi.eiriksgata.rulateday.exception.RulatedayException;
 import indi.eiriksgata.rulateday.mapper.UserConversationMapper;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 import indi.eiriksgata.rulateday.pojo.UserConversation;
-import indi.eiriksgata.rulateday.service.Dnd5eLibService;
 import indi.eiriksgata.rulateday.service.UserConversationService;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
-import net.mamoe.mirai.event.events.FriendMessageEvent;
-import net.mamoe.mirai.event.events.GroupMessageEvent;
-import net.mamoe.mirai.event.events.MessageEvent;
+import org.apache.ibatis.exceptions.PersistenceException;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -33,7 +29,12 @@ public class UserConversationImpl implements UserConversationService {
         userConversation.setId(qq);
         userConversation.setData(new Gson().toJson(queryData));
         userConversation.setTimestamp(System.currentTimeMillis());
-        mapper.insert(userConversation);
+        try {
+            mapper.insert(userConversation);
+        } catch (PersistenceException e) {
+            mapper.createTable();
+            mapper.insert(userConversation);
+        }
         MyBatisUtil.getSqlSession().commit();
     }
 

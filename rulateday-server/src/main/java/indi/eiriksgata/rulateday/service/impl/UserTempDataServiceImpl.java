@@ -5,6 +5,7 @@ import indi.eiriksgata.rulateday.mapper.UserTempDataMapper;
 import indi.eiriksgata.rulateday.pojo.UserTempData;
 import indi.eiriksgata.rulateday.service.UserTempDataService;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
+import org.apache.ibatis.exceptions.PersistenceException;
 
 public class UserTempDataServiceImpl implements UserTempDataService {
 
@@ -12,7 +13,13 @@ public class UserTempDataServiceImpl implements UserTempDataService {
 
     @Override
     public void updateUserAttribute(Long id, String attribute) {
-        if (mapper.selectById(id) == null) {
+        UserTempData userTempData = null;
+        try {
+            userTempData = mapper.selectById(id);
+        } catch (PersistenceException e) {
+            mapper.createTable();
+        }
+        if (userTempData == null) {
             addUserTempData(id);
         }
         mapper.updateAttributeById(id, attribute);
@@ -21,7 +28,13 @@ public class UserTempDataServiceImpl implements UserTempDataService {
 
     @Override
     public void updateUserDiceFace(Long id, int diceFace) {
-        if (mapper.selectById(id) == null) {
+        UserTempData userTempData = null;
+        try {
+            userTempData = mapper.selectById(id);
+        } catch (PersistenceException e) {
+            mapper.createTable();
+        }
+        if (userTempData == null) {
             addUserTempData(id);
         }
         mapper.updateDiceFaceById(id, diceFace);
@@ -48,6 +61,9 @@ public class UserTempDataServiceImpl implements UserTempDataService {
             return mapper.selectById(id).getDice_face();
         } catch (NullPointerException ignored) {
             return null;
+        } catch (PersistenceException e) {
+            mapper.createTable();
+            return null;
         }
     }
 
@@ -57,8 +73,10 @@ public class UserTempDataServiceImpl implements UserTempDataService {
             return mapper.selectById(id).getAttribute();
         } catch (NullPointerException ignored) {
             return null;
+        } catch (PersistenceException e) {
+            mapper.createTable();
+            return null;
         }
-
     }
 
 }

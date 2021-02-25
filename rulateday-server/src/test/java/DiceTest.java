@@ -39,7 +39,7 @@ public class DiceTest {
 
 
     @Test
-    void instructTest() {
+    void instructTest() throws Exception {
 
     }
 
@@ -52,15 +52,25 @@ public class DiceTest {
 
 
     @Test
-    void setDiceFace() throws DiceInstructException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public void setDiceFace() {
         MessageData messageData = new MessageData();
         messageData.setQqID(123456789L);
-
-
         InstructHandle instruct = new InstructHandle();
+        messageData.setMessage(".dr牧师");
+        try {
+            System.out.println(instruct.instructCheck(messageData));
+        } catch (DiceInstructException e) {
+            System.out.println(e.getErrMsg());
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException ex) {
+            System.out.println("call function exception");
+            ex.printStackTrace();
+        }
 
-        messageData.setMessage(".cr人类学");
-        System.out.println(instruct.instructCheck(messageData));
+
     }
 
 

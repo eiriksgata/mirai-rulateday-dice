@@ -3,6 +3,7 @@ package indi.eiriksgata.rulateday.service.impl;
 import indi.eiriksgata.rulateday.mapper.SpeakersGroupListMapper;
 import indi.eiriksgata.rulateday.service.BotControlService;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
+import org.apache.ibatis.exceptions.PersistenceException;
 
 /**
  * author: create by Keith
@@ -16,28 +17,41 @@ public class BotControlServiceImpl implements BotControlService {
 
     @Override
     public boolean groupIsEnable(long groupId) {
-        Boolean isEnable = speakersGroupListMapper.selectByGroupId(groupId);
-        return isEnable == null || isEnable;
+        try {
+            Boolean isEnable = speakersGroupListMapper.selectByGroupId(groupId);
+            return isEnable == null || isEnable;
+        } catch (PersistenceException e) {
+            speakersGroupListMapper.createTable();
+            return true;
+        }
     }
 
     @Override
     public void groupEnable(long groupId) {
-        if (speakersGroupListMapper.selectByGroupId(groupId) == null) {
-            speakersGroupListMapper.insert(groupId, true);
-        } else {
-            speakersGroupListMapper.updateIsEnableById(groupId, true);
+        try {
+            if (speakersGroupListMapper.selectByGroupId(groupId) == null) {
+                speakersGroupListMapper.insert(groupId, true);
+            } else {
+                speakersGroupListMapper.updateIsEnableById(groupId, true);
+            }
+            MyBatisUtil.getSqlSession().commit();
+        } catch (PersistenceException e) {
+            speakersGroupListMapper.createTable();
         }
-        MyBatisUtil.getSqlSession().commit();
     }
 
     @Override
     public void groupDisable(long groupId) {
-        if (speakersGroupListMapper.selectByGroupId(groupId) == null) {
-            speakersGroupListMapper.insert(groupId, false);
-        } else {
-            speakersGroupListMapper.updateIsEnableById(groupId, false);
+        try {
+            if (speakersGroupListMapper.selectByGroupId(groupId) == null) {
+                speakersGroupListMapper.insert(groupId, false);
+            } else {
+                speakersGroupListMapper.updateIsEnableById(groupId, false);
+            }
+            MyBatisUtil.getSqlSession().commit();
+        } catch (PersistenceException e) {
+            speakersGroupListMapper.createTable();
         }
-        MyBatisUtil.getSqlSession().commit();
     }
 
 }

@@ -6,7 +6,6 @@ import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.exception.RulatedayException;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 import indi.eiriksgata.rulateday.pojo.RuleBook;
-import indi.eiriksgata.rulateday.pojo.UserConversation;
 import indi.eiriksgata.rulateday.service.CrazyLibraryService;
 import indi.eiriksgata.rulateday.service.Dnd5eLibService;
 import indi.eiriksgata.rulateday.service.RuleService;

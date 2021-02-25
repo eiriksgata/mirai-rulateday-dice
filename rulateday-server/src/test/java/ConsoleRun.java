@@ -16,4 +16,5 @@ public class ConsoleRun {
         MiraiConsoleImplementationTerminal terminal = new MiraiConsoleImplementationTerminal();
         MiraiConsoleTerminalLoader.INSTANCE.startAsDaemon(terminal);
     }
+
 }
