@@ -69,10 +69,6 @@
 * `ruleteday.db`数据库文件会在程序初次运行时检测，如果该文件不在在控制台目录`/data/rulateday/`中，那么将会自动创建一个新的数据库文件。如果已经存在那么将不会自动创建
 （如果本插件有明显的功能升级，需要将该文件删除）
 
-
-**编译jar文件**
-* [Rulateday 0.2.0](https://github.com/Eiriksgata/mirai-rulateday-dice/releases/tag/v0.2.0)
-
 **构建说明**
 * 暂无
 
