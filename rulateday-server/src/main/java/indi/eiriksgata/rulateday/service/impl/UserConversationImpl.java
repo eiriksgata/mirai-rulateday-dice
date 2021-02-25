@@ -3,7 +3,7 @@ package indi.eiriksgata.rulateday.service.impl;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import indi.eiriksgata.dice.vo.MessageData;
-import indi.eiriksgata.rulateday.exception.RulatedayException;
+import indi.eiriksgata.rulateday.instruction.QueryController;
 import indi.eiriksgata.rulateday.mapper.UserConversationMapper;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 import indi.eiriksgata.rulateday.pojo.UserConversation;
@@ -30,10 +30,18 @@ public class UserConversationImpl implements UserConversationService {
         userConversation.setData(new Gson().toJson(queryData));
         userConversation.setTimestamp(System.currentTimeMillis());
         try {
-            mapper.insert(userConversation);
+            if (mapper.selectById(qq) == null) {
+                mapper.insert(userConversation);
+            } else {
+                mapper.updateDataById(userConversation);
+            }
         } catch (PersistenceException e) {
-            mapper.createTable();
-            mapper.insert(userConversation);
+            e.printStackTrace();
+            try {
+                mapper.createTable();
+                mapper.insert(userConversation);
+            } catch (PersistenceException ignored) {
+            }
         }
         MyBatisUtil.getSqlSession().commit();
     }
@@ -62,11 +70,9 @@ public class UserConversationImpl implements UserConversationService {
             MyBatisUtil.getSqlSession().commit();
             if (queryData.get(number).getName().length() > 5) {
                 if (queryData.get(number).getName().substring(0, 5).equals("怪物图鉴:")) {
-                    try {
+                    QueryController.cachedThread.execute(() -> {
                         new Dnd5eLibServiceImpl().sendMMImage(data.getEvent(), queryData.get(number));
-                    } catch (RulatedayException e) {
-                        return e.getErrMsg();
-                    }
+                    });
                 }
             }
             return queryData.get(number).getDescribe();

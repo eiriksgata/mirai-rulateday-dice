@@ -67,13 +67,12 @@ public class Dnd5eLibServiceImpl implements Dnd5eLibService {
 
 
     @Override
-    public void sendMMImage(Object event, QueryDataBase result) throws RulatedayException {
+    public void sendMMImage(Object event, QueryDataBase result) {
         String mmNameFileName = result.getName().substring(5) + ".png";
         String mmName = result.getName().substring(5) + ".png";
         mmNameFileName = URLEncoder.encode(mmNameFileName, StandardCharsets.UTF_8);
         String url = imagesUrl + mmNameFileName;
         File imageFile = new File(localPath + mmName);
-
         if (!imageFile.exists()) {
             try {
                 FileUtil.downLoadFromUrl(url, localPath + mmName);
@@ -86,7 +85,6 @@ public class Dnd5eLibServiceImpl implements Dnd5eLibService {
                 ((GroupMessageEvent) event).getGroup()
                         .sendMessage(((GroupMessageEvent) event)
                                 .getGroup().uploadImage(ExternalResource.create(imageFile)));
-
             }
         }
         if (event.getClass() == FriendMessageEvent.class) {

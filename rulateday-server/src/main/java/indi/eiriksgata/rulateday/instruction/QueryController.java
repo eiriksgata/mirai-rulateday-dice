@@ -3,7 +3,6 @@ package indi.eiriksgata.rulateday.instruction;
 import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.injection.InstructService;
 import indi.eiriksgata.dice.vo.MessageData;
-import indi.eiriksgata.rulateday.exception.RulatedayException;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 import indi.eiriksgata.rulateday.pojo.RuleBook;
 import indi.eiriksgata.rulateday.service.CrazyLibraryService;
@@ -18,6 +17,8 @@ import indi.eiriksgata.rulateday.service.impl.UserConversationImpl;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * author: create by Keith
@@ -28,6 +29,8 @@ import java.util.List;
 
 @InstructService
 public class QueryController {
+
+    public static ExecutorService cachedThread = Executors.newCachedThreadPool();
 
     @Resource
     private CrazyLibraryService crazyLibraryService = new CrazyLibraryImpl();
@@ -100,11 +103,7 @@ public class QueryController {
             }
             if (result.get(0).getName().length() > 5) {
                 if (result.get(0).getName().substring(0, 5).equals("怪物图鉴:")) {
-                    try {
-                        dnd5eLibService.sendMMImage(data.getEvent(), result.get(0));
-                    } catch (RulatedayException e) {
-                        return e.getErrMsg();
-                    }
+                    cachedThread.execute(() -> dnd5eLibService.sendMMImage(data.getEvent(), result.get(0)));
                 }
             }
             return result.get(0).getName() + "\n" + result.get(0).getDescribe().replaceAll("\n\n", "\n");
@@ -144,11 +143,7 @@ public class QueryController {
     @InstructReflex(value = {".rmm", "。rmm"})
     public String rollMM(MessageData data) {
         QueryDataBase result = dnd5eLibService.getRandomMMData();
-        try {
-            dnd5eLibService.sendMMImage(data.getEvent(), result);
-        } catch (RulatedayException e) {
-            return e.getErrMsg();
-        }
+        cachedThread.execute(() -> dnd5eLibService.sendMMImage(data.getEvent(), result));
         return result.getName() + "\n" + result.getDescribe().replaceAll("\n\n", "\n");
     }
 

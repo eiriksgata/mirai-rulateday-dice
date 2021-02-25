@@ -19,5 +19,5 @@ public interface Dnd5eLibService {
 
     QueryDataBase getRandomMMData();
 
-    void sendMMImage(Object event, QueryDataBase result) throws RulatedayException;
+    void sendMMImage(Object event, QueryDataBase result) ;
 }
