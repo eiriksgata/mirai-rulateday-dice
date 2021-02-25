@@ -22,7 +22,7 @@ public class BotServiceControl {
 
     public boolean groupBotOff(GroupMessageEvent event) {
         long id = Bot.getInstances().get(0).getId();
-        String regex = ".*\\[mirai:at:" + id + ",@.*]\\.botoff";
+        String regex = ".*\\[mirai:at:" + id + "].*\\.botoff";
         String messageSource = event.getMessage().toString().replaceAll(" ", "");
         String messageContent = event.getMessage().contentToString().replaceAll(" ", "");
         if (messageSource.matches(regex) || messageContent.equals(".botoff")) {
@@ -35,7 +35,7 @@ public class BotServiceControl {
 
     public boolean groupBotOn(GroupMessageEvent event) {
         long id = Bot.getInstances().get(0).getId();
-        String regex = ".*\\[mirai:at:" + id + ",@.*]\\.boton";
+        String regex = ".*\\[mirai:at:" + id + "].*\\.boton";
         String messageSource = event.getMessage().toString().replaceAll(" ", "");
         String messageContent = event.getMessage().contentToString().replaceAll(" ", "");
         if (messageSource.matches(regex) || messageContent.equals(".boton")) {
