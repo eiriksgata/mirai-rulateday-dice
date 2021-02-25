@@ -8,7 +8,7 @@
 * 如果你是一名纯粹的 Java+Maven 开发者 该项目是一个很好的学习模板。
 * 本项目中的一些查询数据文档: **[Rulateday-Dnd5e Wiki](https://eiriksgata.github.io/rulateday-dnd5e-wiki/)**
 * 如果你有什么疑问或者讨论方案，可以选择在在[Discussions](https://github.com/Eiriksgata/mirai-rulateday-dice/discussions)进行
-* 本项目文档地址:[mirai-rulateday-dice Document](https://eiriksgata.github.io/mirai-rulateday-dice/)
+* 本项目文档地址:[Mirai-rulateday-dice Document](https://eiriksgata.github.io/mirai-rulateday-dice/)
 * 如果想直接使用QQ机器人请添加QQ:`209135855`
 
 **快速使用**
@@ -58,16 +58,6 @@
 
 **文件说明**
 * `ruleteday.db` 为 SQLite的数据库文件，其中主要用于保存用户的骰子属性数据以及规则书和疯狂状态的描述内容。当运行时需要放在运行的当前目录下，日后会进行文件相应位置更改，或者主动生成本地文件。避免用户出现使用问题。
-* `mirai-ruleteday.log` 日志文件
-
-
-**使用说明**
-* 该项目是建立在Mirai-Console的框架下运行的插件，因此需要先了解构造出一个 Mirai-Console 的运行程序[点击查看详细搭建说明](https://github.com/mamoe/mirai-console/blob/master/docs/Run.md)。如果实在不懂如何使用的，可以和我联系。
-* 该项目是由Java编写，因此可以通过相应的IDE生成jar文件，然后放入到 Mirai-Console的插件目录下即可。
-* 如果需要自定义返回文本，则可以通过7z等解压程序打开jar文件，然后将其里面的 custom-text.properties 文件复制出来进行修改，然后添加到jar里面进行覆盖。
-* 此外其他的配置文件也是如此修改(后续可能会考虑特殊的情况再进行设置项修改)
-* `ruleteday.db`数据库文件会在程序初次运行时检测，如果该文件不在在控制台目录`/data/rulateday/`中，那么将会自动创建一个新的数据库文件。如果已经存在那么将不会自动创建
-（如果本插件有明显的功能升级，需要将该文件删除）
 
 **构建说明**
 * 暂无

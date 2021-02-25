@@ -7,7 +7,7 @@
     <groupId>indi.eiriksgata</groupId>
     <artifactId>mirai-rulateday-dice</artifactId>
     <packaging>pom</packaging>
-    <version>0.3.1-SNAPSHOT</version>
+    <version>0.3.2-SNAPSHOT</version>
     <modules>
         <module>rulateday-dao</module>
         <module>rulateday-server</module>
