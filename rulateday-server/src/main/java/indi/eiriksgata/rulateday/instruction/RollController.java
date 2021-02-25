@@ -13,13 +13,11 @@ import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.operation.DiceSet;
 import indi.eiriksgata.dice.operation.impl.RollBasicsImpl;
 import indi.eiriksgata.dice.reply.CustomText;
-import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 import indi.eiriksgata.rulateday.service.UserTempDataService;
 import indi.eiriksgata.rulateday.service.impl.UserTempDataServiceImpl;
 import net.mamoe.mirai.Bot;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author: create by Keith
@@ -86,7 +84,6 @@ public class RollController {
     public String setDiceFace(MessageData data) throws DiceInstructException {
         //移除所有的空格
         data.setMessage(data.getMessage().replaceAll(" ", ""));
-
         int setDiceFace = Integer.valueOf(data.getMessage());
         if (setDiceFace > Integer.valueOf(DiceConfig.diceSet.getString("dice.face.max"))) {
             throw new DiceInstructException(ExceptionEnum.DICE_SET_FACE_MAX_ERR);
@@ -159,12 +156,30 @@ public class RollController {
 
     @InstructReflex(value = {".coc", "。coc"})
     public String randomCocRole(MessageData data) {
-        return rollRole.createCocRole(data.getMessage().equals("")?1:Integer.valueOf(data.getMessage()));
+        int createNumber;
+        if (data.getMessage().equals("")) {
+            createNumber = 1;
+        } else {
+            createNumber = Integer.valueOf(data.getMessage());
+        }
+        if (createNumber > 20 | createNumber < 1) {
+            return "参数范围需要在1-20内";
+        }
+        return rollRole.createCocRole(createNumber);
     }
 
     @InstructReflex(value = {".dnd", "。dnd"})
     public String randomDndRole(MessageData data) {
-        return rollRole.createDndRole(data.getMessage().equals("")?1:Integer.valueOf(data.getMessage()));
+        int createNumber;
+        if (data.getMessage().equals("")) {
+            createNumber = 1;
+        } else {
+            createNumber = Integer.valueOf(data.getMessage());
+        }
+        if (createNumber > 20 | createNumber < 1) {
+            return "参数范围需要在1-20内";
+        }
+        return rollRole.createDndRole(createNumber);
     }
 
 

@@ -56,7 +56,7 @@ public class DiceTest {
         MessageData messageData = new MessageData();
         messageData.setQqID(123456789L);
         InstructHandle instruct = new InstructHandle();
-        messageData.setMessage(".dr牧师");
+        messageData.setMessage(".dnd");
         try {
             System.out.println(instruct.instructCheck(messageData));
         } catch (DiceInstructException e) {
