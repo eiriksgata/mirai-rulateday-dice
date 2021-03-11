@@ -147,14 +147,14 @@ public class RollController {
         return rollBasics.rollBonus(data.getMessage(), attribute, true);
     }
 
-    @InstructReflex(value = {".rp", "。rp", ",rp"}, priority = 3)
+    @InstructReflex(value = {".rp", "。rp", ",rp", ".Rp"}, priority = 3)
     public String rollPunishment(MessageData data) {
         data.setMessage(data.getMessage().replaceAll(" ", ""));
         String attribute = userTempDataService.getUserAttribute(data.getQqID());
         return rollBasics.rollBonus(data.getMessage(), attribute, false);
     }
 
-    @InstructReflex(value = {".coc", "。coc"})
+    @InstructReflex(value = {".coc", "。coc", ".Coc"})
     public String randomCocRole(MessageData data) {
         int createNumber;
         if (data.getMessage().equals("")) {
@@ -168,7 +168,7 @@ public class RollController {
         return rollRole.createCocRole(createNumber);
     }
 
-    @InstructReflex(value = {".dnd", "。dnd"})
+    @InstructReflex(value = {".dnd", "。dnd", ".Dnd", "。DND"})
     public String randomDndRole(MessageData data) {
         int createNumber;
         if (data.getMessage().equals("")) {
@@ -181,6 +181,12 @@ public class RollController {
         }
         return rollRole.createDndRole(createNumber);
     }
+
+    @InstructReflex(value = {".jrrp", ".JRRP", "。jrrp", ".todayRandom"})
+    public String todayRandom(MessageData data) {
+        return rollBasics.todayRandom(data.getQqID(), 8);
+    }
+
 
 
 }

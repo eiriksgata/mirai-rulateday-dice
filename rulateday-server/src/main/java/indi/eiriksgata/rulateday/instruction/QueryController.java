@@ -52,7 +52,7 @@ public class QueryController {
     }
 
     //发疯结束总结
-    @InstructReflex(value = {".li", "。li"})
+    @InstructReflex(value = {".li", "。li", ".Li", ".LI"})
     public String getCrazyOverEvent(MessageData data) {
         return crazyLibraryService.getCrazyOverDescribe();
     }
@@ -67,7 +67,7 @@ public class QueryController {
         return result.getTitle() + "\n" + result.getContent();
     }
 
-    @InstructReflex(value = {".dr", "。dr", ".d5er"})
+    @InstructReflex(value = {".dr", "。dr", ".d5er", ".Dr", ".DR"})
     public String queryDnd5eRule(MessageData data) {
         //如果输入的数据是无关键字的
         if (data.getMessage().equals("")) {
