@@ -31,6 +31,7 @@
         <mapper class="indi.eiriksgata.rulateday.mapper.Dnd5ePhbDataMapper"/>
 
         <mapper class="indi.eiriksgata.rulateday.mapper.UserConversationMapper"/>
+        <mapper class="indi.eiriksgata.rulateday.mapper.UserInitiativeDataMapper"/>
 
     </mappers>
 
