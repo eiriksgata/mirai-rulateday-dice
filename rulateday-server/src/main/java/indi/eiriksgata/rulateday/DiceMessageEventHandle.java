@@ -15,6 +15,8 @@ import net.mamoe.mirai.message.data.At;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DiceMessageEventHandle extends SimpleListenerHost {
 
@@ -28,10 +30,58 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         return ListeningStatus.LISTENING;
     }
 
-
     @EventHandler()
     public ListeningStatus onFriendRequest(NewFriendRequestEvent event) {
         event.accept();
+        return ListeningStatus.LISTENING;
+    }
+
+
+    @EventHandler()
+    public ListeningStatus addFriendRequest(FriendAddEvent event) {
+        //event.getFriend().sendMessage("Hello , Welcome use Rulateday-Dice Boot");
+        return ListeningStatus.LISTENING;
+    }
+
+    @EventHandler()
+    public ListeningStatus otherClientMessageEvent(OtherClientMessageEvent event) {
+        MessageData<OtherClientMessageEvent> messageData = new MessageData<>();
+        messageData.setMessage(event.getMessage().contentToString());
+        messageData.setQqID(event.getSender().getId());
+        messageData.setEvent(event);
+        //检测对话模式，具有最高优先级
+        String conversationResult = UserConversationImpl.checkInputQuery(messageData);
+        if (conversationResult != null) {
+            event.getSender().sendMessage(conversationResult);
+            return ListeningStatus.LISTENING;
+        }
+        List<String> result = personalMessageEventHandling(messageData);
+        if (result != null) {
+            result.forEach((text) -> {
+                event.getSender().sendMessage(text);
+            });
+        }
+        return ListeningStatus.LISTENING;
+    }
+
+    @EventHandler()
+    public ListeningStatus strangerMessageEvent(StrangerMessageEvent event) {
+        MessageData<StrangerMessageEvent> messageData = new MessageData<>();
+        messageData.setMessage(event.getMessage().contentToString());
+        messageData.setQqID(event.getSender().getId());
+        messageData.setEvent(event);
+        //检测对话模式，具有最高优先级
+        String conversationResult = UserConversationImpl.checkInputQuery(messageData);
+        if (conversationResult != null) {
+            event.getSender().sendMessage(conversationResult);
+            return ListeningStatus.LISTENING;
+        }
+        List<String> result = personalMessageEventHandling(messageData);
+        if (result != null) {
+            result.forEach((text) -> {
+                event.getSender().sendMessage(text);
+            });
+        }
         return ListeningStatus.LISTENING;
     }
 
@@ -47,28 +97,11 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             event.getSender().sendMessage(conversationResult);
             return ListeningStatus.LISTENING;
         }
-        String result;
-        try {
-            result = instructHandle.instructCheck(messageData);
-            //对于私聊的消息需要进行分割长度发送
-            while (true) {
-                if (result.length() > 200) {
-                    event.getSender().sendMessage(result.substring(0, 200));
-                    result = result.substring(200);
-                } else {
-                    event.getSender().sendMessage(result);
-                    break;
-                }
-            }
-        } catch (DiceInstructException e) {
-            if (e.getErrCode().equals(ExceptionEnum.DICE_INSTRUCT_NOT_FOUND.getErrCode())) {
-                return ListeningStatus.LISTENING;
-            }
-            event.getSender().sendMessage(e.getErrMsg());
-        } catch (IllegalAccessException | InstantiationException e) {
-            event.getSender().sendMessage(e.getMessage());
-        } catch (InvocationTargetException e) {
-            event.getSender().sendMessage(e.getCause().toString());
+        List<String> result = personalMessageEventHandling(messageData);
+        if (result != null) {
+            result.forEach((text) -> {
+                event.getSender().sendMessage(text);
+            });
         }
         return ListeningStatus.LISTENING;
     }
@@ -86,28 +119,11 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             event.getSender().sendMessage(conversationResult);
             return ListeningStatus.LISTENING;
         }
-        String result;
-        try {
-            result = instructHandle.instructCheck(messageData);
-            //对于私聊的消息需要进行分割长度发送
-            while (true) {
-                if (result.length() > 200) {
-                    event.getFriend().sendMessage(result.substring(0, 200));
-                    result = result.substring(200);
-                } else {
-                    event.getFriend().sendMessage(result);
-                    break;
-                }
-            }
-        } catch (DiceInstructException e) {
-            if (e.getErrCode().equals(ExceptionEnum.DICE_INSTRUCT_NOT_FOUND.getErrCode())) {
-                return ListeningStatus.LISTENING;
-            }
-            event.getFriend().sendMessage(e.getErrMsg());
-        } catch (IllegalAccessException | InstantiationException e) {
-            event.getFriend().sendMessage(e.getMessage());
-        } catch (InvocationTargetException e) {
-            event.getFriend().sendMessage(e.getCause().toString());
+        List<String> result = personalMessageEventHandling(messageData);
+        if (result != null) {
+            result.forEach((text) -> {
+                event.getSender().sendMessage(text);
+            });
         }
         return ListeningStatus.LISTENING;
     }
@@ -164,6 +180,34 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             result = e.getCause().toString();
         }
         event.getGroup().sendMessage(new At(event.getSender().getId()).plus("\n" + result));
+    }
+
+
+    private List<String> personalMessageEventHandling(MessageData messageData) {
+        List<String> result = new ArrayList<>();
+        try {
+            String returnText = instructHandle.instructCheck(messageData);
+            //对于私聊的消息需要进行分割长度发送
+            while (true) {
+                if (returnText.length() > 200) {
+                    result.add(returnText.substring(0, 200));
+                    returnText = returnText.substring(200);
+                } else {
+                    result.add(returnText);
+                    break;
+                }
+            }
+        } catch (DiceInstructException e) {
+            if (e.getErrCode().equals(ExceptionEnum.DICE_INSTRUCT_NOT_FOUND.getErrCode())) {
+                return null;
+            }
+            result.add(e.getErrMsg());
+        } catch (IllegalAccessException | InstantiationException e) {
+            result.add(e.getMessage());
+        } catch (InvocationTargetException e) {
+            result.add(e.getCause().toString());
+        }
+        return result;
     }
 
 }
