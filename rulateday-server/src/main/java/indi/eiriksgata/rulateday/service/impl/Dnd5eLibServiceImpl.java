@@ -1,6 +1,8 @@
 package indi.eiriksgata.rulateday.service.impl;
 
 import indi.eiriksgata.rulateday.RulatedayCore;
+import indi.eiriksgata.rulateday.event.EventAdapter;
+import indi.eiriksgata.rulateday.event.EventUtils;
 import indi.eiriksgata.rulateday.exception.ExceptionEnum;
 import indi.eiriksgata.rulateday.exception.RulatedayException;
 import indi.eiriksgata.rulateday.mapper.Dnd5ePhbDataMapper;
@@ -10,6 +12,8 @@ import indi.eiriksgata.rulateday.utlis.FileUtil;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
+import net.mamoe.mirai.event.events.GroupTempMessageEvent;
+import net.mamoe.mirai.event.events.StrangerMessageEvent;
 import net.mamoe.mirai.utils.ExternalResource;
 
 import java.io.File;
@@ -80,21 +84,31 @@ public class Dnd5eLibServiceImpl implements Dnd5eLibService {
                 RulatedayCore.INSTANCE.getLogger().info("下载" + result.getName().substring(5) + "图片失败，服务器可能没有该资源");
             }
         }
-        if (event.getClass() == GroupMessageEvent.class) {
-            if (imageFile.exists()) {
-                ((GroupMessageEvent) event).getGroup()
-                        .sendMessage(((GroupMessageEvent) event)
-                                .getGroup().uploadImage(ExternalResource.create(imageFile)));
-            }
+
+
+        // TODO: 需要对不同的事件进行处理，如果是属于主动推送额外的数据的话
+        if (imageFile.exists()) {
+            EventUtils.eventCallback(event, new EventAdapter() {
+
+                @Override
+                public void group(GroupMessageEvent groupMessageEvent) {
+                    groupMessageEvent.getGroup().sendMessage(
+                            groupMessageEvent.getGroup().uploadImage(ExternalResource.create(imageFile))
+                    );
+                }
+
+                @Override
+                public void friend(FriendMessageEvent friendMessageEvent) {
+                    friendMessageEvent.getFriend()
+                            .sendMessage(
+                                    friendMessageEvent
+                                            .getFriend()
+                                            .uploadImage(ExternalResource.create(imageFile)));
+                }
+            });
         }
-        if (event.getClass() == FriendMessageEvent.class) {
-            if (imageFile.exists()) {
-                ((FriendMessageEvent) event).getFriend()
-                        .sendMessage(
-                                ((FriendMessageEvent) event)
-                                        .getFriend().uploadImage(ExternalResource.create(imageFile)));
-            }
-        }
+
+
     }
 
 

@@ -4,6 +4,7 @@ import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.rulateday.mapper.UserInitiativeDataMapper;
 import indi.eiriksgata.rulateday.pojo.UserInitiativeData;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
+import org.apache.ibatis.exceptions.PersistenceException;
 
 import java.util.List;
 
@@ -20,24 +21,27 @@ public class UserInitiativeServerImpl {
 
     public boolean diceLimit(String groupId) {
         List<UserInitiativeData> initiativeDataList = mapper.selectByGroupId(groupId);
-        return initiativeDataList.size() < 20;
+        return initiativeDataList.size() >= 20;
     }
 
-    public void addInitiatveDice(String groupId, Long userId, String name, int value) {
+    public void addInitiativeDice(String groupId, Long userId, String name, int value) {
         UserInitiativeData result = mapper.select(groupId, userId, name);
         UserInitiativeData userInitiativeData = new UserInitiativeData();
         userInitiativeData.setGroupId(groupId);
         userInitiativeData.setName(name);
         userInitiativeData.setUserId(userId);
         userInitiativeData.setValue(value);
-        if (result == null) {
-            mapper.insert(userInitiativeData);
-            MyBatisUtil.getSqlSession().commit();
-        } else {
-            mapper.deleteById(result.getId());
-            mapper.insert(userInitiativeData);
-            MyBatisUtil.getSqlSession().commit();
+        try {
+            if (result == null) {
+                mapper.insert(userInitiativeData);
+            } else {
+                mapper.deleteById(result.getId());
+                mapper.insert(userInitiativeData);
+            }
+        } catch (PersistenceException e) {
+            e.printStackTrace();
         }
+        MyBatisUtil.getSqlSession().commit();
     }
 
     public void deleteDice(String groupId, Long userId, String name) {
@@ -46,7 +50,7 @@ public class UserInitiativeServerImpl {
     }
 
     public void clearGroupDice(String groupId) {
-        mapper.delteByGroupId(groupId);
+        mapper.deleteByGroupId(groupId);
         MyBatisUtil.getSqlSession().commit();
     }
 
@@ -76,9 +80,9 @@ public class UserInitiativeServerImpl {
 
     private void initiativeSort(List<UserInitiativeData> list) {
         for (int i = 0; i < list.size(); i++) {
-            for (int j = 0; i < list.size(); i++) {
+            for (int j = 0; j < list.size(); j++) {
                 if (list.get(i).getValue() > list.get(j).getValue()) {
-                    UserInitiativeData temp = list.get(j);
+                    UserInitiativeData temp = list.get(i);
                     list.set(i, list.get(j));
                     list.set(j, temp);
                 }
