@@ -56,7 +56,7 @@ public class DiceTest {
         MessageData messageData = new MessageData();
         messageData.setQqID(123456789L);
         InstructHandle instruct = new InstructHandle();
-        messageData.setMessage(".dnd");
+        messageData.setMessage(".atkd test");
         try {
             System.out.println(instruct.instructCheck(messageData));
         } catch (DiceInstructException e) {

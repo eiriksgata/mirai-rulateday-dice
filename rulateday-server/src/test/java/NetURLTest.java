@@ -22,7 +22,6 @@ public class NetURLTest {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        System.out.println(mmNameFileName);
         URL url = new URL("https://eiriksgata.github.io/rulateday-dnd5e-wiki/mm-image/" + mmNameFileName);
         url.openConnection().connect();
         url.openConnection().connect();
