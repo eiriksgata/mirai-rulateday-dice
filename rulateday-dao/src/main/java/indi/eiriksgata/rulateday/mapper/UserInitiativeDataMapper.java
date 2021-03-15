@@ -1,6 +1,5 @@
 package indi.eiriksgata.rulateday.mapper;
 
-import indi.eiriksgata.rulateday.pojo.UserConversation;
 import indi.eiriksgata.rulateday.pojo.UserInitiativeData;
 import org.apache.ibatis.annotations.*;
 
@@ -17,7 +16,7 @@ import java.util.List;
 public interface UserInitiativeDataMapper {
 
 
-    @Insert("insert into user_initiative_data (id,name,group_id,user_id,value) values (#{id},#{name},#{groupId},#{userId},value)")
+    @Insert("insert into user_initiative_data (id,name,group_id,user_id,value) values (#{id},#{name},#{groupId},#{userId},#{value})")
     void insert(UserInitiativeData userInitiativeData);
 
     @Delete("delete from user_initiative_data where group_id=#{groupId} and user_id=#{userId} and name=#{name}")
@@ -27,12 +26,12 @@ public interface UserInitiativeDataMapper {
     void deleteById(@Param("id") Long id);
 
     @Delete("delete from user_initiative_data where group_id=#{groupId}")
-    void delteByGroupId(@Param("groupId") String groupId);
+    void deleteByGroupId(@Param("groupId") String groupId);
 
-    @Select("select * from user_initiative where group_id=#{groupId}")
+    @Select("select * from user_initiative_data where group_id=#{groupId}")
     List<UserInitiativeData> selectByGroupId(@Param("groupId") String groupId);
 
-    @Select("select * from user_initiative where group_id=#{groupId} and user_id =#{userId} and name=#{name}")
+    @Select("select * from user_initiative_data where group_id=#{groupId} and user_id =#{userId} and name=#{name}")
     UserInitiativeData select(@Param("groupId") String groupId, @Param("userId") Long userId, @Param("name") String name);
 
     @Update("create table user_initiative_data\n" +
