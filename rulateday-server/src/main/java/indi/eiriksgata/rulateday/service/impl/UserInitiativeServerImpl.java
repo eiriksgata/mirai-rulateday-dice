@@ -20,8 +20,17 @@ public class UserInitiativeServerImpl {
     private static UserInitiativeDataMapper mapper = MyBatisUtil.getSqlSession().getMapper(UserInitiativeDataMapper.class);
 
     public boolean diceLimit(String groupId) {
-        List<UserInitiativeData> initiativeDataList = mapper.selectByGroupId(groupId);
-        return initiativeDataList.size() >= 20;
+        try {
+            List<UserInitiativeData> initiativeDataList = mapper.selectByGroupId(groupId);
+            return initiativeDataList.size() >= 20;
+        } catch (PersistenceException e) {
+            try {
+                mapper.createTable();
+            } catch (PersistenceException ignored) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
     public void addInitiativeDice(String groupId, Long userId, String name, int value) {
