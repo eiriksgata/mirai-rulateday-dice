@@ -1,6 +1,4 @@
 
-import net.mamoe.mirai.console.terminal.MiraiConsoleImplementationTerminal;
-import net.mamoe.mirai.console.terminal.MiraiConsoleTerminalLoader;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -11,10 +9,5 @@ import org.junit.jupiter.api.Test;
  **/
 public class ConsoleRun {
 
-    @Test
-    void run() {
-        MiraiConsoleImplementationTerminal terminal = new MiraiConsoleImplementationTerminal();
-        MiraiConsoleTerminalLoader.INSTANCE.startAsDaemon(terminal);
-    }
 
 }
