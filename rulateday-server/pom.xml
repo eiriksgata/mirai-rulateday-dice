@@ -19,6 +19,10 @@
             <url>https://www.jitpack.io</url>
         </repository>
 
+        <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
+        </repository>
     </repositories>
 
     <properties>
