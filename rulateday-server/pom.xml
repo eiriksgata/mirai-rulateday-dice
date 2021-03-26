@@ -58,7 +58,7 @@
         <dependency>
             <groupId>net.mamoe</groupId>
             <artifactId>mirai-console</artifactId>
-            <version>2.4.2</version>
+            <version>2.5-RC</version>
             <scope>provided</scope>
         </dependency>
 
@@ -66,16 +66,9 @@
         <dependency>
             <groupId>net.mamoe</groupId>
             <artifactId>mirai-core-all</artifactId>
-            <version>2.4.2</version>
+            <version>2.5-RC</version>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>io.github.karlatemp</groupId>
-            <artifactId>caller</artifactId>
-            <version>1.0.1</version>
-        </dependency>
-
 
 
         <dependency>
