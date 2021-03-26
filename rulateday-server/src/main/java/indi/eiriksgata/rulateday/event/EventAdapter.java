@@ -1,5 +1,6 @@
 package indi.eiriksgata.rulateday.event;
 
+
 import net.mamoe.mirai.event.events.*;
 
 /**
