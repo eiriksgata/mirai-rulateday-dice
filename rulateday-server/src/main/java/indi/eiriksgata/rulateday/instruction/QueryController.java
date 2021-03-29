@@ -116,7 +116,7 @@ public class QueryController {
         return "插件名称:Rulateda v0.1.0 by Eiriksgata\n" +
                 "反馈联系Github：https://github.com/Eiriksgata/mirai-rulateday-dice\n" +
                 "所有指令：.help指令\n" +
-                "DND5eWiki:https://eiriksgata.github.io/rulateday-dnd5e-wiki/#/";
+                "DND5eWiki:https://keith404.gitee.io/rulateday-dnd5e-wiki/#/";
     }
 
     @InstructReflex(value = {".help指令", "。help指令"}, priority = 3)
@@ -137,7 +137,7 @@ public class QueryController {
                 ".r 随机数生成\n" +
                 ".rd 默认骰数值生成\n" +
                 ".botoff | .boton 启用骰子开关\n" +
-                "更多的指令详情请查看:https://eiriksgata.github.io/mirai-rulateday-dice/#/instruction\n";
+                "更多的指令详情请查看:https://keith404.gitee.io/mirai-rulateday-dice/#/instruction";
     }
 
     @InstructReflex(value = {".rmm", "。rmm"})
