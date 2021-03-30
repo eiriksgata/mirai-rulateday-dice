@@ -46,11 +46,6 @@
             <version>0.3.3-SNAPSHOT</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.github.Eiriksgata</groupId>
-            <artifactId>trpg-java-dice</artifactId>
-            <version>1.1.5</version>
-        </dependency>
 
         <!--<dependency>-->
         <!--<groupId>indi.eiriksgata</groupId>-->
@@ -197,11 +192,6 @@
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.3.0</version>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass></mainClass>
-                        </manifest>
-                    </archive>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
@@ -217,35 +207,6 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
@@ -255,22 +216,44 @@
             <properties>
                 <profiles.active>dev</profiles.active>
             </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>indi.eiriksgata</groupId>
+                    <artifactId>trpg-java-dice</artifactId>
+                    <version>1.1.5-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
         </profile>
         <profile>
             <id>uat</id>
             <properties>
                 <profiles.active>uat</profiles.active>
             </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>indi.eiriksgata</groupId>
+                    <artifactId>trpg-java-dice</artifactId>
+                    <version>1.1.5-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
         </profile>
         <profile>
             <id>prod</id>
             <properties>
                 <profiles.active>prod</profiles.active>
             </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.github.Eiriksgata</groupId>
+                    <artifactId>trpg-java-dice</artifactId>
+                    <version>1.1.5</version>
+                </dependency>
+            </dependencies>
         </profile>
+
     </profiles>
 
 </project>
