@@ -50,7 +50,7 @@
 * [查询功能类型](https://github.com/Eiriksgata/mirai-rulateday-dice/blob/master/rulateday-server/src/main/java/indi/eiriksgata/rulateday/instruction/QueryController.java)
 * 开关骰子指令：.boton | .botoff （可以@机器人.bot on 指定该机器人启动或者关闭）
 * [More](https://github.com/Eiriksgata/mirai-rulateday-dice/tree/master/rulateday-server/src/main/java/indi/eiriksgata/rulateday/instruction)
-* [详细指令集介绍](https://eiriksgata.github.io/mirai-rulateday-dice/#/instruction)
+* [详细指令集介绍](https://keith404.gitee.io/mirai-rulateday-dice/#/instruction)
 
 **代码结构简易说明**
 * 项目 `trpg-java-dice` 提供了指令注解反射处理。因此在当前项目中只需要实现指令的类方法使用即可。
