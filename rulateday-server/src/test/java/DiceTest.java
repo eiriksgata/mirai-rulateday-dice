@@ -56,7 +56,7 @@ public class DiceTest {
         MessageData messageData = new MessageData();
         messageData.setQqID(123456789L);
         InstructHandle instruct = new InstructHandle();
-        messageData.setMessage(".atkd test");
+        messageData.setMessage(".r1d2+1d3,1有2没，完美机器人");
         try {
             System.out.println(instruct.instructCheck(messageData));
         } catch (DiceInstructException e) {

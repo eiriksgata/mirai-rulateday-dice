@@ -74,9 +74,15 @@ public class RollController {
             diceSet.setDiceFace(data.getQqID(), diceFace);
         }
         if (data.getMessage().equals("") || data.getMessage().equals(" ")) {
-            data.setMessage("d");
+            return rollBasics.rollRandom("d", data.getQqID());
+        } else {
+            //正则筛选
+            String result = RegularExpressionUtils.getMatcher("[0-9d+]+", data.getMessage());
+            if (result != null) {
+                return rollBasics.rollRandom(result, data.getQqID()) + data.getMessage().replace(result, "");
+            }
+            return rollBasics.rollRandom(data.getMessage(), data.getQqID());
         }
-        return rollBasics.rollRandom(data.getMessage(), data.getQqID());
     }
 
 
@@ -186,7 +192,6 @@ public class RollController {
     public String todayRandom(MessageData data) {
         return rollBasics.todayRandom(data.getQqID(), 8);
     }
-
 
 
 }
