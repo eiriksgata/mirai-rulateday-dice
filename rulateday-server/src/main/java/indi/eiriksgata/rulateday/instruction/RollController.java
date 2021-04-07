@@ -13,9 +13,12 @@ import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.operation.DiceSet;
 import indi.eiriksgata.dice.operation.impl.RollBasicsImpl;
 import indi.eiriksgata.dice.reply.CustomText;
+import indi.eiriksgata.rulateday.service.HumanNameService;
 import indi.eiriksgata.rulateday.service.UserTempDataService;
+import indi.eiriksgata.rulateday.service.impl.HumanNameServiceImpl;
 import indi.eiriksgata.rulateday.service.impl.UserTempDataServiceImpl;
 import net.mamoe.mirai.Bot;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
 
@@ -40,6 +43,9 @@ public class RollController {
 
     @Resource
     public static final RollRole rollRole = new RollRoleImpl();
+
+    @Resource
+    public static final HumanNameService humanNameService = new HumanNameServiceImpl();
 
     @InstructReflex(value = {".ra", ".rc", "。ra", "。rc"}, priority = 2)
     public String attributeCheck(MessageData data) {
@@ -191,6 +197,20 @@ public class RollController {
     @InstructReflex(value = {".jrrp", ".JRRP", "。jrrp", ".todayRandom"})
     public String todayRandom(MessageData data) {
         return rollBasics.todayRandom(data.getQqID(), 8);
+    }
+
+
+    @InstructReflex(value = {".name"})
+    public String randomName(MessageData data) {
+        if (StringUtils.isNumeric(data.getMessage())) {
+            int number = Integer.valueOf(data.getMessage());
+            if (number > 0 && number < 20) {
+                return humanNameService.randomName(Integer.valueOf(data.getMessage()));
+            }
+            return "参数范围在1-20内";
+        } else {
+            return humanNameService.randomName(1);
+        }
     }
 
 
