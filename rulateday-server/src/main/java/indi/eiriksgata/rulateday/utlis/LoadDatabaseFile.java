@@ -30,27 +30,28 @@ public class LoadDatabaseFile {
         File mmImages = new File(path + "//mm-images");
         if (!mkdir.exists()) {
             mkdir.mkdirs();
-            //RulatedayCore.INSTANCE.getLogger().info("Detecting no database file, creating..");
         }
-        if (!mmImages.exists()){
+        if (!mmImages.exists()) {
             mmImages.mkdirs();
         }
         if (!file.exists()) {
-
-
+            RulatedayCore.INSTANCE.getLogger().info("Detecting no database file, creating..");
             OutputStream output = new FileOutputStream(file);
-            byte[] bytes = new byte[1];
-            while (inputStream.read(bytes) != -1) {
-                output.write(bytes);
+            byte[] bytes = new byte[1024];
+            while (true) {
+                int readLength = inputStream.read(bytes);
+                if (readLength == -1) {
+                    break;
+                }
+                byte[] outData = new byte[readLength];
+                System.arraycopy(bytes, 0, outData, 0, readLength);
+                output.write(outData);
             }
             output.flush();
             inputStream.close();
             output.close();
         }
     }
-
-
-
 
 
 }
