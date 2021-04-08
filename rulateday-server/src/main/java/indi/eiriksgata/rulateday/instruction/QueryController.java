@@ -99,7 +99,7 @@ public class QueryController {
 
         } else {
             if (result.size() == 0) {
-                return "查询不到结果";
+                return "查询不到结果，欢迎联系QQ:2353686862提供更多的数据";
             }
             if (result.get(0).getName().length() > 5) {
                 if (result.get(0).getName().substring(0, 5).equals("怪物图鉴:")) {

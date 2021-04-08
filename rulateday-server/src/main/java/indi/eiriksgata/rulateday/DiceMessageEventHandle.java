@@ -202,10 +202,13 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
                 return null;
             }
             result.add(e.getErrMsg());
+            result.add("\n参数异常，请输入正确的参数范围，或联系QQ:2353686862");
         } catch (IllegalAccessException | InstantiationException e) {
             result.add(e.getMessage());
+            result.add("\n实例化异常或非法访问，可联系QQ:2353686862");
         } catch (InvocationTargetException e) {
             result.add(e.getCause().toString());
+            result.add("\n反射调用异常，可联系QQ:2353686862");
         }
         return result;
     }
