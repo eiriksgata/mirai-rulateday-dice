@@ -34,3 +34,7 @@ build/
 *.log
 *.db-journal
 data/rulateday/*
+Ancient_Names_Corpus.txt
+English_Cn_Name_Corpus.txt
+Japanese_Names_Corpus.txt
+LoadFileTest.txt
