@@ -204,7 +204,7 @@ public class RollController {
     public String randomName(MessageData data) {
         if (StringUtils.isNumeric(data.getMessage())) {
             int number = Integer.valueOf(data.getMessage());
-            if (number > 0 && number < 20) {
+            if (number > 0 && number <= 20) {
                 return humanNameService.randomName(Integer.valueOf(data.getMessage()));
             }
             return "参数范围在1-20内";
