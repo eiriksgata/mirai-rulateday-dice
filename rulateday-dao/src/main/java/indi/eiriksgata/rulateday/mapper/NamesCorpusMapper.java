@@ -14,14 +14,14 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface NamesCorpusMapper {
 
-    @Insert("insert into cn_ancient_names_corpus (id,name) values (#{id},#{name})")
-    void insertCNAncient(@Param("id") Long id, @Param("name") String name);
+    @Insert("insert into cn_ancient_names_corpus (name) values (#{name})")
+    void insertCNAncient(@Param("name") String name);
 
-    @Insert("insert into english_cn_name_corpus (id,name) values (#{id},#{name})")
-    void insertEnglishCN(@Param("id") Long id, @Param("name") String name);
+    @Insert("insert into english_cn_name_corpus (name) values (#{name})")
+    void insertEnglishCN(@Param("name") String name);
 
-    @Insert("insert into japanese_names_corpus (id,name) values (#{id},#{name})")
-    void insertJapanese(@Param("id") Long id, @Param("name") String name);
+    @Insert("insert into japanese_names_corpus (name) values (#{name})")
+    void insertJapanese(@Param("name") String name);
 
     @Select("select name from cn_ancient_names_corpus ORDER BY RANDOM() LIMIT 1")
     String getCNAncientRandomName();
