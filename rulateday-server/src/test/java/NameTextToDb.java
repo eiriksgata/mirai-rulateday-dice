@@ -29,7 +29,7 @@ public class NameTextToDb {
             countLength += readLength;
         }
         byte[] result = new byte[countLength];
-        System.arraycopy(bufferContent,0,result,0,countLength);
+        System.arraycopy(bufferContent, 0, result, 0, countLength);
         System.out.println(
                 new String(result)
         );
@@ -87,14 +87,14 @@ public class NameTextToDb {
                     int randomValue = random.nextInt(10);
                     if (randomValue < 4) {
                         if (type.equals("cn_ancient")) {
-                            mapper.insertCNAncient(null, lineText);
+                            mapper.insertCNAncient(lineText);
                         }
                         if (type.equals("english")) {
-                            mapper.insertEnglishCN(null, lineText);
+                            mapper.insertEnglishCN(lineText);
                         }
-                        if (type.equals("japanese")) {
-                            mapper.insertJapanese(null, lineText);
-                        }
+                    }
+                    if (type.equals("japanese")) {
+                        mapper.insertJapanese(lineText);
                     }
                 } catch (IOException e) {
                     break;
