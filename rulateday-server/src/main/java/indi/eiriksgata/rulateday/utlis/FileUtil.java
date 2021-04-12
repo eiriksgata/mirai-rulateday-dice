@@ -3,6 +3,7 @@ package indi.eiriksgata.rulateday.utlis;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 /**
  * author: create by Keith
@@ -14,20 +15,19 @@ public class FileUtil {
 
     //读取json文件
     public static String readJsonFile(String fileName) {
-        String jsonStr = "";
+
         try {
             File jsonFile = new File(fileName);
             FileReader fileReader = new FileReader(jsonFile);
-            Reader reader = new InputStreamReader(new FileInputStream(jsonFile), "utf-8");
-            int ch = 0;
-            StringBuffer sb = new StringBuffer();
+            Reader reader = new InputStreamReader(new FileInputStream(jsonFile), StandardCharsets.UTF_8);
+            int ch;
+            StringBuilder sb = new StringBuilder();
             while ((ch = reader.read()) != -1) {
                 sb.append((char) ch);
             }
             fileReader.close();
             reader.close();
-            jsonStr = sb.toString();
-            return jsonStr;
+            return sb.toString();
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -35,7 +35,7 @@ public class FileUtil {
     }
 
     public static byte[] downLoadFromUrl(String urlStr, String savePath) throws Exception {
-        byte[] getData = null;
+        byte[] getData;
         URL url = new URL(urlStr);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         // 设置超时间为3秒
