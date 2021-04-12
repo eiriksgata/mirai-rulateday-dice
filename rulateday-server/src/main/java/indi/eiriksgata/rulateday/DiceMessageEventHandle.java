@@ -178,6 +178,8 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             result = e.getMessage();
         } catch (InvocationTargetException e) {
             result = e.getCause().toString();
+        } catch (Exception e) {
+            result = "未在捕捉中考虑到的错误";
         }
         event.getGroup().sendMessage(new At(event.getSender().getId()).plus("\n" + result));
     }
@@ -209,6 +211,8 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         } catch (InvocationTargetException e) {
             result.add(e.getCause().toString());
             result.add("\n反射调用异常，可联系QQ:2353686862");
+        } catch (Exception e) {
+            result.add("未在捕捉中考虑到的错误");
         }
         return result;
     }
