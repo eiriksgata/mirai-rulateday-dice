@@ -12,8 +12,7 @@
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
                 <property name="driver" value="${driver}"/>
-                <property name="url" value="${url}"/>
-
+                <property name="url" value="${url}${db.file.name}{db.file.version}.db"/>
             </dataSource>
         </environment>
     </environments>
@@ -26,14 +25,10 @@
         <mapper class="indi.eiriksgata.rulateday.mapper.RuleBookMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.SpeakersGroupListMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.Dnd5ePhbTestBaseMapper"/>
-
         <mapper class="indi.eiriksgata.rulateday.mapper.Dnd5ePhbDataMapper"/>
-
         <mapper class="indi.eiriksgata.rulateday.mapper.UserConversationMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.UserInitiativeDataMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.NamesCorpusMapper"/>
-
-
     </mappers>
 
 </configuration>
