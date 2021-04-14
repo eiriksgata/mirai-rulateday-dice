@@ -12,7 +12,7 @@
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
                 <property name="driver" value="${driver}"/>
-                <property name="url" value="${url}${db.file.name}{db.file.version}.db"/>
+                <property name="url" value="${url}${db.file.name}${db.file.version}.db"/>
             </dataSource>
         </environment>
     </environments>

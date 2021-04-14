@@ -25,11 +25,12 @@ public class LoadDatabaseFile {
 
     public static void createDatabaseFile() throws IOException {
         //读取db配置文件
-        ResourceBundle dbPropertiesConfig = ResourceBundle.getBundle("db.properties");
+        ResourceBundle dbPropertiesConfig = ResourceBundle.getBundle("db");
+
         String dbFileName = dbPropertiesConfig.getString("db.file.name");
         String dbFileVersion = dbPropertiesConfig.getString("db.file.version");
         String dbCreateName = dbFileName + dbFileVersion + ".db";
-        InputStream inputStream = getResourceAsStream(dbCreateName);
+        InputStream inputStream = getResourceAsStream(dbFileName + ".db");
         String path = "data//rulateday";
         File file = new File(path + "//" + dbCreateName);
         File mkdir = new File(path);
