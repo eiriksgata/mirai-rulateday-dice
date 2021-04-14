@@ -3,6 +3,7 @@ package indi.eiriksgata.rulateday.utlis;
 import indi.eiriksgata.rulateday.RulatedayCore;
 
 import java.io.*;
+import java.util.ResourceBundle;
 
 import static org.apache.ibatis.io.Resources.getResourceAsStream;
 
@@ -23,9 +24,14 @@ public class LoadDatabaseFile {
     }
 
     public static void createDatabaseFile() throws IOException {
-        InputStream inputStream = getResourceAsStream("rulateday.db");
+        //读取db配置文件
+        ResourceBundle dbPropertiesConfig = ResourceBundle.getBundle("db.properties");
+        String dbFileName = dbPropertiesConfig.getString("db.file.name");
+        String dbFileVersion = dbPropertiesConfig.getString("db.file.version");
+        String dbCreateName = dbFileName + dbFileVersion + ".db";
+        InputStream inputStream = getResourceAsStream(dbCreateName);
         String path = "data//rulateday";
-        File file = new File(path + "//rulateday.db");
+        File file = new File(path + "//" + dbCreateName);
         File mkdir = new File(path);
         File mmImages = new File(path + "//mm-images");
         if (!mkdir.exists()) {

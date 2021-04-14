@@ -56,7 +56,7 @@ public class DiceTest {
         MessageData messageData = new MessageData();
         messageData.setQqID(123456789L);
         InstructHandle instruct = new InstructHandle();
-        messageData.setMessage(".name20");
+        messageData.setMessage(".r1D6 ＋ 1d4 这是什么玩意指令");
         try {
             System.out.println(instruct.instructCheck(messageData));
         } catch (DiceInstructException e) {

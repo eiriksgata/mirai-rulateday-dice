@@ -224,6 +224,7 @@
                 </dependency>
             </dependencies>
         </profile>
+
         <profile>
             <id>uat</id>
             <properties>
@@ -237,6 +238,7 @@
                 </dependency>
             </dependencies>
         </profile>
+
         <profile>
             <id>prod</id>
             <properties>
