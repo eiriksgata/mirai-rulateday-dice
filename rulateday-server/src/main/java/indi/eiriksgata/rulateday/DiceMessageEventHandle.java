@@ -12,6 +12,7 @@ import net.mamoe.mirai.event.ListeningStatus;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.*;
 import net.mamoe.mirai.message.data.At;
+import org.apache.ibatis.reflection.ExceptionUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
@@ -113,6 +114,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         messageData.setMessage(event.getMessage().contentToString());
         messageData.setQqID(event.getSender().getId());
         messageData.setEvent(event);
+
         //检测对话模式，具有最高优先级
         String conversationResult = UserConversationImpl.checkInputQuery(messageData);
         if (conversationResult != null) {
@@ -155,6 +157,10 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         if (!botControl.isSpeakers(event)) {
             return;
         }
+        //做一些指令前的判断工作，本身应该由trpg-dice负责的，但是trpg-dice还不够完善
+        if (event.getMessage().contentToString().length() < 2) {
+            return;
+        }
         MessageData<GroupMessageEvent> messageData = new MessageData<>();
         messageData.setMessage(event.getMessage().contentToString());
         messageData.setQqID(event.getSender().getId());
@@ -179,7 +185,9 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         } catch (InvocationTargetException e) {
             result = e.getCause().toString();
         } catch (Exception e) {
-            result = "未在捕捉中考虑到的错误";
+            e.printStackTrace();
+            RulatedayCore.INSTANCE.getLogger().error(ExceptionUtil.unwrapThrowable(e));
+            return;
         }
         event.getGroup().sendMessage(new At(event.getSender().getId()).plus("\n" + result));
     }
@@ -187,6 +195,9 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
 
     private List<String> personalMessageEventHandling(MessageData messageData) {
         List<String> result = new ArrayList<>();
+        if (messageData.getMessage() == null || messageData.getMessage().length() < 2) {
+            return null;
+        }
         try {
             String returnText = instructHandle.instructCheck(messageData);
             //对于私聊的消息需要进行分割长度发送
@@ -212,7 +223,9 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             result.add(e.getCause().toString());
             result.add("\n反射调用异常，可联系QQ:2353686862");
         } catch (Exception e) {
-            result.add("未在捕捉中考虑到的错误");
+            e.printStackTrace();
+            RulatedayCore.INSTANCE.getLogger().error(ExceptionUtil.unwrapThrowable(e));
+            return null;
         }
         return result;
     }
