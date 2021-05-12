@@ -29,6 +29,11 @@
         <mapper class="indi.eiriksgata.rulateday.mapper.UserConversationMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.UserInitiativeDataMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.NamesCorpusMapper"/>
+
+        <mapper class="indi.eiriksgata.rulateday.mapper.CardsGroupDataMapper"/>
+        <mapper class="indi.eiriksgata.rulateday.mapper.CardsTypeListMapper"/>
+
+
     </mappers>
 
 </configuration>
