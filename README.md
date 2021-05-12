@@ -71,3 +71,10 @@
 **快速导航**
 
 QQ群:783679747
+
+
+**为什么叫Rulateday?**
+其实这是一个英语谐音
+ R   U  late day
+Are you late day 
+
