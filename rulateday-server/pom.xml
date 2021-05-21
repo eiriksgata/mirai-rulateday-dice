@@ -163,6 +163,7 @@
                     <include>messages/*</include>
                 </includes>
             </resource>
+
             <resource>
                 <directory>src/main/resources/env/${profiles.active}</directory>
             </resource>

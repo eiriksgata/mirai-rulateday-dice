@@ -13,11 +13,16 @@ import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.operation.DiceSet;
 import indi.eiriksgata.dice.operation.impl.RollBasicsImpl;
 import indi.eiriksgata.dice.reply.CustomText;
+import indi.eiriksgata.rulateday.event.EventAdapter;
+import indi.eiriksgata.rulateday.event.EventUtils;
 import indi.eiriksgata.rulateday.service.HumanNameService;
 import indi.eiriksgata.rulateday.service.UserTempDataService;
 import indi.eiriksgata.rulateday.service.impl.HumanNameServiceImpl;
 import indi.eiriksgata.rulateday.service.impl.UserTempDataServiceImpl;
 import net.mamoe.mirai.Bot;
+import net.mamoe.mirai.event.events.FriendMessageEvent;
+import net.mamoe.mirai.event.events.GroupMessageEvent;
+import net.mamoe.mirai.event.events.GroupTempMessageEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
@@ -148,7 +153,22 @@ public class RollController {
 
     @InstructReflex(value = {".rh", "。rh"}, priority = 3)
     public String rollHide(MessageData data) {
-        Bot.getInstances().get(0).getFriend(data.getQqID()).sendMessage(roll(data));
+        EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
+            @Override
+            public void group(GroupMessageEvent event) {
+                event.getSender().sendMessage(roll(data));
+            }
+
+            @Override
+            public void friend(FriendMessageEvent event) {
+                event.getFriend().sendMessage(roll(data));
+            }
+
+            @Override
+            public void groupTemp(GroupTempMessageEvent event) {
+                event.getSender().sendMessage(roll(data));
+            }
+        });
         return CustomText.getText("coc7.roll.hide");
     }
 
@@ -163,6 +183,8 @@ public class RollController {
     public String rollPunishment(MessageData data) {
         data.setMessage(data.getMessage().replaceAll(" ", ""));
         String attribute = userTempDataService.getUserAttribute(data.getQqID());
+
+
         return rollBasics.rollBonus(data.getMessage(), attribute, false);
     }
 
