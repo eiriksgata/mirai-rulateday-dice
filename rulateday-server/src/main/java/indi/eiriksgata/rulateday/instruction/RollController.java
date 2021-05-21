@@ -183,8 +183,8 @@ public class RollController {
     @InstructReflex(value = {".rb", "。rb", ",rb"}, priority = 3)
     public String rollBonusDice(MessageData data) {
         data.setMessage(data.getMessage().replaceAll(" ", ""));
-
         data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
+
         String attribute = userTempDataService.getUserAttribute(data.getQqID());
         return rollBasics.rollBonus(data.getMessage(), attribute, true);
     }
