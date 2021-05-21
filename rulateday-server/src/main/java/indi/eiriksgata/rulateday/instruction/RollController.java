@@ -19,6 +19,7 @@ import indi.eiriksgata.rulateday.service.HumanNameService;
 import indi.eiriksgata.rulateday.service.UserTempDataService;
 import indi.eiriksgata.rulateday.service.impl.HumanNameServiceImpl;
 import indi.eiriksgata.rulateday.service.impl.UserTempDataServiceImpl;
+import indi.eiriksgata.rulateday.utlis.CharacterUtils;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
@@ -56,6 +57,9 @@ public class RollController {
     public String attributeCheck(MessageData data) {
         String attribute = userTempDataService.getUserAttribute(data.getQqID());
         data.setMessage(data.getMessage().replaceAll(" ", ""));
+        data.setMessage(CharacterUtils.operationSymbolProcessing(
+                data.getMessage()
+        ));
         if (attribute == null) {
             attribute = "";
         }
@@ -81,6 +85,8 @@ public class RollController {
     @InstructReflex(value = {".r", "。r"})
     public String roll(MessageData data) {
         Integer diceFace = userTempDataService.getUserDiceFace(data.getQqID());
+        data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
+
         if (diceFace != null) {
             diceSet.setDiceFace(data.getQqID(), diceFace);
         }
@@ -115,6 +121,8 @@ public class RollController {
 
     @InstructReflex(value = {".sc", "。sc"})
     public String sanCheck(MessageData data) {
+        data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
+
         //检查指令前缀空格符
         for (int i = 0; i < data.getMessage().length(); i++) {
             if (data.getMessage().charAt(i) != ' ') {
@@ -175,6 +183,8 @@ public class RollController {
     @InstructReflex(value = {".rb", "。rb", ",rb"}, priority = 3)
     public String rollBonusDice(MessageData data) {
         data.setMessage(data.getMessage().replaceAll(" ", ""));
+
+        data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
         String attribute = userTempDataService.getUserAttribute(data.getQqID());
         return rollBasics.rollBonus(data.getMessage(), attribute, true);
     }
@@ -182,6 +192,8 @@ public class RollController {
     @InstructReflex(value = {".rp", "。rp", ",rp", ".Rp"}, priority = 3)
     public String rollPunishment(MessageData data) {
         data.setMessage(data.getMessage().replaceAll(" ", ""));
+
+        data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
         String attribute = userTempDataService.getUserAttribute(data.getQqID());
 
 
