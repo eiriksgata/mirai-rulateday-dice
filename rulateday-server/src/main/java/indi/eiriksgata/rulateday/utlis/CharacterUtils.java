@@ -10,7 +10,7 @@ public class CharacterUtils {
 
     public static String operationSymbolProcessing(String text) {
         text = text.replaceAll("[＋➕]", "+");
-        text = text.replaceAll("[-➖—－]]", "-");
+        text = text.replaceAll("[-➖—－]", "-");
         text = text.replaceAll("[×xX✖]", "*");
         text = text.replaceAll("[÷➗]", "/");
         return text;
