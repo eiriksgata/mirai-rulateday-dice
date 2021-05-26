@@ -134,8 +134,17 @@ public class InitiativeController {
         String finalName = name;
         RollController.rollBasics.rollRandom(diceFace, data.getQqID(), new RollRandomCallback() {
             @Override
-            public void getFormulaResult(int i, String s) {
-                resultText[0] += s;
+            public void getFormulaResult(String i, String s) {
+                //处理可能会出现小数等其他情况
+                int numberValue;
+                try {
+                    numberValue = Integer.valueOf(i);
+                    resultText[0] += s;
+                } catch (NumberFormatException e) {
+                    resultText[0] = "先攻数值生成不符合要求，请符合整数型";
+                    return;
+                }
+
                 EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
                     @Override
                     public void group(GroupMessageEvent event) {
@@ -143,7 +152,7 @@ public class InitiativeController {
                         String name = event.getSender().getNameCard();
                         if (finalName != null) name = finalName;
                         initiativeServer.addInitiativeDice(
-                                groupId, event.getSender().getId(), name, i);
+                                groupId, event.getSender().getId(), name, numberValue);
                     }
 
                     @Override
@@ -152,7 +161,7 @@ public class InitiativeController {
                         String name = event.getSender().getNick();
                         if (finalName != null) name = finalName;
                         initiativeServer.addInitiativeDice(
-                                groupId, event.getSender().getId(), name, i);
+                                groupId, event.getSender().getId(), name, numberValue);
                     }
                 });
             }

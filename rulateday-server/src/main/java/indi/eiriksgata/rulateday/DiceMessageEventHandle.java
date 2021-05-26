@@ -45,48 +45,6 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
     }
 
     @EventHandler()
-    public ListeningStatus otherClientMessageEvent(OtherClientMessageEvent event) {
-        MessageData<OtherClientMessageEvent> messageData = new MessageData<>();
-        messageData.setMessage(event.getMessage().contentToString());
-        messageData.setQqID(event.getSender().getId());
-        messageData.setEvent(event);
-        //检测对话模式，具有最高优先级
-        String conversationResult = UserConversationImpl.checkInputQuery(messageData);
-        if (conversationResult != null) {
-            event.getSender().sendMessage(conversationResult);
-            return ListeningStatus.LISTENING;
-        }
-        List<String> result = personalMessageEventHandling(messageData);
-        if (result != null) {
-            result.forEach((text) -> {
-                event.getSender().sendMessage(text);
-            });
-        }
-        return ListeningStatus.LISTENING;
-    }
-
-    @EventHandler()
-    public ListeningStatus strangerMessageEvent(StrangerMessageEvent event) {
-        MessageData<StrangerMessageEvent> messageData = new MessageData<>();
-        messageData.setMessage(event.getMessage().contentToString());
-        messageData.setQqID(event.getSender().getId());
-        messageData.setEvent(event);
-        //检测对话模式，具有最高优先级
-        String conversationResult = UserConversationImpl.checkInputQuery(messageData);
-        if (conversationResult != null) {
-            event.getSender().sendMessage(conversationResult);
-            return ListeningStatus.LISTENING;
-        }
-        List<String> result = personalMessageEventHandling(messageData);
-        if (result != null) {
-            result.forEach((text) -> {
-                event.getSender().sendMessage(text);
-            });
-        }
-        return ListeningStatus.LISTENING;
-    }
-
-    @EventHandler()
     public ListeningStatus OnGroupTempMessageEvent(GroupTempMessageEvent event) {
         MessageData<GroupTempMessageEvent> messageData = new MessageData<>();
         messageData.setMessage(event.getMessage().contentToString());
@@ -107,7 +65,6 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         return ListeningStatus.LISTENING;
     }
 
-
     @EventHandler()
     public ListeningStatus onFriendMessage(FriendMessageEvent event) {
         MessageData<FriendMessageEvent> messageData = new MessageData<>();
@@ -115,7 +72,6 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         messageData.setQqID(event.getSender().getId());
         messageData.setEvent(event);
 
-        //检测对话模式，具有最高优先级
         String conversationResult = UserConversationImpl.checkInputQuery(messageData);
         if (conversationResult != null) {
             event.getSender().sendMessage(conversationResult);
@@ -166,6 +122,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         messageData.setQqID(event.getSender().getId());
         messageData.setEvent(event);
         //检测对话模式，具有最高优先级
+
         String conversationResult = UserConversationImpl.checkInputQuery(messageData);
         if (conversationResult != null) {
             event.getGroup().sendMessage(conversationResult);
