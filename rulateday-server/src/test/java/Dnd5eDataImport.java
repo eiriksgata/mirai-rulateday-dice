@@ -1,10 +1,17 @@
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import indi.eiriksgata.rulateday.mapper.Dnd5ePhbTestBaseMapper;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 import indi.eiriksgata.rulateday.utlis.FileUtil;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * author: create by Keith
@@ -23,16 +30,20 @@ public class Dnd5eDataImport {
         };
         //使用fast json 读取json文件
         for (String file : importFileName) {
-            String path = DBMybatisTest.class.getClassLoader().getResource(file).getPath();
+            String path = Objects.requireNonNull(DBMybatisTest.class.getClassLoader().getResource(file)).getPath();
             String s = FileUtil.readJsonFile(path);
-            JSONObject jsonObject = JSON.parseObject(s);
-            jsonObject.forEach((key, value) -> {
+
+            Map<String, Object> result = new Gson().fromJson(s, new TypeToken<HashMap<String, Object>>() {
+            }.getType());
+
+            assert result != null;
+            result.forEach((key, value) -> {
                 QueryDataBase temp = new QueryDataBase();
                 temp.setName(key);
                 temp.setDescribe((String) value);
                 mapper.insertFeat(temp);
-
             });
+
             MyBatisUtil.getSqlSession().commit();
         }
     }

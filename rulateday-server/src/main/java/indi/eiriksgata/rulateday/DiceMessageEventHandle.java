@@ -140,18 +140,18 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
                 return;
             }
             result = e.getErrMsg();
-            apiReport.exceptionReport(messageData.getMessage(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
+            apiReport.exceptionReport(event.getMessage().contentToString(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
         } catch (IllegalAccessException | InstantiationException e) {
             //e.printStackTrace();
             result = e.getMessage();
-            apiReport.exceptionReport(messageData.getMessage(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
+            apiReport.exceptionReport(event.getMessage().contentToString(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
         } catch (InvocationTargetException e) {
             result = e.getCause().toString();
-            apiReport.exceptionReport(messageData.getMessage(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
+            apiReport.exceptionReport(event.getMessage().contentToString(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
         } catch (Exception e) {
             e.printStackTrace();
             RulatedayCore.INSTANCE.getLogger().error(ExceptionUtil.unwrapThrowable(e));
-            apiReport.exceptionReport(messageData.getMessage(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
+            apiReport.exceptionReport(event.getMessage().contentToString(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
             return;
         }
         event.getGroup().sendMessage(new At(event.getSender().getId()).plus("\n" + result));
@@ -159,6 +159,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
 
 
     private List<String> personalMessageEventHandler(MessageData messageData) {
+        String sourceMessage = messageData.getMessage();
         List<String> result = new ArrayList<>();
         if (messageData.getMessage() == null || messageData.getMessage().length() < 2) {
             return null;
@@ -181,19 +182,19 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             }
             result.add(e.getErrMsg());
             result.add("\n参数异常，请输入正确的参数范围，或联系QQ:2353686862");
-            apiReport.exceptionReport(messageData.getMessage(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
+            apiReport.exceptionReport(sourceMessage, ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
         } catch (IllegalAccessException | InstantiationException e) {
             result.add(e.getMessage());
             result.add("\n实例化异常或非法访问，可联系QQ:2353686862");
-            apiReport.exceptionReport(messageData.getMessage(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
+            apiReport.exceptionReport(sourceMessage, ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
         } catch (InvocationTargetException e) {
             result.add(e.getCause().toString());
             result.add("\n反射调用异常，可联系QQ:2353686862");
-            apiReport.exceptionReport(messageData.getMessage(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
+            apiReport.exceptionReport(sourceMessage, ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
         } catch (Exception e) {
             e.printStackTrace();
             RulatedayCore.INSTANCE.getLogger().error(ExceptionUtil.unwrapThrowable(e));
-            apiReport.exceptionReport(messageData.getMessage(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
+            apiReport.exceptionReport(sourceMessage, ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
             return null;
         }
         return result;
