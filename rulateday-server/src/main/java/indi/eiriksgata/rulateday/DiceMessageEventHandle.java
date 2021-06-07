@@ -5,7 +5,10 @@ import indi.eiriksgata.dice.exception.ExceptionEnum;
 import indi.eiriksgata.dice.message.handle.InstructHandle;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.instruction.BotServiceControl;
+import indi.eiriksgata.rulateday.service.ApiReport;
+import indi.eiriksgata.rulateday.service.impl.ApiReportImpl;
 import indi.eiriksgata.rulateday.service.impl.UserConversationImpl;
+import indi.eiriksgata.rulateday.utlis.ExceptionUtils;
 import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.ListeningStatus;
@@ -23,6 +26,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
 
     private static final InstructHandle instructHandle = new InstructHandle();
     private static final BotServiceControl botControl = new BotServiceControl();
+    public static final ApiReport apiReport = new ApiReportImpl();
 
     @EventHandler()
     public ListeningStatus onBotGroupRequest(BotInvitedJoinGroupRequestEvent event) {
@@ -56,7 +60,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             event.getSender().sendMessage(conversationResult);
             return ListeningStatus.LISTENING;
         }
-        List<String> result = personalMessageEventHandling(messageData);
+        List<String> result = personalMessageEventHandler(messageData);
         if (result != null) {
             result.forEach((text) -> {
                 event.getSender().sendMessage(text);
@@ -77,7 +81,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             event.getSender().sendMessage(conversationResult);
             return ListeningStatus.LISTENING;
         }
-        List<String> result = personalMessageEventHandling(messageData);
+        List<String> result = personalMessageEventHandler(messageData);
         if (result != null) {
             result.forEach((text) -> {
                 event.getSender().sendMessage(text);
@@ -128,7 +132,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             event.getGroup().sendMessage(conversationResult);
             return;
         }
-        String result;
+        String result = "";
         try {
             result = instructHandle.instructCheck(messageData);
         } catch (DiceInstructException e) {
@@ -136,21 +140,25 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
                 return;
             }
             result = e.getErrMsg();
+            apiReport.exceptionReport(messageData.getMessage(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
         } catch (IllegalAccessException | InstantiationException e) {
             //e.printStackTrace();
             result = e.getMessage();
+            apiReport.exceptionReport(messageData.getMessage(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
         } catch (InvocationTargetException e) {
             result = e.getCause().toString();
+            apiReport.exceptionReport(messageData.getMessage(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
         } catch (Exception e) {
             e.printStackTrace();
             RulatedayCore.INSTANCE.getLogger().error(ExceptionUtil.unwrapThrowable(e));
+            apiReport.exceptionReport(messageData.getMessage(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
             return;
         }
         event.getGroup().sendMessage(new At(event.getSender().getId()).plus("\n" + result));
     }
 
 
-    private List<String> personalMessageEventHandling(MessageData messageData) {
+    private List<String> personalMessageEventHandler(MessageData messageData) {
         List<String> result = new ArrayList<>();
         if (messageData.getMessage() == null || messageData.getMessage().length() < 2) {
             return null;
@@ -173,15 +181,19 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             }
             result.add(e.getErrMsg());
             result.add("\n参数异常，请输入正确的参数范围，或联系QQ:2353686862");
+            apiReport.exceptionReport(messageData.getMessage(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
         } catch (IllegalAccessException | InstantiationException e) {
             result.add(e.getMessage());
             result.add("\n实例化异常或非法访问，可联系QQ:2353686862");
+            apiReport.exceptionReport(messageData.getMessage(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
         } catch (InvocationTargetException e) {
             result.add(e.getCause().toString());
             result.add("\n反射调用异常，可联系QQ:2353686862");
+            apiReport.exceptionReport(messageData.getMessage(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
         } catch (Exception e) {
             e.printStackTrace();
             RulatedayCore.INSTANCE.getLogger().error(ExceptionUtil.unwrapThrowable(e));
+            apiReport.exceptionReport(messageData.getMessage(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
             return null;
         }
         return result;
