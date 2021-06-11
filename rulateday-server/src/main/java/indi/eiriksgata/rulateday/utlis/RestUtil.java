@@ -40,5 +40,9 @@ public class RestUtil {
         return request.send(jsonStr).body();
     }
 
+    public static String get(String url) {
+        return HttpRequest.get(url).body();
+    }
+
 
 }
