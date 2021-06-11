@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
  **/
 public class ApiReportImpl implements ApiReport {
 
-    private String apiUrl = ResourceBundle.getBundle("resources").getString("api.server.url");
+    public static String apiUrl = ResourceBundle.getBundle("resources").getString("api.server.url");
 
     @Override
     public void exceptionReport(String title, String content, Long qqId) {
@@ -29,13 +29,19 @@ public class ApiReportImpl implements ApiReport {
         requestData.put("qqId", qqId);
         requestData.put("content", content);
         requestData.put("title", title);
-        ResponseBaseVo<Object> result =
-                new Gson().fromJson(RestUtil.postForJson(apiUrl + path, new Gson().toJson(requestData)),
-                        new TypeToken<ResponseBaseVo<Object>>() {
-                        }.getType());
-        if (result.getCode() != 0) {
-            RulatedayCore.INSTANCE.getLogger().info("Rulateday exception report fail.");
+        try {
+            ResponseBaseVo<Object> result =
+                    new Gson().fromJson(RestUtil.postForJson(apiUrl + path, new Gson().toJson(requestData)),
+                            new TypeToken<ResponseBaseVo<Object>>() {
+                            }.getType());
+            if (result.getCode() != 0) {
+                RulatedayCore.INSTANCE.getLogger().info("Rulateday exception report fail.");
+            }
+        } catch (Exception e) {
+            RulatedayCore.INSTANCE.getLogger().info("rulateday exception report url error");
         }
+
+
     }
 
 }

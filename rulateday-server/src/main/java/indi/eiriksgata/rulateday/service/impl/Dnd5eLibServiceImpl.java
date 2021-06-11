@@ -10,6 +10,8 @@ import indi.eiriksgata.rulateday.utlis.FileUtil;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
+import net.mamoe.mirai.event.events.GroupTempMessageEvent;
+import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.utils.ExternalResource;
 
 import java.io.File;
@@ -88,17 +90,26 @@ public class Dnd5eLibServiceImpl implements Dnd5eLibService {
                 @Override
                 public void group(GroupMessageEvent groupMessageEvent) {
                     groupMessageEvent.getGroup().sendMessage(
-                            groupMessageEvent.getGroup().uploadImage(ExternalResource.create(imageFile))
+                            groupMessageEvent.getGroup().uploadImage(
+                                    ExternalResource.create(imageFile)
+                            )
                     );
                 }
 
                 @Override
                 public void friend(FriendMessageEvent friendMessageEvent) {
-                    friendMessageEvent.getFriend()
-                            .sendMessage(
-                                    friendMessageEvent
-                                            .getFriend()
-                                            .uploadImage(ExternalResource.create(imageFile)));
+                    friendMessageEvent.getSender().sendMessage(friendMessageEvent.getSender()
+                            .uploadImage(ExternalResource.create(imageFile)));
+                }
+
+
+                @Override
+                public void groupTemp(GroupTempMessageEvent event) {
+                    event.getSender().sendMessage(
+                            event.getSender().uploadImage(
+                                    ExternalResource.create(imageFile)
+                            )
+                    );
                 }
             });
         }
