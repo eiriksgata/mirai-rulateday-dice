@@ -158,7 +158,12 @@ public class QueryController {
     @InstructReflex(value = {".kkp", "。kkp"})
     public String randomPicture(MessageData data) {
         String url = ApiReportImpl.apiUrl + "/picture/random";
-        String resultJson = HttpRequest.get(url).body();
+        String resultJson = "";
+        try {
+            resultJson = HttpRequest.get(url).body();
+        } catch (Exception e) {
+            return "请求服务器失败。请联系相关开发人员。";
+        }
         ResponseBaseVo<String> response = new Gson().fromJson(
                 resultJson, new TypeToken<ResponseBaseVo<String>>() {
                 }.getType());
