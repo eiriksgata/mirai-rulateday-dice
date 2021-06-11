@@ -1,18 +1,26 @@
 package indi.eiriksgata.rulateday.instruction;
 
+import com.github.kevinsawicki.http.HttpRequest;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.injection.InstructService;
 import indi.eiriksgata.dice.vo.MessageData;
+import indi.eiriksgata.rulateday.event.EventAdapter;
+import indi.eiriksgata.rulateday.event.EventUtils;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 import indi.eiriksgata.rulateday.pojo.RuleBook;
 import indi.eiriksgata.rulateday.service.CrazyLibraryService;
 import indi.eiriksgata.rulateday.service.Dnd5eLibService;
 import indi.eiriksgata.rulateday.service.RuleService;
 import indi.eiriksgata.rulateday.service.UserConversationService;
-import indi.eiriksgata.rulateday.service.impl.CrazyLibraryImpl;
-import indi.eiriksgata.rulateday.service.impl.Dnd5eLibServiceImpl;
-import indi.eiriksgata.rulateday.service.impl.RuleServiceImpl;
-import indi.eiriksgata.rulateday.service.impl.UserConversationImpl;
+import indi.eiriksgata.rulateday.service.impl.*;
+import indi.eiriksgata.rulateday.utlis.HexConvertUtil;
+import indi.eiriksgata.rulateday.vo.ResponseBaseVo;
+import net.mamoe.mirai.event.events.FriendMessageEvent;
+import net.mamoe.mirai.event.events.GroupMessageEvent;
+import net.mamoe.mirai.event.events.GroupTempMessageEvent;
+import net.mamoe.mirai.utils.ExternalResource;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -147,6 +155,38 @@ public class QueryController {
         return result.getName() + "\n" + result.getDescribe().replaceAll("\n\n", "\n");
     }
 
+    @InstructReflex(value = {".kkp", "。kkp"})
+    public String randomPicture(MessageData data) {
+        String url = ApiReportImpl.apiUrl + "/picture/random";
+        String resultJson = HttpRequest.get(url).body();
+        ResponseBaseVo<String> response = new Gson().fromJson(
+                resultJson, new TypeToken<ResponseBaseVo<String>>() {
+                }.getType());
+        byte[] pictureData = HexConvertUtil.hexStringToByteArray(response.getData());
+        EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
+            @Override
+            public void group(GroupMessageEvent event) {
+                event.getGroup().sendMessage(
+                        event.getGroup().uploadImage(ExternalResource.create(pictureData)));
+            }
+
+            @Override
+            public void friend(FriendMessageEvent event) {
+                event.getSender().sendMessage(
+                        event.getSender().uploadImage(ExternalResource.create(pictureData))
+                );
+            }
+
+            @Override
+            public void groupTemp(GroupTempMessageEvent event) {
+                event.getSender().sendMessage(
+                        event.getSender().uploadImage(ExternalResource.create(pictureData))
+                );
+            }
+        });
+        return null;
+    }
+
     @InstructReflex(value = {".rmi", "。rmi"})
     public String rollMagicItem() {
         return "null";
@@ -156,6 +196,7 @@ public class QueryController {
     public String rollTool() {
         return "null";
     }
+
 
     @InstructReflex(value = {".drw", "。drw"})
     public String rollWeapone() {
