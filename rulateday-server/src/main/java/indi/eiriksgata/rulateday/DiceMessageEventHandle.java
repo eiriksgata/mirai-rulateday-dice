@@ -154,6 +154,8 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             apiReport.exceptionReport(event.getMessage().contentToString(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
             return;
         }
+        if (result == null) return;
+
         event.getGroup().sendMessage(new At(event.getSender().getId()).plus("\n" + result));
     }
 
@@ -166,6 +168,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         }
         try {
             String returnText = instructHandle.instructCheck(messageData);
+            if (returnText == null) return null;
             //对于私聊的消息需要进行分割长度发送
             while (true) {
                 if (returnText.length() > 200) {
