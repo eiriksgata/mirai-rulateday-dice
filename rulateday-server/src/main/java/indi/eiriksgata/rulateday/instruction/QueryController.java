@@ -162,7 +162,7 @@ public class QueryController {
         try {
             resultJson = HttpRequest.get(url).body();
         } catch (Exception e) {
-            return "请求服务器失败。请联系相关开发人员。";
+            return "请求云端服务器接口失败。请联系相关开发人员。";
         }
         ResponseBaseVo<String> response = new Gson().fromJson(
                 resultJson, new TypeToken<ResponseBaseVo<String>>() {

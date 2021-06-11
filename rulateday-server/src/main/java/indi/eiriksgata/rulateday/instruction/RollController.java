@@ -73,6 +73,9 @@ public class RollController {
 
     @InstructReflex(value = {".st", "。st"})
     public String setAttribute(MessageData data) {
+        if (data.getMessage().equals("")) {
+            return CustomText.getText("dice.set.attribute.error");
+        }
         try {
             userTempDataService.updateUserAttribute(data.getQqID(), data.getMessage());
         } catch (Exception e) {
@@ -86,7 +89,6 @@ public class RollController {
     public String roll(MessageData data) {
         Integer diceFace = userTempDataService.getUserDiceFace(data.getQqID());
         data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
-
         if (diceFace != null) {
             diceSet.setDiceFace(data.getQqID(), diceFace);
         }
@@ -106,8 +108,14 @@ public class RollController {
     @InstructReflex(value = {".MessageData", ".set", "。set"})
     public String setDiceFace(MessageData data) throws DiceInstructException {
         //移除所有的空格
+        int setDiceFace = 0;
         data.setMessage(data.getMessage().replaceAll(" ", ""));
-        int setDiceFace = Integer.valueOf(data.getMessage());
+        try {
+            setDiceFace = Integer.valueOf(data.getMessage());
+        } catch (Exception e) {
+            return CustomText.getText("dice.set.face.error");
+        }
+
         if (setDiceFace > Integer.valueOf(DiceConfig.diceSet.getString("dice.face.max"))) {
             throw new DiceInstructException(ExceptionEnum.DICE_SET_FACE_MAX_ERR);
         }
@@ -192,22 +200,16 @@ public class RollController {
     @InstructReflex(value = {".rp", "。rp", ",rp", ".Rp"}, priority = 3)
     public String rollPunishment(MessageData data) {
         data.setMessage(data.getMessage().replaceAll(" ", ""));
-
         data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
         String attribute = userTempDataService.getUserAttribute(data.getQqID());
-
-
         return rollBasics.rollBonus(data.getMessage(), attribute, false);
     }
 
     @InstructReflex(value = {".coc", "。coc", ".Coc"})
     public String randomCocRole(MessageData data) {
         int createNumber;
-        if (data.getMessage().equals("")) {
-            createNumber = 1;
-        } else {
-            createNumber = Integer.valueOf(data.getMessage());
-        }
+        createNumber = checkCreateRandomRoleNumber(data.getMessage());
+        if (createNumber == -1) return CustomText.getText("dice.base.parameter.error");
         if (createNumber > 20 | createNumber < 1) {
             return "参数范围需要在1-20内";
         }
@@ -217,11 +219,8 @@ public class RollController {
     @InstructReflex(value = {".dnd", "。dnd", ".Dnd", "。DND"})
     public String randomDndRole(MessageData data) {
         int createNumber;
-        if (data.getMessage().equals("")) {
-            createNumber = 1;
-        } else {
-            createNumber = Integer.valueOf(data.getMessage());
-        }
+        createNumber = checkCreateRandomRoleNumber(data.getMessage());
+        if (createNumber == -1) return CustomText.getText("dice.base.parameter.error");
         if (createNumber > 20 | createNumber < 1) {
             return "参数范围需要在1-20内";
         }
@@ -237,13 +236,30 @@ public class RollController {
     @InstructReflex(value = {".name"})
     public String randomName(MessageData data) {
         if (StringUtils.isNumeric(data.getMessage())) {
-            int number = Integer.valueOf(data.getMessage());
+            int number = 0;
+            try {
+                number = Integer.valueOf(data.getMessage());
+            } catch (Exception e) {
+                return CustomText.getText("dice.base.parameter.error");
+            }
             if (number > 0 && number <= 20) {
                 return humanNameService.randomName(Integer.valueOf(data.getMessage()));
             }
             return "参数范围在1-20内";
         } else {
             return humanNameService.randomName(1);
+        }
+    }
+
+    private int checkCreateRandomRoleNumber(String message) {
+        if (message.equals("")) {
+            return 1;
+        } else {
+            try {
+                return Integer.valueOf(message);
+            } catch (Exception e) {
+                return -1;
+            }
         }
     }
 

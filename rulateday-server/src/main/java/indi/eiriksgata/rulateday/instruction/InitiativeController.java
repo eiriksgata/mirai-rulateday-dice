@@ -98,8 +98,6 @@ public class InitiativeController {
 
     @InstructReflex(value = {".atk", "。atk"})
     public String generateInitiativeDice(MessageData data) {
-
-
         String name = null;
         String[] tempList;
         String diceFace = "d";
