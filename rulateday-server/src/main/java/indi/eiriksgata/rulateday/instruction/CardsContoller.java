@@ -150,14 +150,14 @@ public class CardsContoller {
             @Override
             public void group(GroupMessageEvent event) {
                 groupId[0] = event.getGroup().getId();
-                CardsGroupData result = cardsGroupDataMapper.randonGetCard(groupId[0]);
+                CardsGroupData result = cardsGroupDataMapper.randomGetCard(groupId[0]);
                 event.getSender().sendMessage("在QQ群[" + event.getGroup().getId() + "]的抽出结果为：" + result.getValue());
             }
 
             @Override
             public void friend(FriendMessageEvent event) {
                 groupId[0] = -event.getFriend().getId();
-                CardsGroupData result = cardsGroupDataMapper.randonGetCard(groupId[0]);
+                CardsGroupData result = cardsGroupDataMapper.randomGetCard(groupId[0]);
                 event.getSender().sendMessage("在QQ[" + event.getFriend().getId() + "]的抽出结果为：" + result.getValue());
 
             }
@@ -165,11 +165,11 @@ public class CardsContoller {
             @Override
             public void groupTemp(GroupTempMessageEvent event) {
                 groupId[0] = event.getGroup().getId();
-                CardsGroupData result = cardsGroupDataMapper.randonGetCard(groupId[0]);
+                CardsGroupData result = cardsGroupDataMapper.randomGetCard(groupId[0]);
                 event.getSender().sendMessage("在QQ群[" + event.getGroup().getId() + "]的抽出结果为：" + result.getValue());
             }
         });
-        CardsGroupData result = cardsGroupDataMapper.randonGetCard(groupId[0]);
+        CardsGroupData result = cardsGroupDataMapper.randomGetCard(groupId[0]);
         if (result == null) {
             return "当前牌堆没有任何数据";
         }
@@ -197,7 +197,7 @@ public class CardsContoller {
                 groupId[0] = event.getGroup().getId();
             }
         });
-        CardsGroupData result = cardsGroupDataMapper.randonGetCard(groupId[0]);
+        CardsGroupData result = cardsGroupDataMapper.randomGetCard(groupId[0]);
         if (result == null) {
             return "当前牌堆没有任何数据";
         }

@@ -20,13 +20,13 @@ import indi.eiriksgata.rulateday.service.UserTempDataService;
 import indi.eiriksgata.rulateday.service.impl.HumanNameServiceImpl;
 import indi.eiriksgata.rulateday.service.impl.UserTempDataServiceImpl;
 import indi.eiriksgata.rulateday.utlis.CharacterUtils;
-import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.GroupTempMessageEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.Random;
 
 /**
  * @author: create by Keith
@@ -250,6 +250,86 @@ public class RollController {
             return humanNameService.randomName(1);
         }
     }
+
+
+    @InstructReflex(value = {".ga", "。ga"}, priority = 2)
+    public String attributeGetAttribute(MessageData data) {
+        return userTempDataService.getUserAttribute(data.getQqID());
+    }
+
+    @InstructReflex(value = {".en"})
+    public String attributeEn(MessageData data) {
+        if (data.getMessage().equals("")) {
+            return "请输入属性名和数值或者属性名";
+        }
+        String checkAttribute = RegularExpressionUtils.getMatcher("[\\u4E00-\\u9FA5A-z]+[0-9]+", data.getMessage());
+        if (checkAttribute == null) {
+            checkAttribute = RegularExpressionUtils.getMatcher("[\\u4E00-\\u9FA5A-z]+", data.getMessage());
+            if (checkAttribute == null) {
+                return "请输入正确的参数形式";
+            }
+
+            String userAttribute = userTempDataService.getUserAttribute(data.getQqID());
+            if (userAttribute == null || userAttribute.equals("")) {
+                return "你尚未设置你的个人属性可以通过.st进行设置";
+            }
+
+            String tempData = RegularExpressionUtils.getMatcher(checkAttribute + "[0-9]+", userAttribute);
+            if (tempData == null) {
+                return "你通过.st设置的属性中，不存在[" + checkAttribute + "]这个技能";
+            }
+
+            int checkNumber = Integer.valueOf(tempData.substring(checkAttribute.length()));
+
+            int randomNumber = new Random().nextInt(100);
+            if (randomNumber > checkNumber) {
+                int addValue = new Random().nextInt(10);
+                int count = checkNumber + addValue;
+                String updateAttribute = userAttribute.replaceAll(tempData, checkAttribute + count);
+                userTempDataService.updateUserAttribute(data.getQqID(), updateAttribute);
+                return "D100=" + randomNumber + "/" + checkNumber + " [" + checkAttribute + "] 成长成功! " +
+                        "你当前的[" + checkAttribute + "]为D10=" + addValue + "+" + checkNumber + "=" + count;
+            }
+            return "D100=" + randomNumber + "/" + checkNumber + " [" + checkAttribute + "] 成长失败!";
+        }
+
+        int randomNumber = new Random().nextInt(100);
+        int checkNumber = Integer.valueOf(RegularExpressionUtils.getMatcher("[0-9]+", checkAttribute));
+        if (randomNumber > checkNumber) {
+            int addValue = new Random().nextInt(10);
+            int count = addValue + checkNumber;
+            return "D100=" + randomNumber + "/" + checkNumber + " [" + checkAttribute + "] 成长成功! " +
+                    "你当前的[" + checkAttribute + "]为D10=" + addValue + "+" + checkNumber + "=" + count;
+        }
+        return "D100=" + randomNumber + "/" + checkNumber + " [" + checkAttribute + "] 成长失败!";
+    }
+
+    @InstructReflex(value = {".sa", "。sa"})
+    public String attributeSetAttribute(MessageData data) {
+        String changeValue = RegularExpressionUtils.getMatcher("[0-9]+", data.getMessage());
+        if (changeValue == null) {
+            return "你输入的指令参数中没有需要更改的数值";
+        }
+        String changeName = data.getMessage().substring(0, data.getMessage().length() - changeValue.length());
+        if (changeName.equals("")) {
+            return "你输入的指令参数中没有需要更改的数值";
+        }
+
+        //查询属性
+        String findAttribute = userTempDataService.getUserAttribute(data.getQqID());
+        if (findAttribute == null || findAttribute.equals("")) {
+            return "你尚未设置属性，可以通过指令.st来进行设置";
+        }
+
+        String attribute = RegularExpressionUtils.getMatcher(changeName + "[0-9]+", findAttribute);
+        if (attribute == null) {
+            return "你的属性中，不存在该属性，请通过.st重新设置";
+        }
+        String updateData = findAttribute.replaceAll(attribute, changeName + changeValue);
+        userTempDataService.updateUserAttribute(data.getQqID(), updateData);
+        return "您的属性已更新:" + attribute + " => " + changeName + changeValue;
+    }
+
 
     private int checkCreateRandomRoleNumber(String message) {
         if (message.equals("")) {
