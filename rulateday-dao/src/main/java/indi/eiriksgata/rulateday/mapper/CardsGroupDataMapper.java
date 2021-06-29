@@ -24,7 +24,7 @@ public interface CardsGroupDataMapper {
     void clearByGroupId(@Param("groupId") Long groupId);
 
     @Select("select * from cards_group_data where group_id =#{groupId} ORDER BY RANDOM() LIMIT 1")
-    CardsGroupData randonGetCard(@Param("groupId") Long groupId);
+    CardsGroupData randomGetCard(@Param("groupId") Long groupId);
 
     @Select("select * from cards_group_data where group_id = #{groupId}")
     List<CardsGroupData> getGroupCardsList(@Param("groupId") Long groupId);
