@@ -117,21 +117,23 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         if (!botControl.isSpeakers(event)) {
             return;
         }
-        //做一些指令前的判断工作，本身应该由trpg-dice负责的，但是trpg-dice还不够完善
-        if (event.getMessage().contentToString().length() < 2) {
-            return;
-        }
+
         MessageData<GroupMessageEvent> messageData = new MessageData<>();
         messageData.setMessage(event.getMessage().contentToString());
         messageData.setQqID(event.getSender().getId());
         messageData.setEvent(event);
         //检测对话模式，具有最高优先级
-
         String conversationResult = UserConversationImpl.checkInputQuery(messageData);
         if (conversationResult != null) {
             event.getGroup().sendMessage(conversationResult);
             return;
         }
+
+        //做一些指令前的判断工作，本身应该由trpg-dice负责的，但是trpg-dice还不够完善
+        if (event.getMessage().contentToString().length() < 2) {
+            return;
+        }
+
         String result = "";
         try {
             result = instructHandle.instructCheck(messageData);
