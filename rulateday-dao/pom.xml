@@ -5,7 +5,7 @@
     <parent>
         <artifactId>mirai-rulateday-dice</artifactId>
         <groupId>indi.eiriksgata</groupId>
-        <version>0.3.8-SNAPSHOT</version>
+        <version>0.3.9-SNAPSHOT</version>
 
     </parent>
 
