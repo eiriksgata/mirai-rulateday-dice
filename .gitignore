@@ -42,3 +42,5 @@ rulateday-server/data/*
 rulateday-server/src/main/resources/query/
 rulateday-server/src/main/resources/coctext/
 rulateday-dao/src/main/resources/mapper/
+
+config/
