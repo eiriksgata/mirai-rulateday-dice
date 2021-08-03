@@ -39,3 +39,6 @@ English_Cn_Name_Corpus.txt
 Japanese_Names_Corpus.txt
 LoadFileTest.txt
 rulateday-server/data/*
+rulateday-server/src/main/resources/query/
+rulateday-server/src/main/resources/coctext/
+rulateday-dao/src/main/resources/mapper/
