@@ -32,7 +32,7 @@ public interface UserInitiativeDataMapper {
     List<UserInitiativeData> selectByGroupId(@Param("groupId") String groupId);
 
     @Select("select * from user_initiative_data where group_id=#{groupId} and user_id =#{userId} and name=#{name}")
-    UserInitiativeData select(@Param("groupId") String groupId, @Param("userId") Long userId, @Param("name") String name);
+    UserInitiativeData selectByGroupIdAndUserIdAndName(@Param("groupId") String groupId, @Param("userId") Long userId, @Param("name") String name);
 
     @Update("create table user_initiative_data\n" +
             "(\n" +
