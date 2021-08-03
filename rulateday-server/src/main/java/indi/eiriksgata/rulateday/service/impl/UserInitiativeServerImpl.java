@@ -34,7 +34,7 @@ public class UserInitiativeServerImpl {
     }
 
     public void addInitiativeDice(String groupId, Long userId, String name, int value) {
-        UserInitiativeData result = mapper.select(groupId, userId, name);
+        UserInitiativeData result = mapper.selectByGroupIdAndUserIdAndName(groupId, userId, name);
         UserInitiativeData userInitiativeData = new UserInitiativeData();
         userInitiativeData.setGroupId(groupId);
         userInitiativeData.setName(name);
