@@ -31,18 +31,20 @@ public class LoadDatabaseFile {
         String dbFileVersion = dbPropertiesConfig.getString("db.file.version");
         String dbCreateName = dbFileName + dbFileVersion + ".db";
         InputStream inputStream = getResourceAsStream(dbFileName + ".db");
-        String path = "data//rulateday";
-        File file = new File(path + "//" + dbCreateName);
+        String path = RulatedayCore.INSTANCE.getDataFolderPath().toString();
+
+        File file = new File(path + "/" + dbCreateName);
         File mkdir = new File(path);
-        File mmImages = new File(path + "//mm-images");
+        File mmImages = new File(path + "/mm-images");
         if (!mkdir.exists()) {
-            mkdir.mkdirs();
+             mkdir.mkdirs();
         }
         if (!mmImages.exists()) {
             mmImages.mkdirs();
         }
         if (!file.exists()) {
-            RulatedayCore.INSTANCE.getLogger().info("Detecting no database file, creating..");
+
+//      RulatedayCore.INSTANCE.getLogger().info("Detecting no database file, creating..");
             OutputStream output = new FileOutputStream(file);
             byte[] bytes = new byte[1024];
             while (true) {
