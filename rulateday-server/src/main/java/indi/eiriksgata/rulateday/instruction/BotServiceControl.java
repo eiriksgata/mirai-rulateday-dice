@@ -17,7 +17,6 @@ import javax.annotation.Resource;
 
 public class BotServiceControl {
 
-    @Resource
     public final static BotControlService botControl = new BotControlServiceImpl();
 
     public boolean groupBotOff(GroupMessageEvent event) {
