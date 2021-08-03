@@ -8,6 +8,9 @@ public enum ExceptionEnum {
     // 系统错误的指令
     DND5E_MM_NAME_DECODE_ERR(10001, "怪物名称编码出错"),
 
+    //数据库连接异常
+    DB_LINK_ERROR(10002, "数据库链接异常"),
+
     // system predefine
     WARING(4, "Your operation may be abnormal."),
 
