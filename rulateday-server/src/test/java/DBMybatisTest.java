@@ -1,15 +1,19 @@
 
+import indi.eiriksgata.rulateday.RulatedayCore;
 import indi.eiriksgata.rulateday.mapper.CrazyOverDescribeMapper;
 import indi.eiriksgata.rulateday.mapper.SpeakersGroupListMapper;
 import indi.eiriksgata.rulateday.pojo.CrazyOverDescribe;
-import indi.eiriksgata.rulateday.pojo.UserInitiativeData;
 import indi.eiriksgata.rulateday.service.impl.UserInitiativeServerImpl;
 import indi.eiriksgata.rulateday.utlis.LoadDatabaseFile;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
+import net.mamoe.mirai.console.plugin.PluginManager;
+import org.apache.ibatis.io.Resources;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.util.List;
+import java.util.Properties;
+import java.util.ResourceBundle;
 
 
 /**
@@ -22,6 +26,7 @@ public class DBMybatisTest {
 
     @Test
     void dbTest() {
+
         CrazyOverDescribeMapper mapper = MyBatisUtil.getSqlSession().getMapper(CrazyOverDescribeMapper.class);
         List<CrazyOverDescribe> list = mapper.selectAll();
 
@@ -48,6 +53,14 @@ public class DBMybatisTest {
 
     @Test
     void file() throws IOException {
+        File file = new File("");
+        //输出程序路径
+        try {
+            System.out.println("canonical:" + file.getCanonicalPath());
+            System.out.println("absolute:" + file.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         LoadDatabaseFile.createDatabaseFile();
 
@@ -60,6 +73,30 @@ public class DBMybatisTest {
                 new UserInitiativeServerImpl().showInitiativeList("1000")
 
         );
+
+    }
+
+
+    @Test
+    void testConfigFile() throws IOException {
+        Properties properties = new Properties();
+        ResourceBundle dbPropertiesConfig = ResourceBundle.getBundle("db");
+        InputStream inputStream = Resources.getResourceAsStream("mybatis-config.xml");
+
+        String dbFileName = dbPropertiesConfig.getString("db.file.name");
+        String dbFileVersion = dbPropertiesConfig.getString("db.file.version");
+        String dbCreateName = dbFileName + dbFileVersion + ".db";
+       // String path = "jdbc:sqlite:" + RulatedayCore.INSTANCE.getDataFolderPath() + "\\" + dbCreateName;
+        String path = "jdbc:sqlite:" + "test" + "\\" + dbCreateName;
+
+
+        properties.load(inputStream);
+        properties.setProperty("url", path);
+
+        System.out.println(properties);
+
+
+        System.out.println(properties.get("driver"));
 
     }
 
