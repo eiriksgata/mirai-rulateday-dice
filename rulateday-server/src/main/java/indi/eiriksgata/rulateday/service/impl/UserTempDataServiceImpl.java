@@ -9,7 +9,7 @@ import org.apache.ibatis.exceptions.PersistenceException;
 
 public class UserTempDataServiceImpl implements UserTempDataService {
 
-    private static UserTempDataMapper mapper = MyBatisUtil.getSqlSession().getMapper(UserTempDataMapper.class);
+    private static final UserTempDataMapper mapper = MyBatisUtil.getSqlSession().getMapper(UserTempDataMapper.class);
 
     @Override
     public void updateUserAttribute(Long id, String attribute) {

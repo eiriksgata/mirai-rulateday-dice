@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 public class RuleServiceImpl implements RuleService {
 
     @Resource
-    private static RuleBookMapper ruleBookMapper = MyBatisUtil.getSqlSession().getMapper(RuleBookMapper.class);
+    private static final RuleBookMapper ruleBookMapper = MyBatisUtil.getSqlSession().getMapper(RuleBookMapper.class);
 
     @Override
     public RuleBook selectRule(String title) {

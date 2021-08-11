@@ -62,9 +62,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         }
         List<String> result = personalMessageEventHandler(messageData);
         if (result != null) {
-            result.forEach((text) -> {
-                event.getSender().sendMessage(text);
-            });
+            result.forEach((text) -> event.getSender().sendMessage(text));
         }
         return ListeningStatus.LISTENING;
     }
@@ -83,9 +81,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         }
         List<String> result = personalMessageEventHandler(messageData);
         if (result != null) {
-            result.forEach((text) -> {
-                event.getSender().sendMessage(text);
-            });
+            result.forEach((text) -> event.getSender().sendMessage(text));
         }
         return ListeningStatus.LISTENING;
     }
@@ -134,7 +130,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             return;
         }
 
-        String result = "";
+        String result;
         try {
             result = instructHandle.instructCheck(messageData);
         } catch (DiceInstructException e) {
@@ -162,6 +158,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
     }
 
 
+    @SuppressWarnings("rawtypes")
     private List<String> personalMessageEventHandler(MessageData messageData) {
         String sourceMessage = messageData.getMessage();
         List<String> result = new ArrayList<>();

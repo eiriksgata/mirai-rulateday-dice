@@ -1,5 +1,7 @@
 package indi.eiriksgata.rulateday.utlis;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * author: create by Keith
  * version: v1.0
@@ -8,7 +10,7 @@ package indi.eiriksgata.rulateday.utlis;
  **/
 public class CharacterUtils {
 
-    public static String operationSymbolProcessing(String text) {
+    public static @NotNull String operationSymbolProcessing(String text) {
         text = text.replaceAll("[＋➕]", "+");
         text = text.replaceAll("[-➖—－]", "-");
         text = text.replaceAll("[×xX✖]", "*");

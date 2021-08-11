@@ -19,7 +19,7 @@ public class ExceptionUtils {
             out = new ByteArrayOutputStream();
             pout = new PrintStream(out);
             ex.printStackTrace(pout);
-            ret = new String(out.toByteArray());
+            ret = out.toString();
             out.close();
         } catch (Exception e) {
             return ex.getMessage();

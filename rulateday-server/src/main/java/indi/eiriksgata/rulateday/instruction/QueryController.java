@@ -41,32 +41,32 @@ public class QueryController {
     public static ExecutorService cachedThread = Executors.newCachedThreadPool();
 
     @Resource
-    private CrazyLibraryService crazyLibraryService = new CrazyLibraryImpl();
+    private final CrazyLibraryService crazyLibraryService = new CrazyLibraryImpl();
 
     @Resource
-    private Dnd5eLibService dnd5eLibService = new Dnd5eLibServiceImpl();
+    private final Dnd5eLibService dnd5eLibService = new Dnd5eLibServiceImpl();
 
     @Resource
-    private RuleService ruleService = new RuleServiceImpl();
+    private final RuleService ruleService = new RuleServiceImpl();
 
     @Resource
-    private UserConversationService conversationService = new UserConversationImpl();
+    private final UserConversationService conversationService = new UserConversationImpl();
 
 
     //发疯状态确认
     @InstructReflex(value = {".ti", "。ti"})
-    public String getCrazyState(MessageData data) {
+    public String getCrazyState(MessageData<Object> data) {
         return crazyLibraryService.getRandomCrazyDescribe();
     }
 
     //发疯结束总结
     @InstructReflex(value = {".li", "。li", ".Li", ".LI"})
-    public String getCrazyOverEvent(MessageData data) {
+    public String getCrazyOverEvent(MessageData<Object> data) {
         return crazyLibraryService.getCrazyOverDescribe();
     }
 
     @InstructReflex(value = {".cr", "。cr", ".cr7"})
-    public String queryCoc7Rule(MessageData data) {
+    public String queryCoc7Rule( MessageData<Object> data) {
         data.setMessage(data.getMessage().replaceAll(" ", ""));
         RuleBook result = ruleService.selectRule(data.getMessage());
         if (result == null) {
@@ -76,7 +76,7 @@ public class QueryController {
     }
 
     @InstructReflex(value = {".dr", "。dr", ".d5er", ".Dr", ".DR"})
-    public String queryDnd5eRule(MessageData data) {
+    public String queryDnd5eRule( MessageData<Object> data) {
         //如果输入的数据是无关键字的
         if (data.getMessage().equals("")) {
             return "请输入关键字参数";
@@ -110,7 +110,7 @@ public class QueryController {
                 return "查询不到结果，欢迎联系QQ:2353686862提供更多的数据";
             }
             if (result.get(0).getName().length() > 5) {
-                if (result.get(0).getName().substring(0, 5).equals("怪物图鉴:")) {
+                if (result.get(0).getName().startsWith("怪物图鉴:")) {
                     cachedThread.execute(() -> dnd5eLibService.sendMMImage(data.getEvent(), result.get(0)));
                 }
             }
@@ -120,7 +120,7 @@ public class QueryController {
 
 
     @InstructReflex(value = {".help", "。help"})
-    public String help(MessageData data) {
+    public String help(MessageData<Object> data) {
         return "插件名称:Rulateda v0.1.0 by Eiriksgata\n" +
                 "反馈联系Github：https://github.com/Eiriksgata/mirai-rulateday-dice\n" +
                 "所有指令：.help指令\n" +
@@ -128,7 +128,7 @@ public class QueryController {
     }
 
     @InstructReflex(value = {".help指令", "。help指令"}, priority = 3)
-    public String helpInstruct(MessageData data) {
+    public String helpInstruct(MessageData<Object> data) {
         return "骰子常用指令列表:\n" +
                 ".st 属性设置\n" +
                 ".ra|.rc 属性检测\n" +
@@ -149,16 +149,16 @@ public class QueryController {
     }
 
     @InstructReflex(value = {".rmm", "。rmm"})
-    public String rollMM(MessageData data) {
+    public String rollMM(MessageData<Object> data) {
         QueryDataBase result = dnd5eLibService.getRandomMMData();
         cachedThread.execute(() -> dnd5eLibService.sendMMImage(data.getEvent(), result));
         return result.getName() + "\n" + result.getDescribe().replaceAll("\n\n", "\n");
     }
 
     @InstructReflex(value = {".kkp", "。kkp"})
-    public String randomPicture(MessageData data) {
+    public String randomPicture(MessageData<Object> data) {
         String url = ApiReportImpl.apiUrl + "/picture/random";
-        String resultJson = "";
+        String resultJson;
         try {
             resultJson = HttpRequest.get(url).body();
         } catch (Exception e) {

@@ -13,7 +13,7 @@ import org.apache.ibatis.exceptions.PersistenceException;
  **/
 public class BotControlServiceImpl implements BotControlService {
 
-    private static SpeakersGroupListMapper speakersGroupListMapper = MyBatisUtil.getSqlSession().getMapper(SpeakersGroupListMapper.class);
+    private static final SpeakersGroupListMapper speakersGroupListMapper = MyBatisUtil.getSqlSession().getMapper(SpeakersGroupListMapper.class);
 
     @Override
     public boolean groupIsEnable(long groupId) {

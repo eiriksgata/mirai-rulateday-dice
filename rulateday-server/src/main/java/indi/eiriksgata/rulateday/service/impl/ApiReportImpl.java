@@ -2,7 +2,6 @@ package indi.eiriksgata.rulateday.service.impl;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import indi.eiriksgata.rulateday.DiceMessageEventHandle;
 import indi.eiriksgata.rulateday.RulatedayCore;
 import indi.eiriksgata.rulateday.service.ApiReport;
 import indi.eiriksgata.rulateday.utlis.RestUtil;

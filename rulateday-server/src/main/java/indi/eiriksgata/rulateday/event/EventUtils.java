@@ -8,9 +8,11 @@ import net.mamoe.mirai.event.events.*;
  * description: indi.eiriksgata.rulateday.event
  * date: 2021/3/12
  **/
+
 public class EventUtils {
 
     public static void eventCallback(Object event, EventAdapter eventHandler) {
+
         if (event.getClass() == GroupMessageEvent.class) {
             eventHandler.group((GroupMessageEvent) event);
             return;
@@ -27,9 +29,11 @@ public class EventUtils {
             eventHandler.groupTemp((GroupTempMessageEvent) event);
             return;
         }
+
         if (event.getClass() == OtherClientEvent.class) {
             eventHandler.otherClient((OtherClientEvent) event);
         }
+
     }
 
 }

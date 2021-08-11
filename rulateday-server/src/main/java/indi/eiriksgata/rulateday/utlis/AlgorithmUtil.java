@@ -1,5 +1,7 @@
 package indi.eiriksgata.rulateday.utlis;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * author: create by Keith
  * version: v1.0
@@ -7,7 +9,7 @@ package indi.eiriksgata.rulateday.utlis;
  * date: 2021/3/11
  **/
 public class AlgorithmUtil {
-    public int[] bubbleSort(int[] data) {
+    public int[] bubbleSort(int @NotNull [] data) {
         for (int i = 0; i < data.length; i++) {
             for (int j = 0; i < data.length; i++) {
                 if (data[i] > data[j]) {

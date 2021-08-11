@@ -21,7 +21,7 @@ import java.util.List;
  **/
 public class UserConversationImpl implements UserConversationService {
 
-    private static UserConversationMapper mapper = MyBatisUtil.getSqlSession().getMapper(UserConversationMapper.class);
+    private static final UserConversationMapper mapper = MyBatisUtil.getSqlSession().getMapper(UserConversationMapper.class);
 
     @Override
     public void saveConversation(Long qq, List<QueryDataBase> queryData) {

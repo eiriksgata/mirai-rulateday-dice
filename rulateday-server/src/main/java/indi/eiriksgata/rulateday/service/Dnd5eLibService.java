@@ -1,6 +1,4 @@
 package indi.eiriksgata.rulateday.service;
-
-import indi.eiriksgata.rulateday.exception.RulatedayException;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 
 import java.util.List;

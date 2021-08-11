@@ -17,7 +17,7 @@ import java.util.List;
 
 public class UserInitiativeServerImpl {
 
-    private static UserInitiativeDataMapper mapper = MyBatisUtil.getSqlSession().getMapper(UserInitiativeDataMapper.class);
+    private static final UserInitiativeDataMapper mapper = MyBatisUtil.getSqlSession().getMapper(UserInitiativeDataMapper.class);
 
     public boolean diceLimit(String groupId) {
         try {

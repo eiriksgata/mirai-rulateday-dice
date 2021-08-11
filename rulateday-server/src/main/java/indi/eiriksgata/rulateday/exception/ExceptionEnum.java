@@ -1,6 +1,7 @@
 package indi.eiriksgata.rulateday.exception;
 
 import lombok.Getter;
+import org.jetbrains.annotations.Nullable;
 
 @Getter
 public enum ExceptionEnum {
@@ -24,8 +25,8 @@ public enum ExceptionEnum {
 
     UNKNOWN(-2, "Unknown Exception.");
 
-    private Integer errCode;
-    private String errMsg;
+    private final Integer errCode;
+    private final String errMsg;
 
     /**
      * @param errCode 系统号(2bit) + 业务模块（2bit）+ 业务异常（2bit）

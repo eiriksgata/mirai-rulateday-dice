@@ -11,11 +11,9 @@ import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.GroupTempMessageEvent;
-import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.utils.ExternalResource;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -30,8 +28,8 @@ import java.util.ResourceBundle;
  **/
 public class Dnd5eLibServiceImpl implements Dnd5eLibService {
 
-    private String imagesUrl = ResourceBundle.getBundle("resources").getString("resources.mm.images.url");
-    private String localPath = RulatedayCore.INSTANCE.getDataFolderPath() + ResourceBundle.getBundle("resources").getString("resources.mm.images.path");
+    private final String imagesUrl = ResourceBundle.getBundle("resources").getString("resources.mm.images.url");
+    private final String localPath = RulatedayCore.INSTANCE.getDataFolderPath() + ResourceBundle.getBundle("resources").getString("resources.mm.images.path");
 
 
     @Override

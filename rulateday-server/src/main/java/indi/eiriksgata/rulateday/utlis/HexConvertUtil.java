@@ -1,5 +1,8 @@
 package indi.eiriksgata.rulateday.utlis;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 public class HexConvertUtil {
 
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
@@ -8,7 +11,7 @@ public class HexConvertUtil {
      * 十六进制字符串转字节数组
      *
      * @param hexString 如：FE00120F0E
-     * @return
+     * @return byte[] byte array
      */
     public static byte[] hexStringToByteArray(String hexString) {
         int length = hexString.length();
@@ -24,7 +27,8 @@ public class HexConvertUtil {
     }
 
 
-    public static String bytesToHex(byte[] bytes) {
+
+    public static @NotNull String bytesToHex(byte @NotNull [] bytes) {
         char[] hexChars = new char[bytes.length * 2];
         for (int j = 0; j < bytes.length; j++) {
             int v = bytes[j] & 0xFF;

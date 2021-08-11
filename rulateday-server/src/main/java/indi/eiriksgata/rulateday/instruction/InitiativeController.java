@@ -7,7 +7,6 @@ import indi.eiriksgata.rulateday.event.EventAdapter;
 import indi.eiriksgata.rulateday.event.EventUtils;
 import indi.eiriksgata.rulateday.service.impl.UserInitiativeServerImpl;
 import net.mamoe.mirai.event.events.*;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Resource;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -26,7 +25,7 @@ public class InitiativeController {
     public static UserInitiativeServerImpl initiativeServer = new UserInitiativeServerImpl();
 
     @InstructReflex(value = {".atklist", "atkList"}, priority = 2)
-    public String getAtkList(@NotNull MessageData<Object> data) {
+    public String getAtkList( MessageData<Object> data) {
         final String[] resultText = {""};
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
@@ -46,7 +45,7 @@ public class InitiativeController {
 
 
     @InstructReflex(value = {".atkdel", ".atkDel", ".Atkdel", ".AtlDel"}, priority = 2)
-    public String delAtk(@NotNull MessageData<Object> data) {
+    public String delAtk( MessageData<Object> data) {
         String tempName = null;
         String resultText = "已删除你的先攻骰";
         if (!data.getMessage().equals("") && data.getMessage() != null) {
@@ -84,7 +83,7 @@ public class InitiativeController {
 
 
     @InstructReflex(value = {".atkClear", ".clearAtk", ".atkclear", "AtkClear"}, priority = 2)
-    public String clearAtkList(@NotNull MessageData<Object> data) {
+    public String clearAtkList( MessageData<Object> data) {
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
             public void group(GroupMessageEvent event) {
@@ -100,7 +99,7 @@ public class InitiativeController {
     }
 
     @InstructReflex(value = {".atk", "。atk"})
-    public String generateInitiativeDice(@NotNull MessageData<Object> data) {
+    public String generateInitiativeDice( MessageData<Object> data) {
         String name = null;
         String[] tempList;
         String diceFace = "d";

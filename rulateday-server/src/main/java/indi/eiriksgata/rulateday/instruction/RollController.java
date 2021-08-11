@@ -29,10 +29,10 @@ import javax.annotation.Resource;
 import java.util.Random;
 
 /**
- * @author: create by Keith
- * @version: v1.0
- * @description: indi.eiriksgata.dice
- * @date:2020/9/24
+ *  author: create by Keith
+ *  version: v1.0
+ *  description: indi.eiriksgata.dice
+ *  date:2020/9/24
  **/
 
 @InstructService
@@ -54,7 +54,7 @@ public class RollController {
     public static final HumanNameService humanNameService = new HumanNameServiceImpl();
 
     @InstructReflex(value = {".ra", ".rc", "。ra", "。rc"}, priority = 2)
-    public String attributeCheck(MessageData data) {
+    public String attributeCheck( MessageData<Object> data) {
         String attribute = userTempDataService.getUserAttribute(data.getQqID());
         data.setMessage(data.getMessage().replaceAll(" ", ""));
         data.setMessage(CharacterUtils.operationSymbolProcessing(
@@ -72,7 +72,7 @@ public class RollController {
     }
 
     @InstructReflex(value = {".st", "。st"})
-    public String setAttribute(MessageData data) {
+    public String setAttribute( MessageData<Object> data) {
         if (data.getMessage().equals("")) {
             return CustomText.getText("dice.set.attribute.error");
         }
@@ -86,7 +86,7 @@ public class RollController {
     }
 
     @InstructReflex(value = {".r", "。r"})
-    public String roll(MessageData data) {
+    public String roll( MessageData<Object> data) {
         Integer diceFace = userTempDataService.getUserDiceFace(data.getQqID());
         data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
         if (diceFace != null) {
@@ -106,20 +106,20 @@ public class RollController {
 
 
     @InstructReflex(value = {".MessageData", ".set", "。set"})
-    public String setDiceFace(MessageData data) throws DiceInstructException {
+    public String setDiceFace( MessageData<Object> data) throws DiceInstructException {
         //移除所有的空格
-        int setDiceFace = 0;
+        int setDiceFace;
         data.setMessage(data.getMessage().replaceAll(" ", ""));
         try {
-            setDiceFace = Integer.valueOf(data.getMessage());
+            setDiceFace = Integer.parseInt(data.getMessage());
         } catch (Exception e) {
             return CustomText.getText("dice.set.face.error");
         }
 
-        if (setDiceFace > Integer.valueOf(DiceConfig.diceSet.getString("dice.face.max"))) {
+        if (setDiceFace > Integer.parseInt(DiceConfig.diceSet.getString("dice.face.max"))) {
             throw new DiceInstructException(ExceptionEnum.DICE_SET_FACE_MAX_ERR);
         }
-        if (setDiceFace <= Integer.valueOf(DiceConfig.diceSet.getString("dice.face.min"))) {
+        if (setDiceFace <= Integer.parseInt(DiceConfig.diceSet.getString("dice.face.min"))) {
             throw new DiceInstructException(ExceptionEnum.DICE_SET_FACE_MIN_ERR);
         }
         diceSet.setDiceFace(data.getQqID(), setDiceFace);
@@ -128,7 +128,7 @@ public class RollController {
     }
 
     @InstructReflex(value = {".sc", "。sc"})
-    public String sanCheck(MessageData data) {
+    public String sanCheck( MessageData<Object> data) {
         data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
 
         //检查指令前缀空格符
@@ -168,7 +168,7 @@ public class RollController {
     }
 
     @InstructReflex(value = {".rh", "。rh"}, priority = 3)
-    public String rollHide(MessageData data) {
+    public String rollHide( MessageData<Object> data) {
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
             public void group(GroupMessageEvent event) {
@@ -189,7 +189,7 @@ public class RollController {
     }
 
     @InstructReflex(value = {".rb", "。rb", ",rb"}, priority = 3)
-    public String rollBonusDice(MessageData data) {
+    public String rollBonusDice( MessageData<Object> data) {
         data.setMessage(data.getMessage().replaceAll(" ", ""));
         data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
 
@@ -198,7 +198,7 @@ public class RollController {
     }
 
     @InstructReflex(value = {".rp", "。rp", ",rp", ".Rp"}, priority = 3)
-    public String rollPunishment(MessageData data) {
+    public String rollPunishment( MessageData<Object> data) {
         data.setMessage(data.getMessage().replaceAll(" ", ""));
         data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
         String attribute = userTempDataService.getUserAttribute(data.getQqID());
@@ -206,7 +206,7 @@ public class RollController {
     }
 
     @InstructReflex(value = {".coc", "。coc", ".Coc"})
-    public String randomCocRole(MessageData data) {
+    public String randomCocRole( MessageData<Object> data) {
         int createNumber;
         createNumber = checkCreateRandomRoleNumber(data.getMessage());
         if (createNumber == -1) return CustomText.getText("dice.base.parameter.error");
@@ -217,7 +217,7 @@ public class RollController {
     }
 
     @InstructReflex(value = {".dnd", "。dnd", ".Dnd", "。DND"})
-    public String randomDndRole(MessageData data) {
+    public String randomDndRole( MessageData<Object> data) {
         int createNumber;
         createNumber = checkCreateRandomRoleNumber(data.getMessage());
         if (createNumber == -1) return CustomText.getText("dice.base.parameter.error");
@@ -228,22 +228,22 @@ public class RollController {
     }
 
     @InstructReflex(value = {".jrrp", ".JRRP", "。jrrp", ".todayRandom"})
-    public String todayRandom(MessageData data) {
+    public String todayRandom( MessageData<Object> data) {
         return rollBasics.todayRandom(data.getQqID(), 8);
     }
 
 
     @InstructReflex(value = {".name"})
-    public String randomName(MessageData data) {
+    public String randomName( MessageData<Object> data) {
         if (StringUtils.isNumeric(data.getMessage())) {
-            int number = 0;
+            int number ;
             try {
-                number = Integer.valueOf(data.getMessage());
+                number = Integer.parseInt(data.getMessage());
             } catch (Exception e) {
                 return CustomText.getText("dice.base.parameter.error");
             }
             if (number > 0 && number <= 20) {
-                return humanNameService.randomName(Integer.valueOf(data.getMessage()));
+                return humanNameService.randomName(Integer.parseInt(data.getMessage()));
             }
             return "参数范围在1-20内";
         } else {
@@ -253,12 +253,12 @@ public class RollController {
 
 
     @InstructReflex(value = {".ga", "。ga"}, priority = 2)
-    public String attributeGetAttribute(MessageData data) {
+    public String attributeGetAttribute( MessageData<Object> data) {
         return userTempDataService.getUserAttribute(data.getQqID());
     }
 
     @InstructReflex(value = {".en"})
-    public String attributeEn(MessageData data) {
+    public String attributeEn( MessageData<Object> data) {
         if (data.getMessage().equals("")) {
             return "请输入属性名和数值或者属性名";
         }
@@ -279,7 +279,7 @@ public class RollController {
                 return "你通过.st设置的属性中，不存在[" + checkAttribute + "]这个技能";
             }
 
-            int checkNumber = Integer.valueOf(tempData.substring(checkAttribute.length()));
+            int checkNumber = Integer.parseInt(tempData.substring(checkAttribute.length()));
 
             int randomNumber = new Random().nextInt(100);
             if (randomNumber > checkNumber) {
@@ -294,7 +294,7 @@ public class RollController {
         }
 
         int randomNumber = new Random().nextInt(100);
-        int checkNumber = Integer.valueOf(RegularExpressionUtils.getMatcher("[0-9]+", checkAttribute));
+        int checkNumber = Integer.parseInt(RegularExpressionUtils.getMatcher("[0-9]+", checkAttribute));
         if (randomNumber > checkNumber) {
             int addValue = new Random().nextInt(10);
             int count = addValue + checkNumber;
@@ -305,7 +305,7 @@ public class RollController {
     }
 
     @InstructReflex(value = {".sa", "。sa"})
-    public String attributeSetAttribute(MessageData data) {
+    public String attributeSetAttribute( MessageData<Object> data) {
         String changeValue = RegularExpressionUtils.getMatcher("[0-9]+", data.getMessage());
         if (changeValue == null) {
             return "你输入的指令参数中没有需要更改的数值";
@@ -331,12 +331,12 @@ public class RollController {
     }
 
 
-    private int checkCreateRandomRoleNumber(String message) {
+    private int checkCreateRandomRoleNumber( String message) {
         if (message.equals("")) {
             return 1;
         } else {
             try {
-                return Integer.valueOf(message);
+                return Integer.parseInt(message);
             } catch (Exception e) {
                 return -1;
             }

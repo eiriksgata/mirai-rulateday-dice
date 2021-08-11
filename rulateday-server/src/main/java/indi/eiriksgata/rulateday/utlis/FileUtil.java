@@ -1,5 +1,7 @@
 package indi.eiriksgata.rulateday.utlis;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -34,7 +36,7 @@ public class FileUtil {
         }
     }
 
-    public static byte[] downLoadFromUrl(String urlStr, String savePath) throws Exception {
+    public static byte @NotNull [] downLoadFromUrl(String urlStr, String savePath) throws Exception {
         byte[] getData;
         URL url = new URL(urlStr);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -60,13 +62,13 @@ public class FileUtil {
     /**
      * 从输入流中获取字节数组
      *
-     * @param inputStream
-     * @return
-     * @throws IOException
+     * @param inputStream net input stream
+     * @return input stream byte array
+     * @throws IOException file io exception
      */
-    public static byte[] readInputStream(InputStream inputStream) throws IOException {
+    public static byte @NotNull [] readInputStream(InputStream inputStream) throws IOException {
         byte[] buffer = new byte[1024];
-        int len = 0;
+        int len;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         while ((len = inputStream.read(buffer)) != -1) {
             bos.write(buffer, 0, len);

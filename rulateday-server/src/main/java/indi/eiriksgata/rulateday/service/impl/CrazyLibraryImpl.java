@@ -2,7 +2,6 @@ package indi.eiriksgata.rulateday.service.impl;
 
 import indi.eiriksgata.rulateday.mapper.CrazyDescribeMapper;
 import indi.eiriksgata.rulateday.mapper.CrazyOverDescribeMapper;
-import indi.eiriksgata.rulateday.mapper.UserTempDataMapper;
 import indi.eiriksgata.rulateday.pojo.CrazyDescribe;
 import indi.eiriksgata.rulateday.pojo.CrazyOverDescribe;
 import indi.eiriksgata.rulateday.service.CrazyLibraryService;
@@ -19,8 +18,8 @@ import java.util.List;
  **/
 public class CrazyLibraryImpl implements CrazyLibraryService {
 
-    private static CrazyDescribeMapper crazyMapper = MyBatisUtil.getSqlSession().getMapper(CrazyDescribeMapper.class);
-    private static CrazyOverDescribeMapper overMapper = MyBatisUtil.getSqlSession().getMapper(CrazyOverDescribeMapper.class);
+    private static final CrazyDescribeMapper crazyMapper = MyBatisUtil.getSqlSession().getMapper(CrazyDescribeMapper.class);
+    private static final CrazyOverDescribeMapper overMapper = MyBatisUtil.getSqlSession().getMapper(CrazyOverDescribeMapper.class);
 
     @Override
     public String getRandomCrazyDescribe() {
