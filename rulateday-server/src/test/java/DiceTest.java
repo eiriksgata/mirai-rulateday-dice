@@ -47,13 +47,12 @@ public class DiceTest {
     @Test
     void rollTest() {
 
-
     }
 
 
     @Test
     public void setDiceFace() {
-        MessageData messageData = new MessageData();
+        MessageData<?> messageData = new MessageData<>();
         messageData.setQqID(123456789L);
         InstructHandle instruct = new InstructHandle();
         messageData.setMessage(".r1D6 ＋ 1d4 这是什么玩意指令");
@@ -61,9 +60,7 @@ public class DiceTest {
             System.out.println(instruct.instructCheck(messageData));
         } catch (DiceInstructException e) {
             System.out.println(e.getErrMsg());
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException e) {
             e.printStackTrace();
         } catch (InvocationTargetException ex) {
             System.out.println("call function exception");

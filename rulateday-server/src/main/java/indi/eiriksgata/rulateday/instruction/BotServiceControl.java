@@ -18,7 +18,7 @@ public class BotServiceControl {
 
     public final static BotControlService botControl = new BotControlServiceImpl();
 
-    public boolean groupBotOff( GroupMessageEvent event) {
+    public boolean groupBotOff(GroupMessageEvent event) {
         long id = Bot.getInstances().get(0).getId();
         String regex = ".*\\[mirai:at:" + id + "].*\\.botoff";
         String messageSource = event.getMessage().toString().replaceAll(" ", "");
@@ -31,7 +31,7 @@ public class BotServiceControl {
         return false;
     }
 
-    public boolean groupBotOn( GroupMessageEvent event) {
+    public boolean groupBotOn(GroupMessageEvent event) {
         long id = Bot.getInstances().get(0).getId();
         String regex = ".*\\[mirai:at:" + id + "].*\\.boton";
         String messageSource = event.getMessage().toString().replaceAll(" ", "");
@@ -44,7 +44,7 @@ public class BotServiceControl {
         return false;
     }
 
-    public boolean isSpeakers( GroupMessageEvent event) {
+    public boolean isSpeakers(GroupMessageEvent event) {
         long groupId = event.getGroup().getId();
         return botControl.groupIsEnable(groupId);
     }

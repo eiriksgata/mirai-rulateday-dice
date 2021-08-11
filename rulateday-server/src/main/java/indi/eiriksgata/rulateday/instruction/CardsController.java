@@ -30,7 +30,7 @@ public class CardsController {
     public static CardsTypeListMapper cardsTypeListMapper = MyBatisUtil.getSqlSession().getMapper(CardsTypeListMapper.class);
 
     @InstructReflex(value = {".cards"})
-    public String cardsList(MessageData<Object> data) {
+    public String cardsList(MessageData<?> data) {
         List<CardsTypeList> lists = cardsTypeListMapper.selectAll();
         if (lists.size() == 0) {
             return "当前存储库没有卡组类型,可以通过指令.cardsAdd进行添加";
@@ -46,7 +46,7 @@ public class CardsController {
     }
 
     @InstructReflex(value = {".cardsAdd", ".cardsadd"}, priority = 3)
-    public String cardsAdd( MessageData<Object> data) {
+    public String cardsAdd(MessageData<?> data) {
         String[] parsingData = data.getMessage().split(" ");
         if (parsingData.length < 2) {
             return "参数类型不正确，正确格式应该是[卡组名称 卡组数据]例如:麻将 白板,红中,发字,东风,南风";
@@ -64,7 +64,7 @@ public class CardsController {
     }
 
     @InstructReflex(value = {".cardsDel", ".cardsdel"}, priority = 3)
-    public String cardsDel( MessageData<Object> data) {
+    public String cardsDel(MessageData<?> data) {
         cardsTypeListMapper.deleteByName(data.getMessage());
         MyBatisUtil.getSqlSession().commit();
         return "已删除的卡组";
@@ -72,7 +72,7 @@ public class CardsController {
 
 
     @InstructReflex(value = {".drawAdd", ".drawadd"}, priority = 3)
-    public String drawAdd( MessageData<Object> data) {
+    public String drawAdd(MessageData<?> data) {
         if (data.getMessage().equals("") || data.getMessage() == null) {
             return "请输入添加的牌组名称,可以使用.cards查看";
         }
@@ -110,7 +110,7 @@ public class CardsController {
     }
 
     @InstructReflex(value = {".drawList", ".drawlist"}, priority = 3)
-    public String drawList( MessageData<Object> data) {
+    public String drawList(MessageData<?> data) {
         final Long[] groupId = new Long[1];
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
@@ -142,7 +142,7 @@ public class CardsController {
 
 
     @InstructReflex(value = {".drawHide", ".drawhide"}, priority = 3)
-    public String drawHideOut( MessageData<Object> data) {
+    public String drawHideOut(MessageData<?> data) {
         final long[] groupId = new long[1];
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
@@ -177,7 +177,7 @@ public class CardsController {
     }
 
     @InstructReflex(value = {".draw"})
-    public String drawOut( MessageData<Object> data) {
+    public String drawOut(MessageData<?> data) {
         final long[] groupId = new long[1];
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
@@ -205,7 +205,7 @@ public class CardsController {
     }
 
     @InstructReflex(value = {".drawclear", ".drawClear"}, priority = 3)
-    public String drawClear( MessageData<Object> data) {
+    public String drawClear(MessageData<?> data) {
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
             public void group(GroupMessageEvent event) {

@@ -47,7 +47,7 @@ public class UserConversationImpl implements UserConversationService {
     }
 
 
-    public static String checkInputQuery(MessageData data) {
+    public static String checkInputQuery(MessageData<?> data) {
         //检测用户是否有对话模式记录
         UserConversation result = mapper.selectById(data.getQqID());
         if (result == null) {
@@ -60,7 +60,7 @@ public class UserConversationImpl implements UserConversationService {
         }
 
         try {
-            int number = Integer.valueOf(data.getMessage());
+            int number = Integer.parseInt(data.getMessage());
             List<QueryDataBase> queryData = new Gson().fromJson(result.getData(), new TypeToken<List<QueryDataBase>>() {
             }.getType());
             if (number >= queryData.size() || number < 0) {
@@ -69,10 +69,8 @@ public class UserConversationImpl implements UserConversationService {
             mapper.deleteById(data.getQqID());
             MyBatisUtil.getSqlSession().commit();
             if (queryData.get(number).getName().length() > 5) {
-                if (queryData.get(number).getName().substring(0, 5).equals("怪物图鉴:")) {
-                    QueryController.cachedThread.execute(() -> {
-                        new Dnd5eLibServiceImpl().sendMMImage(data.getEvent(), queryData.get(number));
-                    });
+                if (queryData.get(number).getName().startsWith("怪物图鉴:")) {
+                    QueryController.cachedThread.execute(() -> new Dnd5eLibServiceImpl().sendMMImage(data.getEvent(), queryData.get(number)));
                 }
             }
             return queryData.get(number).getDescribe();

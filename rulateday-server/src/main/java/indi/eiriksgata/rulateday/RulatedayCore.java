@@ -17,7 +17,7 @@ public class RulatedayCore extends JavaPlugin {
                         "indi.eiriksgata.rulateday-dice", // name
                         "0.0.1" // version
                 )
-                        .author("Eirksgata")
+                        .author("Eiriksgata")
                         .info("TRPG dice plugin.")
                         .build()
         );

@@ -1,10 +1,7 @@
 package indi.eiriksgata.rulateday.utlis;
 
 import indi.eiriksgata.rulateday.RulatedayCore;
-import indi.eiriksgata.rulateday.exception.ExceptionEnum;
-import indi.eiriksgata.rulateday.exception.RulatedayException;
 import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
@@ -12,7 +9,6 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import java.io.*;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.stream.Stream;
 
 public class MyBatisUtil {
 

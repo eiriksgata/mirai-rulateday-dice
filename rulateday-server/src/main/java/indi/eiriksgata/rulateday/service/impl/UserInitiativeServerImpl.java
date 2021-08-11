@@ -41,12 +41,10 @@ public class UserInitiativeServerImpl {
         userInitiativeData.setUserId(userId);
         userInitiativeData.setValue(value);
         try {
-            if (result == null) {
-                mapper.insert(userInitiativeData);
-            } else {
+            if (result != null) {
                 mapper.deleteById(result.getId());
-                mapper.insert(userInitiativeData);
             }
+            mapper.insert(userInitiativeData);
         } catch (PersistenceException e) {
             e.printStackTrace();
         }
