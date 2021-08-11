@@ -19,10 +19,6 @@
             <url>https://www.jitpack.io</url>
         </repository>
 
-        <repository>
-            <id>jcenter</id>
-            <url>https://jcenter.bintray.com/</url>
-        </repository>
     </repositories>
 
     <properties>
@@ -49,9 +45,6 @@
             <artifactId>rulateday-dao</artifactId>
             <version>0.3.9-SNAPSHOT</version>
         </dependency>
-
-
-
 
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -215,7 +208,7 @@
                 <dependency>
                     <groupId>indi.eiriksgata</groupId>
                     <artifactId>trpg-java-dice</artifactId>
-                    <version>1.1.9-SNAPSHOT</version>
+                    <version>1.2.1-SNAPSHOT</version>
                 </dependency>
 
                 <dependency>
@@ -250,7 +243,7 @@
                 <dependency>
                     <groupId>indi.eiriksgata</groupId>
                     <artifactId>trpg-java-dice</artifactId>
-                    <version>1.1.9-SNAPSHOT</version>
+                    <version>1.2.1-SNAPSHOT</version>
                 </dependency>
 
                 <dependency>
@@ -279,7 +272,7 @@
                 <dependency>
                     <groupId>com.github.Eiriksgata</groupId>
                     <artifactId>trpg-java-dice</artifactId>
-                    <version>1.1.9</version>
+                    <version>1.2.1</version>
                 </dependency>
 
                 <dependency>
