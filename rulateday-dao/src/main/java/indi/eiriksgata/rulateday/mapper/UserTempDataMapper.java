@@ -5,10 +5,10 @@ import indi.eiriksgata.rulateday.pojo.UserTempData;
 import org.apache.ibatis.annotations.*;
 
 /**
- * @author: create by Keith
- * @version: v1.0
- * @description: indi.eiriksgata.rulateday.dao
- * @date:2020/10/20
+ * author: create by Keith
+ * version: v1.0
+ * description: indi.eiriksgata.rulateday.dao
+ * date:2020/10/20
  **/
 
 @Mapper

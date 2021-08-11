@@ -4,10 +4,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 /**
- * @author: create by Keith
- * @version: v1.0
- * @description: indi.eiriksgata.trpgservice.utils
- * @date:2020/5/6
+ * author: create by Keith
+ * version: v1.0
+ * description: indi.eiriksgata.trpgservice.utils
+ * date:2020/5/6
  **/
 public class ExceptionUtils {
 

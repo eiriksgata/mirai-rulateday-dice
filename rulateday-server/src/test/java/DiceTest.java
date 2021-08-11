@@ -11,10 +11,10 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 /**
- * @author: create by Keith
- * @version: v1.0
- * @description: PACKAGE_NAME
- * @date:2020/10/12
+ * author: create by Keith
+ * version: v1.0
+ * description: PACKAGE_NAME
+ * date:2020/10/12
  **/
 public class DiceTest {
 
