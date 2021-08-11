@@ -1,6 +1,5 @@
 package indi.eiriksgata.rulateday.instruction;
 
-import indi.eiriksgata.dice.callback.RollRandomCallback;
 import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.injection.InstructService;
 import indi.eiriksgata.dice.vo.MessageData;
@@ -8,6 +7,7 @@ import indi.eiriksgata.rulateday.event.EventAdapter;
 import indi.eiriksgata.rulateday.event.EventUtils;
 import indi.eiriksgata.rulateday.service.impl.UserInitiativeServerImpl;
 import net.mamoe.mirai.event.events.*;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Resource;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -26,8 +26,8 @@ public class InitiativeController {
     public static UserInitiativeServerImpl initiativeServer = new UserInitiativeServerImpl();
 
     @InstructReflex(value = {".atklist", "atkList"}, priority = 2)
-    public String getAtkList(MessageData data) {
-        final String resultText[] = {""};
+    public String getAtkList(@NotNull MessageData<Object> data) {
+        final String[] resultText = {""};
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
             public void group(GroupMessageEvent event) {
@@ -46,7 +46,7 @@ public class InitiativeController {
 
 
     @InstructReflex(value = {".atkdel", ".atkDel", ".Atkdel", ".AtlDel"}, priority = 2)
-    public String delAtk(MessageData data) {
+    public String delAtk(@NotNull MessageData<Object> data) {
         String tempName = null;
         String resultText = "已删除你的先攻骰";
         if (!data.getMessage().equals("") && data.getMessage() != null) {
@@ -59,6 +59,9 @@ public class InitiativeController {
             public void group(GroupMessageEvent event) {
                 String groupId = "" + event.getGroup().getId();
                 String name = event.getSender().getNameCard();
+                if (name.equals("")) {
+                    name = event.getSender().getNick();
+                }
                 if (finalTempName != null) {
                     name = finalTempName;
                 }
@@ -81,7 +84,7 @@ public class InitiativeController {
 
 
     @InstructReflex(value = {".atkClear", ".clearAtk", ".atkclear", "AtkClear"}, priority = 2)
-    public String clearAtkList(MessageData data) {
+    public String clearAtkList(@NotNull MessageData<Object> data) {
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
             public void group(GroupMessageEvent event) {
@@ -97,7 +100,7 @@ public class InitiativeController {
     }
 
     @InstructReflex(value = {".atk", "。atk"})
-    public String generateInitiativeDice(MessageData data) {
+    public String generateInitiativeDice(@NotNull MessageData<Object> data) {
         String name = null;
         String[] tempList;
         String diceFace = "d";
@@ -130,39 +133,36 @@ public class InitiativeController {
             diceFace = tempList[0];
         }
         String finalName = name;
-        RollController.rollBasics.rollRandom(diceFace, data.getQqID(), new RollRandomCallback() {
-            @Override
-            public void getFormulaResult(String i, String s) {
-                //处理可能会出现小数等其他情况
-                int numberValue;
-                try {
-                    numberValue = Integer.valueOf(i);
-                    resultText[0] += s;
-                } catch (NumberFormatException e) {
-                    resultText[0] = "先攻数值生成不符合要求，请符合整数型";
-                    return;
+        RollController.rollBasics.rollRandom(diceFace, data.getQqID(), (i, s) -> {
+            //处理可能会出现小数等其他情况
+            int numberValue;
+            try {
+                numberValue = Integer.parseInt(i);
+                resultText[0] += s;
+            } catch (NumberFormatException e) {
+                resultText[0] = "先攻数值生成不符合要求，请符合整数型";
+                return;
+            }
+
+            EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
+                @Override
+                public void group(GroupMessageEvent event) {
+                    String groupId = "" + event.getGroup().getId();
+                    String name1 = event.getSender().getNameCard();
+                    if (finalName != null) name1 = finalName;
+                    initiativeServer.addInitiativeDice(
+                            groupId, event.getSender().getId(), name1, numberValue);
                 }
 
-                EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
-                    @Override
-                    public void group(GroupMessageEvent event) {
-                        String groupId = "" + event.getGroup().getId();
-                        String name = event.getSender().getNameCard();
-                        if (finalName != null) name = finalName;
-                        initiativeServer.addInitiativeDice(
-                                groupId, event.getSender().getId(), name, numberValue);
-                    }
-
-                    @Override
-                    public void friend(FriendMessageEvent event) {
-                        String groupId = "-" + event.getFriend().getId();
-                        String name = event.getSender().getNick();
-                        if (finalName != null) name = finalName;
-                        initiativeServer.addInitiativeDice(
-                                groupId, event.getSender().getId(), name, numberValue);
-                    }
-                });
-            }
+                @Override
+                public void friend(FriendMessageEvent event) {
+                    String groupId = "-" + event.getFriend().getId();
+                    String name1 = event.getSender().getNick();
+                    if (finalName != null) name1 = finalName;
+                    initiativeServer.addInitiativeDice(
+                            groupId, event.getSender().getId(), name1, numberValue);
+                }
+            });
         });
         return resultText[0];
     }
