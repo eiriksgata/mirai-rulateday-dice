@@ -26,6 +26,7 @@ import net.mamoe.mirai.event.events.GroupTempMessageEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -328,6 +329,37 @@ public class RollController {
         String updateData = findAttribute.replaceAll(attribute, changeName + changeValue);
         userTempDataService.updateUserAttribute(data.getQqID(), updateData);
         return "您的属性已更新:" + attribute + " => " + changeName + changeValue;
+    }
+
+    @InstructReflex(value = {".ww", ".dp", "。ww"})
+    public static String dicePoolGen(MessageData<?> data) {
+        int diceNumber = 1;
+        int dpCheck = 10;
+        StringBuilder resultText = new StringBuilder();
+        int count = 0;
+
+        if (!data.getMessage().equals("") && data.getMessage() != null) {
+            List<String> parametersList = RegularExpressionUtils.getMatchers("[0-9]+", data.getMessage());
+            if (parametersList.size() <= 0) {
+                return CustomText.getText("dice.pool.parameter.format.error");
+            }
+            diceNumber = Integer.parseInt(parametersList.get(0));
+            if (diceNumber < 0 || diceNumber > 99) {
+                return CustomText.getText("dice.pool.parameter.range.error");
+            }
+            if (parametersList.size() > 1) {
+                dpCheck = Integer.parseInt(parametersList.get(1));
+            } else {
+                data.setMessage(data.getMessage() + "a10");
+            }
+            if (parametersList.size() > 2) {
+                for (int i = 2; i < parametersList.size(); i++) {
+                    count += Integer.parseInt(parametersList.get(i));
+                }
+            }
+        }
+        rollBasics.dicePoolCount(diceNumber, resultText, count, dpCheck, count);
+        return CustomText.getText("dice.pool.result", data.getMessage(), resultText);
     }
 
 
