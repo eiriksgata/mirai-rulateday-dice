@@ -2,20 +2,15 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+currently being supported with security updates.(当前正在支持安全更新)
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| 0.3.9   | :white_check_mark: |
+| < 0.3.9   | :x:                |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+当你发现一个Bug时，可以在本项目中的[issues](https://github.com/Eiriksgata/mirai-rulateday-dice/issues)中提出。新建一个issues [Bug report](https://github.com/Eiriksgata/mirai-rulateday-dice/issues/new/choose) 参考Bug report模板提交格式。
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+当你有新功能或者是建设性意见提出时，请使用[Feature request](https://github.com/Eiriksgata/mirai-rulateday-dice/issues/new?assignees=&labels=&template=feature_request.md&title=)
