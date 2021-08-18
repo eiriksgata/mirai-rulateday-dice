@@ -7,7 +7,7 @@
     <groupId>io.github.eiriksgata</groupId>
     <artifactId>mirai-rulateday-dice</artifactId>
     <packaging>pom</packaging>
-    <version>0.3.9-SNAPSHOT</version>
+    <version>0.3.10-SNAPSHOT</version>
 
     <modules>
         <module>rulateday-dao</module>

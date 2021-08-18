@@ -5,7 +5,7 @@
     <parent>
         <artifactId>mirai-rulateday-dice</artifactId>
         <groupId>io.github.eiriksgata</groupId>
-        <version>0.3.9-SNAPSHOT</version>
+        <version>0.3.10-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>io.github.eiriksgata</groupId>
             <artifactId>rulateday-dao</artifactId>
-            <version>0.3.9-SNAPSHOT</version>
+            <version>0.3.10-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -113,6 +113,7 @@
 
 
     <build>
+
 
         <resources>
             <!-- 加入数据库文件 -->
@@ -208,7 +209,7 @@
                 <dependency>
                     <groupId>io.github.eiriksgata</groupId>
                     <artifactId>trpg-java-dice</artifactId>
-                    <version>1.2.1-SNAPSHOT</version>
+                    <version>1.2.2-SNAPSHOT</version>
                 </dependency>
 
                 <dependency>
@@ -231,6 +232,10 @@
 
             </dependencies>
 
+            <build>
+                <finalName>rulateday-server-dev-${project.version}</finalName>
+            </build>
+
 
         </profile>
 
@@ -243,7 +248,7 @@
                 <dependency>
                     <groupId>io.github.eiriksgata</groupId>
                     <artifactId>trpg-java-dice</artifactId>
-                    <version>1.2.1-SNAPSHOT</version>
+                    <version>1.2.2-SNAPSHOT</version>
                 </dependency>
 
                 <dependency>
@@ -258,6 +263,10 @@
                     <version>2.7-M2</version>
                 </dependency>
             </dependencies>
+
+            <build>
+                <finalName>rulateday-server-uat-${project.version}</finalName>
+            </build>
         </profile>
 
         <profile>
@@ -272,7 +281,7 @@
                 <dependency>
                     <groupId>com.github.Eiriksgata</groupId>
                     <artifactId>trpg-java-dice</artifactId>
-                    <version>1.2.1</version>
+                    <version>1.2.2</version>
                 </dependency>
 
                 <dependency>
@@ -289,6 +298,10 @@
                     <scope>provided</scope>
                 </dependency>
             </dependencies>
+
+            <build>
+                <finalName>rulateday-server-pro-${project.version}</finalName>
+            </build>
         </profile>
 
     </profiles>
