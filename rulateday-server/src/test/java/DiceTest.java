@@ -3,12 +3,8 @@ import indi.eiriksgata.dice.exception.DiceInstructException;
 import indi.eiriksgata.dice.message.handle.InstructHandle;
 import indi.eiriksgata.dice.operation.impl.SanCheckImpl;
 import indi.eiriksgata.dice.vo.MessageData;
-import indi.eiriksgata.rulateday.RulatedayCore;
 import indi.eiriksgata.rulateday.instruction.RollController;
 import indi.eiriksgata.rulateday.utlis.LoadDatabaseFile;
-import net.mamoe.mirai.console.MiraiConsoleImplementation;
-import net.mamoe.mirai.console.plugin.PluginManager;
-import net.mamoe.mirai.console.terminal.MiraiConsoleImplementationTerminal;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
@@ -22,13 +18,6 @@ import java.util.ResourceBundle;
  * date:2020/10/12
  **/
 public class DiceTest {
-
-    static {
-        MiraiConsoleImplementation.Companion.start(new MiraiConsoleImplementationTerminal());
-        PluginManager.INSTANCE.loadPlugin(RulatedayCore.INSTANCE);
-        PluginManager.INSTANCE.enablePlugin(RulatedayCore.INSTANCE);
-
-    }
 
 
     @Test
