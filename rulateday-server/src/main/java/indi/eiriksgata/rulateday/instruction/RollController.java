@@ -336,30 +336,41 @@ public class RollController {
         int diceNumber = 1;
         int dpCheck = 10;
         StringBuilder resultText = new StringBuilder();
+        StringBuilder returnText = new StringBuilder();
         int count = 0;
-
         if (!data.getMessage().equals("") && data.getMessage() != null) {
+            String regularResult = RegularExpressionUtils.getMatcher("[0-9]+a[0-9]+", data.getMessage());
             List<String> parametersList = RegularExpressionUtils.getMatchers("[0-9]+", data.getMessage());
             if (parametersList.size() <= 0) {
                 return CustomText.getText("dice.pool.parameter.format.error");
             }
             diceNumber = Integer.parseInt(parametersList.get(0));
+            int offset;
+
+            if (regularResult != null) {
+                String[] slt = regularResult.split("a");
+                dpCheck = Integer.parseInt(slt[1]);
+                offset = 2;
+                returnText.append(slt[0]).append("a").append(slt[1]);
+            } else {
+                offset = 1;
+                returnText.append(diceNumber).append("a10");
+            }
+
+            if (parametersList.size() > 1) {
+                for (int i = offset; i < parametersList.size(); i++) {
+                    count += Integer.parseInt(parametersList.get(i));
+                    returnText.append("+").append(Integer.parseInt(parametersList.get(i)));
+                }
+            }
+
             if (diceNumber < 0 || diceNumber > 99) {
                 return CustomText.getText("dice.pool.parameter.range.error");
             }
-            if (parametersList.size() > 1) {
-                dpCheck = Integer.parseInt(parametersList.get(1));
-            } else {
-                data.setMessage(data.getMessage() + "a10");
-            }
-            if (parametersList.size() > 2) {
-                for (int i = 2; i < parametersList.size(); i++) {
-                    count += Integer.parseInt(parametersList.get(i));
-                }
-            }
+
         }
         rollBasics.dicePoolCount(diceNumber, resultText, count, dpCheck, count);
-        return CustomText.getText("dice.pool.result", data.getMessage(), resultText);
+        return CustomText.getText("dice.pool.result", returnText, resultText);
     }
 
 
