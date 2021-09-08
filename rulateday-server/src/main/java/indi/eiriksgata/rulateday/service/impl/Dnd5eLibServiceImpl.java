@@ -48,6 +48,9 @@ public class Dnd5eLibServiceImpl implements Dnd5eLibService {
         result.addAll(mapper.selectRuleDmg(name));
         result.addAll(mapper.selectMM(name));
         result.addAll(mapper.selectBackgroundPhb(name));
+        result.addAll(mapper.selectEgtw(name));
+        result.addAll(mapper.selectBaseModule(name));
+
         return result;
     }
 
