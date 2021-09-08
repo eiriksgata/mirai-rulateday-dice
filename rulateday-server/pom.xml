@@ -134,7 +134,7 @@
             <!-- 加入数据库文件 -->
             <resource>
                 <directory>src/main/resources/template/</directory>
-                <!--<targetPath>rulateday.db</targetPath>-->
+                <!--<targetPath>rulateday0.3.6.db</targetPath>-->
             </resource>
 
             <!-- 加入不同阶段的配置 -->
