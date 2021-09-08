@@ -89,5 +89,10 @@ public interface Dnd5ePhbDataMapper {
     @Select("select * from dnd5e_creature_phb_dmg where name like #{name}")
     List<QueryDataBase> selectCreaturePhbDmg(@Param("name") String name);
 
+    @Select("select * from dnd5e_egtw where name like #{name}")
+    List<QueryDataBase> selectEgtw(@Param("name") String name);
 
+    @Select("select * from dnd5e_base_module where name like #{name}")
+    List<QueryDataBase> selectBaseModule(@Param("name") String name);
+    
 }

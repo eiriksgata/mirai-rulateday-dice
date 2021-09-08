@@ -54,6 +54,10 @@ public interface Dnd5ePhbTestBaseMapper {
     @Insert("insert into dnd5e_creature_phb_dmg (id,name,describe) values (#{id},#{name},#{describe})")
     void insertCreaturePhbDmg(QueryDataBase dataBase);
 
+    @Insert("insert into dnd5e_egtw (id,name,describe) values (#{id},#{name},#{describe})")
+    void insertEgtw(QueryDataBase dataBase);
 
+    @Insert("insert into dnd5e_base_module (id,name,describe) values (#{id},#{name},#{describe})")
+    void insertBaseModule(QueryDataBase dataBase);
 
 }
