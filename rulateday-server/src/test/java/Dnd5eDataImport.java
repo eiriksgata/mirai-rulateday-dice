@@ -7,6 +7,8 @@ import indi.eiriksgata.rulateday.mapper.Dnd5ePhbTestBaseMapper;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 import indi.eiriksgata.rulateday.utlis.FileUtil;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -19,6 +21,7 @@ import java.util.Objects;
  * description: PACKAGE_NAME
  * date: 2020/11/26
  **/
+@Slf4j
 public class Dnd5eDataImport {
 
 
@@ -69,7 +72,6 @@ public class Dnd5eDataImport {
             MyBatisUtil.getSqlSession().commit();
         }
     }
-
 
     @Test
     void importRaces() {
@@ -208,23 +210,44 @@ public class Dnd5eDataImport {
     @Test
     void importMm() {
         Dnd5ePhbTestBaseMapper mapper = MyBatisUtil.getSqlSession().getMapper(Dnd5ePhbTestBaseMapper.class);
-        String[] importFileName = {
-                "query//5E_08_mm_by_hze_pear_query.json"
-        };
+        String importFileName =
+                "D:\\workspace\\mirai-rulateday-dice\\rulateday-server\\src\\main\\resources\\query\\5E_08_mm_by_hze_pear_query.json";
         //使用fast json 读取json文件
-        for (String file : importFileName) {
-            String path = DBMybatisTest.class.getClassLoader().getResource(file).getPath();
-            String s = FileUtil.readJsonFile(path);
-            JSONObject jsonObject = JSON.parseObject(s);
-            jsonObject.forEach((key, value) -> {
-                QueryDataBase temp = new QueryDataBase();
-                temp.setName(key);
-                temp.setDescribe((String) value);
+        String s = FileUtil.readJsonFile(importFileName);
+        JSONObject jsonObject = JSON.parseObject(s);
+        jsonObject.forEach((key, value) -> {
+            QueryDataBase temp = new QueryDataBase();
+            temp.setName(key);
+            temp.setDescribe((String) value);
+            try {
                 mapper.insertMM(temp);
+            } catch (PersistenceException e) {
+                log.error("import data fail:{}", temp);
+            }
+        });
+        MyBatisUtil.getSqlSession().commit();
+    }
 
-            });
-            MyBatisUtil.getSqlSession().commit();
-        }
+    @Test
+    void importCreatureDmgMm() {
+        Dnd5ePhbTestBaseMapper mapper = MyBatisUtil.getSqlSession().getMapper(Dnd5ePhbTestBaseMapper.class);
+        String importFileName =
+                "D:\\workspace\\mirai-rulateday-dice\\rulateday-server\\src\\main\\resources\\query\\5e_09_creature_phb_dmg_by_hze.json";
+        //使用fast json 读取json文件
+        String s = FileUtil.readJsonFile(importFileName);
+        JSONObject jsonObject = JSON.parseObject(s);
+        jsonObject.forEach((key, value) -> {
+            QueryDataBase temp = new QueryDataBase();
+            temp.setName(key);
+            temp.setDescribe((String) value);
+            try {
+                mapper.insertMM(temp);
+            } catch (PersistenceException e) {
+                log.error("import data fail:{}", temp);
+                e.printStackTrace();
+            }
+        });
+        MyBatisUtil.getSqlSession().commit();
     }
 
 
