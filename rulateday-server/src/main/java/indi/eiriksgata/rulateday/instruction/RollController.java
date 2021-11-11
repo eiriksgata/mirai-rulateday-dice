@@ -333,43 +333,53 @@ public class RollController {
 
     @InstructReflex(value = {".ww", ".dp", "。ww"})
     public static String dicePoolGen(MessageData<?> data) {
+        data.setMessage(data.getMessage().toLowerCase());
+        data.setMessage(data.getMessage().trim());
         int diceNumber = 1;
-        int dpCheck = 10;
+        int addDiceCheck = 10;
         StringBuilder resultText = new StringBuilder();
         StringBuilder returnText = new StringBuilder();
         int count = 0;
+        int successDiceCheck = 8;
+        int diceFace = 10;
         if (!data.getMessage().equals("") && data.getMessage() != null) {
-            String regularResult = RegularExpressionUtils.getMatcher("[0-9]+a[0-9]+", data.getMessage());
-            List<String> parametersList = RegularExpressionUtils.getMatchers("[0-9]+", data.getMessage());
+            List<String> parametersList = RegularExpressionUtils.getMatchers("[0-9]+|a[0-9]+|k[0-9]+|m[0-9]+|\\+[0-9]+|b[0-9]+", data.getMessage());
             if (parametersList.size() <= 0) {
                 return CustomText.getText("dice.pool.parameter.format.error");
             }
-            diceNumber = Integer.parseInt(parametersList.get(0));
-            int offset;
-
-            if (regularResult != null) {
-                String[] slt = regularResult.split("a");
-                dpCheck = Integer.parseInt(slt[1]);
-                offset = 2;
-                returnText.append(slt[0]).append("a").append(slt[1]);
-            } else {
-                offset = 1;
-                returnText.append(diceNumber).append("a10");
+            try {
+                diceNumber = Integer.parseInt(parametersList.get(0));
+                if (diceNumber < 0 || diceNumber > 99) {
+                    return CustomText.getText("dice.pool.parameter.range.error");
+                }
+                parametersList.remove(0);
+            } catch (Exception e) {
+                return CustomText.getText("dice.pool.parameter.format.error");
             }
-
-            if (parametersList.size() > 1) {
-                for (int i = offset; i < parametersList.size(); i++) {
-                    count += Integer.parseInt(parametersList.get(i));
-                    returnText.append("+").append(Integer.parseInt(parametersList.get(i)));
+            for (String parameter : parametersList) {
+                switch (parameter.charAt(0)) {
+                    case 'a':
+                        addDiceCheck = Integer.parseInt(parameter.substring(1));
+                        break;
+                    case 'k':
+                        successDiceCheck = Integer.parseInt(parameter.substring(1));
+                        break;
+                    case 'm':
+                        diceFace = Integer.parseInt(parameter.substring(1));
+                        break;
+                    case '+':
+                    case 'b':
+                        count += Integer.parseInt(parameter.substring(1));
+                        break;
                 }
             }
-
-            if (diceNumber < 0 || diceNumber > 99) {
-                return CustomText.getText("dice.pool.parameter.range.error");
-            }
-
+            returnText.append(diceNumber);
+            returnText.append("a").append(addDiceCheck);
+            returnText.append("k").append(successDiceCheck);
+            returnText.append("m").append(diceFace);
+            returnText.append("b").append(count);
         }
-        rollBasics.dicePoolCount(diceNumber, resultText, count, dpCheck, count);
+        rollBasics.dicePoolCount(diceNumber, resultText, count, addDiceCheck, count, diceFace, successDiceCheck);
         return CustomText.getText("dice.pool.result", returnText, resultText);
     }
 
