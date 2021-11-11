@@ -44,7 +44,7 @@ public class DiceTest {
     void instructTest() {
         MessageData<?> messageData = new MessageData<>();
         messageData.setQqID(123456789L);
-        messageData.setMessage(".ww");
+        messageData.setMessage(".ww10");
         String result = RollController.dicePoolGen(messageData);
         System.out.println(result);
     }
@@ -53,7 +53,23 @@ public class DiceTest {
     @Test
     void rollTest() {
 
+        MessageData<?> messageData = new MessageData<>();
+        messageData.setQqID(123456789L);
+        InstructHandle instruct = new InstructHandle();
+        messageData.setMessage(".rd");
+        try {
+            System.out.println(instruct.instructCheck(messageData));
+        } catch (DiceInstructException e) {
+            System.out.println(e.getErrMsg());
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException ex) {
+            System.out.println("call function exception");
+            ex.printStackTrace();
+        }
     }
+
+
 
 
     @Test
