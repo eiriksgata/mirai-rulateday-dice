@@ -14,7 +14,6 @@ import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.ListeningStatus;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.*;
-import net.mamoe.mirai.message.data.At;
 import org.apache.ibatis.reflection.ExceptionUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -153,8 +152,11 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             return;
         }
         if (result == null) return;
-
-        event.getGroup().sendMessage(new At(event.getSender().getId()).plus("\n" + result));
+        String senderName = event.getSender().getNameCard();
+        if (senderName.trim().equals("")) {
+            senderName = event.getSender().getNick();
+        }
+        event.getGroup().sendMessage("[" + senderName + "]" + result);
     }
 
 
