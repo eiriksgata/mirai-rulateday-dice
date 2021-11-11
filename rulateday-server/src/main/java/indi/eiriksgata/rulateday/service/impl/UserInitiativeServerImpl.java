@@ -22,7 +22,7 @@ public class UserInitiativeServerImpl {
     public boolean diceLimit(String groupId) {
         try {
             List<UserInitiativeData> initiativeDataList = mapper.selectByGroupId(groupId);
-            return initiativeDataList.size() >= 20;
+            return initiativeDataList.size() > 20;
         } catch (PersistenceException e) {
             try {
                 mapper.createTable();
