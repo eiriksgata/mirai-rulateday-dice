@@ -342,43 +342,44 @@ public class RollController {
         int count = 0;
         int successDiceCheck = 8;
         int diceFace = 10;
-        if (!data.getMessage().equals("") && data.getMessage() != null) {
-            List<String> parametersList = RegularExpressionUtils.getMatchers("[0-9]+|a[0-9]+|k[0-9]+|m[0-9]+|\\+[0-9]+|b[0-9]+", data.getMessage());
-            if (parametersList.size() <= 0) {
-                return CustomText.getText("dice.pool.parameter.format.error");
-            }
-            try {
-                diceNumber = Integer.parseInt(parametersList.get(0));
-                if (diceNumber < 0 || diceNumber > 99) {
-                    return CustomText.getText("dice.pool.parameter.range.error");
-                }
-                parametersList.remove(0);
-            } catch (Exception e) {
-                return CustomText.getText("dice.pool.parameter.format.error");
-            }
-            for (String parameter : parametersList) {
-                switch (parameter.charAt(0)) {
-                    case 'a':
-                        addDiceCheck = Integer.parseInt(parameter.substring(1));
-                        break;
-                    case 'k':
-                        successDiceCheck = Integer.parseInt(parameter.substring(1));
-                        break;
-                    case 'm':
-                        diceFace = Integer.parseInt(parameter.substring(1));
-                        break;
-                    case '+':
-                    case 'b':
-                        count += Integer.parseInt(parameter.substring(1));
-                        break;
-                }
-            }
-            returnText.append(diceNumber);
-            returnText.append("a").append(addDiceCheck);
-            returnText.append("k").append(successDiceCheck);
-            returnText.append("m").append(diceFace);
-            returnText.append("b").append(count);
+        if (data.getMessage().equals("") || data.getMessage() == null) {
+            return CustomText.getText("dice.pool.parameter.format.error");
         }
+        List<String> parametersList = RegularExpressionUtils.getMatchers("[0-9]+|a[0-9]+|k[0-9]+|m[0-9]+|\\+[0-9]+|b[0-9]+", data.getMessage());
+        if (parametersList.size() <= 0) {
+            return CustomText.getText("dice.pool.parameter.format.error");
+        }
+        try {
+            diceNumber = Integer.parseInt(parametersList.get(0));
+            if (diceNumber < 0 || diceNumber > 99) {
+                return CustomText.getText("dice.pool.parameter.range.error");
+            }
+            parametersList.remove(0);
+        } catch (Exception e) {
+            return CustomText.getText("dice.pool.parameter.format.error");
+        }
+        for (String parameter : parametersList) {
+            switch (parameter.charAt(0)) {
+                case 'a':
+                    addDiceCheck = Integer.parseInt(parameter.substring(1));
+                    break;
+                case 'k':
+                    successDiceCheck = Integer.parseInt(parameter.substring(1));
+                    break;
+                case 'm':
+                    diceFace = Integer.parseInt(parameter.substring(1));
+                    break;
+                case '+':
+                case 'b':
+                    count += Integer.parseInt(parameter.substring(1));
+                    break;
+            }
+        }
+        returnText.append(diceNumber);
+        returnText.append("a").append(addDiceCheck);
+        returnText.append("k").append(successDiceCheck);
+        returnText.append("m").append(diceFace);
+        returnText.append("b").append(count);
         rollBasics.dicePoolCount(diceNumber, resultText, count, addDiceCheck, count, diceFace, successDiceCheck);
         return CustomText.getText("dice.pool.result", returnText, resultText);
     }
