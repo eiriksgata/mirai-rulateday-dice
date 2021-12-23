@@ -4,7 +4,7 @@ import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
-import java.util.Random;
+import java.security.SecureRandom;
 
 /**
  * author: create by Keith
@@ -77,7 +77,7 @@ public class NameTextToDb {
             InputStream fileInputStream = new FileInputStream(file);
             InputStreamReader reader = new InputStreamReader(fileInputStream);
             BufferedReader bufferedReader = new BufferedReader(reader);
-            Random random = new Random();
+            SecureRandom random = new SecureRandom();
             while (true) {
                 try {
                     String lineText = bufferedReader.readLine();

@@ -4,7 +4,8 @@ import indi.eiriksgata.rulateday.mapper.NamesCorpusMapper;
 import indi.eiriksgata.rulateday.service.HumanNameService;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
 
-import java.util.Random;
+import java.security.SecureRandom;
+
 
 /**
  * author: create by Keith
@@ -20,7 +21,7 @@ public class HumanNameServiceImpl implements HumanNameService {
         NamesCorpusMapper mapper = MyBatisUtil.getSqlSession().getMapper(NamesCorpusMapper.class);
         StringBuilder resultNames = new StringBuilder();
         resultNames.append("随机名字:");
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
         for (int count = 0; count < number; count++) {
             int randomValue = random.nextInt(3);
             switch (randomValue) {

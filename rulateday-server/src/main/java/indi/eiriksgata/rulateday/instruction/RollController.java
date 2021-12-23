@@ -26,8 +26,8 @@ import net.mamoe.mirai.event.events.GroupTempMessageEvent;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
+import java.security.SecureRandom;
 import java.util.List;
-import java.util.Random;
 
 /**
  * author: create by Keith
@@ -282,9 +282,9 @@ public class RollController {
 
             int checkNumber = Integer.parseInt(tempData.substring(checkAttribute.length()));
 
-            int randomNumber = new Random().nextInt(100);
+            int randomNumber = new SecureRandom().nextInt(100);
             if (randomNumber > checkNumber) {
-                int addValue = new Random().nextInt(10);
+                int addValue = new SecureRandom().nextInt(10);
                 int count = checkNumber + addValue;
                 String updateAttribute = userAttribute.replaceAll(tempData, checkAttribute + count);
                 userTempDataService.updateUserAttribute(data.getQqID(), updateAttribute);
@@ -294,10 +294,10 @@ public class RollController {
             return "D100=" + randomNumber + "/" + checkNumber + " [" + checkAttribute + "] 成长失败!";
         }
 
-        int randomNumber = new Random().nextInt(100);
+        int randomNumber = new SecureRandom().nextInt(100);
         int checkNumber = Integer.parseInt(RegularExpressionUtils.getMatcher("[0-9]+", checkAttribute));
         if (randomNumber > checkNumber) {
-            int addValue = new Random().nextInt(10);
+            int addValue = new SecureRandom().nextInt(10);
             int count = addValue + checkNumber;
             return "D100=" + randomNumber + "/" + checkNumber + " [" + checkAttribute + "] 成长成功! " +
                     "你当前的[" + checkAttribute + "]为D10=" + addValue + "+" + checkNumber + "=" + count;
