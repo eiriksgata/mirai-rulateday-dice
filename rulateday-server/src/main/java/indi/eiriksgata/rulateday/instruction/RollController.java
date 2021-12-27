@@ -345,13 +345,24 @@ public class RollController {
         if (data.getMessage().equals("") || data.getMessage() == null) {
             return CustomText.getText("dice.pool.parameter.format.error");
         }
+        int repeat = 1;
+        int index = data.getMessage().indexOf("#");
+        if (index != -1) {
+            try {
+                repeat = Integer.parseInt(data.getMessage().substring(0, index));
+            } catch (Exception e) {
+                return CustomText.getText("dice.pool.parameter.format.error");
+            }
+        }
+
+
         List<String> parametersList = RegularExpressionUtils.getMatchers("[0-9]+|a[0-9]+|k[0-9]+|m[0-9]+|\\+[0-9]+|b[0-9]+", data.getMessage());
         if (parametersList.size() <= 0) {
             return CustomText.getText("dice.pool.parameter.format.error");
         }
         try {
             diceNumber = Integer.parseInt(parametersList.get(0));
-            if (diceNumber < 0 || diceNumber > 99) {
+            if (diceNumber < 0 || diceNumber > 300) {
                 return CustomText.getText("dice.pool.parameter.range.error");
             }
             parametersList.remove(0);
@@ -380,6 +391,35 @@ public class RollController {
         returnText.append("k").append(successDiceCheck);
         returnText.append("m").append(diceFace);
         returnText.append("b").append(count);
+        for (int i = 1; i < repeat; i++) {
+            rollBasics.dicePoolCount(diceNumber, resultText, count, addDiceCheck, count, diceFace, successDiceCheck);
+            EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
+                @Override
+                public void group(GroupMessageEvent event) {
+                    String senderName = event.getSender().getNameCard();
+                    if (senderName.trim().equals("")) {
+                        senderName = event.getSender().getNick();
+                    }
+                    event.getGroup().sendMessage(
+                            "[" + senderName + "]" +
+                                    CustomText.getText("dice.pool.result", returnText, resultText)
+                    );
+                }
+
+                @Override
+                public void friend(FriendMessageEvent event) {
+                    event.getFriend().sendMessage(
+                            CustomText.getText("dice.pool.result", returnText, resultText));
+                }
+
+                @Override
+                public void groupTemp(GroupTempMessageEvent event) {
+                    event.getGroup().sendMessage(
+                            CustomText.getText("dice.pool.result", returnText, resultText));
+                }
+            });
+            resultText.delete(0, resultText.length());
+        }
         rollBasics.dicePoolCount(diceNumber, resultText, count, addDiceCheck, count, diceFace, successDiceCheck);
         return CustomText.getText("dice.pool.result", returnText, resultText);
     }
