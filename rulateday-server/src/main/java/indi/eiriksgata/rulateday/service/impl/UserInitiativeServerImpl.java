@@ -22,7 +22,7 @@ public class UserInitiativeServerImpl {
     public boolean diceLimit(String groupId) {
         try {
             List<UserInitiativeData> initiativeDataList = mapper.selectByGroupId(groupId);
-            return initiativeDataList.size() > 20;
+            return initiativeDataList.size() > 30;
         } catch (PersistenceException e) {
             try {
                 mapper.createTable();
@@ -64,7 +64,7 @@ public class UserInitiativeServerImpl {
     public String showInitiativeList(String groupId) {
         List<UserInitiativeData> initiativeDataList = mapper.selectByGroupId(groupId);
         if (initiativeDataList.size() == 0) {
-            return CustomText.getText("dice.initiative.null");
+            return CustomText.getText("initiative.null");
         }
         if (initiativeDataList.size() == 1) {
             return CustomText.getText(
@@ -82,7 +82,7 @@ public class UserInitiativeServerImpl {
                     .append(initiativeDataList.get(i).getValue())
                     .append("]");
         }
-        return CustomText.getText("dice.initiative.show", resultText.toString());
+        return CustomText.getText("initiative.show", resultText.toString());
     }
 
     private void initiativeSort(List<UserInitiativeData> list) {

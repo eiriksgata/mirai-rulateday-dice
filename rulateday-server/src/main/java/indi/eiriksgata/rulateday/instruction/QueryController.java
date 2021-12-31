@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.injection.InstructService;
+import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.event.EventAdapter;
 import indi.eiriksgata.rulateday.event.EventUtils;
@@ -70,7 +71,7 @@ public class QueryController {
         data.setMessage(data.getMessage().replaceAll(" ", ""));
         RuleBook result = ruleService.selectRule(data.getMessage());
         if (result == null) {
-            return "找不到COC7规则书内容";
+            return CustomText.getText("coc7.rule.not.found");
         }
         return result.getTitle() + "\n" + result.getContent();
     }
@@ -79,21 +80,21 @@ public class QueryController {
     public String queryDnd5eRule(MessageData<?> data) {
         //如果输入的数据是无关键字的
         if (data.getMessage().equals("")) {
-            return "请输入关键字参数";
+            return CustomText.getText("dr5e.rule.not.parameter");
         }
         if (data.getMessage().equals(" ")) {
-            return "请输入关键字参数";
+            return CustomText.getText("dr5e.rule.not.parameter");
         }
 
         //先进行模糊查询
         List<QueryDataBase> result = dnd5eLibService.findName("%" + data.getMessage() + "%");
         List<QueryDataBase> saveData = new ArrayList<>();
         if (result.size() > 1) {
-            StringBuilder text = new StringBuilder("查询结果存在多个，请在3分钟以内回复清单的数字来查阅内容:");
+            StringBuilder text = new StringBuilder(CustomText.getText("dr5e.rule.lib.result.list.title"));
             int count = 0;
             for (QueryDataBase temp : result) {
                 if (count >= 20) {
-                    text.append("\n最多显示20条数据。如果需要查询更多信息，请前往网站查询：https://eiriksgata.github.io/rulateday-dnd5e-wiki/#/");
+                    text.append(CustomText.getText("dr5e.rule.lib.result.list.tail"));
                     break;
                 } else {
                     text.append("\n").append(count).append(". ").append(temp.getName());
@@ -107,7 +108,7 @@ public class QueryController {
 
         } else {
             if (result.size() == 0) {
-                return "查询不到结果，欢迎联系QQ:2353686862提供更多的数据";
+                return CustomText.getText("dr5e.rule.lib.result.list.not.found");
             }
             if (result.get(0).getName().length() > 5) {
                 if (result.get(0).getName().startsWith("怪物图鉴:")) {
@@ -121,31 +122,12 @@ public class QueryController {
 
     @InstructReflex(value = {".help", "。help"})
     public String help(MessageData<?> data) {
-        return "插件名称:Rulateda v0.1.0 by Eiriksgata\n" +
-                "反馈联系Github：https://github.com/Eiriksgata/mirai-rulateday-dice\n" +
-                "所有指令：.help指令\n" +
-                "DND5eWiki:https://keith404.gitee.io/rulateday-dnd5e-wiki/#/";
+        return CustomText.getText("instructions.help.result");
     }
 
     @InstructReflex(value = {".help指令", "。help指令"}, priority = 3)
     public String helpInstruct(MessageData<?> data) {
-        return "骰子常用指令列表:\n" +
-                ".st 属性设置\n" +
-                ".ra|.rc 属性检测\n" +
-                ".rb 奖励骰|.rp惩罚骰\n" +
-                ".cr coc7规则书查询\n" +
-                ".dr dnd5e信息查询\n" +
-                ".ti 随机获取发疯情况\n" +
-                ".li 发疯后总结\n" +
-                ".sc 理智检测\n" +
-                ".rh 暗骰\n" +
-                ".set 设置默认骰\n" +
-                ".coc 随机coc7角色属性\n" +
-                ".dnd 随机dnd5e角色属性\n" +
-                ".r 随机数生成\n" +
-                ".rd 默认骰数值生成\n" +
-                ".botoff | .boton 启用骰子开关\n" +
-                "更多的指令详情请查看:https://keith404.gitee.io/mirai-rulateday-dice/#/instruction";
+        return CustomText.getText("instructions.all.result");
     }
 
     @InstructReflex(value = {".rmm", "。rmm"})
@@ -162,7 +144,7 @@ public class QueryController {
         try {
             resultJson = HttpRequest.get(url).body();
         } catch (Exception e) {
-            return "请求云端服务器接口失败。请联系相关开发人员。";
+            return CustomText.getText("api.request.error");
         }
         ResponseBaseVo<String> response = new Gson().fromJson(
                 resultJson, new TypeToken<ResponseBaseVo<String>>() {
@@ -202,9 +184,8 @@ public class QueryController {
         return "null";
     }
 
-
     @InstructReflex(value = {".drw", "。drw"})
-    public String rollWeapone() {
+    public String rollWeapon() {
         return "null";
     }
 

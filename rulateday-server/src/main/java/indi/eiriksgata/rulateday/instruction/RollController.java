@@ -212,7 +212,7 @@ public class RollController {
         createNumber = checkCreateRandomRoleNumber(data.getMessage());
         if (createNumber == -1) return CustomText.getText("dice.base.parameter.error");
         if (createNumber > 20 | createNumber < 1) {
-            return "参数范围需要在1-20内";
+            return CustomText.getText("coc7.role.create.size.max");
         }
         return rollRole.createCocRole(createNumber);
     }
@@ -223,7 +223,7 @@ public class RollController {
         createNumber = checkCreateRandomRoleNumber(data.getMessage());
         if (createNumber == -1) return CustomText.getText("dice.base.parameter.error");
         if (createNumber > 20 | createNumber < 1) {
-            return "参数范围需要在1-20内";
+            return CustomText.getText("dr5e.role.create.size.max");
         }
         return rollRole.createDndRole(createNumber);
     }
@@ -246,7 +246,7 @@ public class RollController {
             if (number > 0 && number <= 20) {
                 return humanNameService.randomName(Integer.parseInt(data.getMessage()));
             }
-            return "参数范围在1-20内";
+            return CustomText.getText("names.create.size.max");
         } else {
             return humanNameService.randomName(1);
         }
@@ -261,25 +261,24 @@ public class RollController {
     @InstructReflex(value = {".en"})
     public String attributeEn(MessageData<?> data) {
         if (data.getMessage().equals("")) {
-            return "请输入属性名和数值或者属性名";
+            return CustomText.getText("dice.en.parameter.null");
         }
         String checkAttribute = RegularExpressionUtils.getMatcher("[\\u4E00-\\u9FA5A-z]+[0-9]+", data.getMessage());
         if (checkAttribute == null) {
             checkAttribute = RegularExpressionUtils.getMatcher("[\\u4E00-\\u9FA5A-z]+", data.getMessage());
             if (checkAttribute == null) {
-                return "请输入正确的参数形式";
+                return CustomText.getText("dice.en.parameter.format.error");
             }
 
             String userAttribute = userTempDataService.getUserAttribute(data.getQqID());
             if (userAttribute == null || userAttribute.equals("")) {
-                return "你尚未设置你的个人属性可以通过.st进行设置";
+                return CustomText.getText("dice.en.not.set.attribute");
             }
 
             String tempData = RegularExpressionUtils.getMatcher(checkAttribute + "[0-9]+", userAttribute);
             if (tempData == null) {
-                return "你通过.st设置的属性中，不存在[" + checkAttribute + "]这个技能";
+                return CustomText.getText("dice.en.not.found.attribute", checkAttribute);
             }
-
             int checkNumber = Integer.parseInt(tempData.substring(checkAttribute.length()));
 
             int randomNumber = new SecureRandom().nextInt(100);
@@ -288,10 +287,10 @@ public class RollController {
                 int count = checkNumber + addValue;
                 String updateAttribute = userAttribute.replaceAll(tempData, checkAttribute + count);
                 userTempDataService.updateUserAttribute(data.getQqID(), updateAttribute);
-                return "D100=" + randomNumber + "/" + checkNumber + " [" + checkAttribute + "] 成长成功! " +
-                        "你当前的[" + checkAttribute + "]为D10=" + addValue + "+" + checkNumber + "=" + count;
+                return CustomText.getText("dice.en.success",
+                        randomNumber, checkNumber, checkAttribute, checkAttribute, addValue, checkNumber, count);
             }
-            return "D100=" + randomNumber + "/" + checkNumber + " [" + checkAttribute + "] 成长失败!";
+            return CustomText.getText("dice.en.fail", randomNumber, checkNumber, checkAttribute);
         }
 
         int randomNumber = new SecureRandom().nextInt(100);
@@ -299,36 +298,36 @@ public class RollController {
         if (randomNumber > checkNumber) {
             int addValue = new SecureRandom().nextInt(10);
             int count = addValue + checkNumber;
-            return "D100=" + randomNumber + "/" + checkNumber + " [" + checkAttribute + "] 成长成功! " +
-                    "你当前的[" + checkAttribute + "]为D10=" + addValue + "+" + checkNumber + "=" + count;
+            return CustomText.getText("dice.en.success",
+                    randomNumber, checkNumber, checkAttribute, checkAttribute, addValue, checkNumber, count);
         }
-        return "D100=" + randomNumber + "/" + checkNumber + " [" + checkAttribute + "] 成长失败!";
+        return CustomText.getText("dice.en.fail", randomNumber, checkNumber, checkAttribute);
     }
 
     @InstructReflex(value = {".sa", "。sa"})
     public String attributeSetAttribute(MessageData<?> data) {
         String changeValue = RegularExpressionUtils.getMatcher("[0-9]+", data.getMessage());
         if (changeValue == null) {
-            return "你输入的指令参数中没有需要更改的数值";
+            return CustomText.getText("dice.sa.parameter.null");
         }
         String changeName = data.getMessage().substring(0, data.getMessage().length() - changeValue.length());
         if (changeName.equals("")) {
-            return "你输入的指令参数中没有需要更改的数值";
+            return CustomText.getText("dice.sa.parameter.error");
         }
 
         //查询属性
         String findAttribute = userTempDataService.getUserAttribute(data.getQqID());
         if (findAttribute == null || findAttribute.equals("")) {
-            return "你尚未设置属性，可以通过指令.st来进行设置";
+            return CustomText.getText("dice.sa.not.set.attribute");
         }
 
         String attribute = RegularExpressionUtils.getMatcher(changeName + "[0-9]+", findAttribute);
         if (attribute == null) {
-            return "你的属性中，不存在该属性，请通过.st重新设置";
+            return CustomText.getText("dice.sa.not.found.attribute");
         }
         String updateData = findAttribute.replaceAll(attribute, changeName + changeValue);
         userTempDataService.updateUserAttribute(data.getQqID(), updateData);
-        return "您的属性已更新:" + attribute + " => " + changeName + changeValue;
+        return CustomText.getText("dice.sa.update.success", attribute, changeName, changeValue);
     }
 
     @InstructReflex(value = {".ww", ".dp", "。ww"})

@@ -2,6 +2,7 @@ package indi.eiriksgata.rulateday.instruction;
 
 import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.injection.InstructService;
+import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.event.EventAdapter;
 import indi.eiriksgata.rulateday.event.EventUtils;
@@ -33,10 +34,10 @@ public class CardsController {
     public String cardsList(MessageData<?> data) {
         List<CardsTypeList> lists = cardsTypeListMapper.selectAll();
         if (lists.size() == 0) {
-            return "当前存储库没有卡组类型,可以通过指令.cardsAdd进行添加";
+            return CustomText.getText("cards.type.not.found");
         }
         StringBuilder result = new StringBuilder();
-        result.append("当前存储库下有以下卡组类型:");
+        result.append(CustomText.getText("cards.type.list.title"));
         AtomicInteger count = new AtomicInteger();
         lists.forEach((cardsTypeList) -> {
             count.getAndIncrement();
@@ -49,7 +50,7 @@ public class CardsController {
     public String cardsAdd(MessageData<?> data) {
         String[] parsingData = data.getMessage().split(" ");
         if (parsingData.length < 2) {
-            return "参数类型不正确，正确格式应该是[卡组名称 卡组数据]例如:麻将 白板,红中,发字,东风,南风";
+            return CustomText.getText("cards.add.parameter.format.error");
         }
         CardsTypeList cardsTypeList = new CardsTypeList();
         cardsTypeList.setName(parsingData[0]);
@@ -58,27 +59,27 @@ public class CardsController {
             cardsTypeListMapper.insert(cardsTypeList);
             MyBatisUtil.getSqlSession().commit();
         } catch (Exception e) {
-            return "增加卡组类型失败，可能卡组中已存在该卡组名。";
+            return CustomText.getText("cards.add.error");
         }
-        return "增加成功";
+        return CustomText.getText("cards.add.success");
     }
 
     @InstructReflex(value = {".cardsDel", ".cardsdel"}, priority = 3)
     public String cardsDel(MessageData<?> data) {
         cardsTypeListMapper.deleteByName(data.getMessage());
         MyBatisUtil.getSqlSession().commit();
-        return "已删除的卡组";
+        return CustomText.getText("cards.delete.success");
     }
 
 
     @InstructReflex(value = {".drawAdd", ".drawadd"}, priority = 3)
     public String drawAdd(MessageData<?> data) {
         if (data.getMessage().equals("") || data.getMessage() == null) {
-            return "请输入添加的牌组名称,可以使用.cards查看";
+            return CustomText.getText("cards.draw.not.parameter");
         }
         CardsTypeList cardsTypeList = cardsTypeListMapper.selectByName(data.getMessage());
         if (cardsTypeList == null) {
-            return "查询不到卡组名称，请使用.cards查看所有牌组";
+            return "cards.draw.not.found";
         }
         String[] addDataArr = cardsTypeList.getContent().split(",");
         final Long[] groupId = new Long[1];
@@ -106,7 +107,7 @@ public class CardsController {
             cardsGroupDataMapper.insert(cardsGroupData);
         }
         MyBatisUtil.getSqlSession().commit();
-        return "已将卡组[" + cardsTypeList.getName() + "],添加至当前牌堆。";
+        return CustomText.getText("cards.draw.add.success", cardsTypeList.getName());
     }
 
     @InstructReflex(value = {".drawList", ".drawlist"}, priority = 3)
@@ -130,10 +131,11 @@ public class CardsController {
         });
         List<CardsGroupData> list = cardsGroupDataMapper.getGroupCardsList(groupId[0]);
         if (list.size() <= 0) {
-            return "当前所在群的牌堆中无数据，请使用指令.drawAdd进行添加";
+            return CustomText.getText("cards.draw.not.data");
         }
         StringBuilder result = new StringBuilder();
-        result.append("卡池列表:[");
+
+        result.append(CustomText.getText("cards.draw.list")).append("[");
         list.forEach(cardsGroupData -> result.append(cardsGroupData.getValue()).append(","));
         result.delete(result.length() - 1, result.length());
         result.append("]");
@@ -149,14 +151,20 @@ public class CardsController {
             public void group(GroupMessageEvent event) {
                 groupId[0] = event.getGroup().getId();
                 CardsGroupData result = cardsGroupDataMapper.randomGetCard(groupId[0]);
-                event.getSender().sendMessage("在QQ群[" + event.getGroup().getId() + "]的抽出结果为：" + result.getValue());
+                event.getSender().sendMessage(
+                        CustomText.getText("cards.draw.hide.group.result",
+                                event.getGroup().getId(), result.getValue())
+                );
             }
 
             @Override
             public void friend(FriendMessageEvent event) {
                 groupId[0] = -event.getFriend().getId();
                 CardsGroupData result = cardsGroupDataMapper.randomGetCard(groupId[0]);
-                event.getSender().sendMessage("在QQ[" + event.getFriend().getId() + "]的抽出结果为：" + result.getValue());
+                event.getSender().sendMessage(
+                        CustomText.getText("cards.draw.hide.friend.result",
+                                event.getFriend().getId(), result.getValue())
+                );
 
             }
 
@@ -164,16 +172,19 @@ public class CardsController {
             public void groupTemp(GroupTempMessageEvent event) {
                 groupId[0] = event.getGroup().getId();
                 CardsGroupData result = cardsGroupDataMapper.randomGetCard(groupId[0]);
-                event.getSender().sendMessage("在QQ群[" + event.getGroup().getId() + "]的抽出结果为：" + result.getValue());
+                event.getSender().sendMessage(
+                        CustomText.getText("cards.draw.hide.group.result",
+                                event.getGroup().getId(), result.getValue())
+                );
             }
         });
         CardsGroupData result = cardsGroupDataMapper.randomGetCard(groupId[0]);
         if (result == null) {
-            return "当前牌堆没有任何数据";
+            return CustomText.getText("cards.draw.not.data");
         }
         cardsGroupDataMapper.deleteById(result.getId());
         MyBatisUtil.getSqlSession().commit();
-        return "抽出结果已私发";
+        return CustomText.getText("cards.draw.hide.success");
     }
 
     @InstructReflex(value = {".draw"})
@@ -197,11 +208,11 @@ public class CardsController {
         });
         CardsGroupData result = cardsGroupDataMapper.randomGetCard(groupId[0]);
         if (result == null) {
-            return "当前牌堆没有任何数据";
+            return CustomText.getText("cards.draw.not.data");
         }
         cardsGroupDataMapper.deleteById(result.getId());
         MyBatisUtil.getSqlSession().commit();
-        return "抽取结果：" + result.getValue();
+        return CustomText.getText("cards.draw.success", result.getValue());
     }
 
     @InstructReflex(value = {".drawclear", ".drawClear"}, priority = 3)
@@ -225,7 +236,7 @@ public class CardsController {
                 MyBatisUtil.getSqlSession().commit();
             }
         });
-        return "已清空当前牌堆所有数据";
+        return CustomText.getText("cards.draw.clear");
     }
 
 

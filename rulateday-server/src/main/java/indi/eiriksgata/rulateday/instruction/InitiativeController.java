@@ -2,6 +2,7 @@ package indi.eiriksgata.rulateday.instruction;
 
 import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.injection.InstructService;
+import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.event.EventAdapter;
 import indi.eiriksgata.rulateday.event.EventUtils;
@@ -47,10 +48,10 @@ public class InitiativeController {
     @InstructReflex(value = {".atkdel", ".atkDel", ".Atkdel", ".AtlDel"}, priority = 2)
     public String delAtk(MessageData<?> data) {
         String tempName = null;
-        String resultText = "已删除你的先攻骰";
+        String resultText = CustomText.getText("initiative.delete.oneself");
         if (!data.getMessage().equals("") && data.getMessage() != null) {
             tempName = data.getMessage();
-            resultText = "已删除" + tempName + "的先攻骰";
+            resultText = CustomText.getText("initiative.delete.other", tempName);
         }
         String finalTempName = tempName;
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
@@ -95,7 +96,7 @@ public class InitiativeController {
                 initiativeServer.clearGroupDice("-" + event.getFriend().getId());
             }
         });
-        return "已清空当前的先攻池";
+        return CustomText.getText("initiative.clear");
     }
 
     @InstructReflex(value = {".atk", "。atk"})
@@ -119,15 +120,15 @@ public class InitiativeController {
         });
 
         if (isLimit.get()) {
-            return "先攻池骰子数量不能超过20个";
+            return CustomText.getText("initiative.list.size.max");
         }
 
-        final String[] resultText = {"你的先攻骰为:"};
+        final String[] resultText = {CustomText.getText("initiative.result.title", "你")};
         if (!data.getMessage().equals("") && data.getMessage() != null) {
             tempList = data.getMessage().split(" ");
             if (tempList.length > 1) {
                 name = tempList[1];
-                resultText[0] = name + "的先攻骰为:";
+                resultText[0] = CustomText.getText("initiative.result.title", name);
             }
             diceFace = tempList[0];
         }
@@ -139,7 +140,7 @@ public class InitiativeController {
                 numberValue = Integer.parseInt(i);
                 resultText[0] += s;
             } catch (NumberFormatException e) {
-                resultText[0] = "先攻数值生成不符合要求，请符合整数型";
+                resultText[0] = CustomText.getText("initiative.parameter.format.error");
                 return;
             }
 
