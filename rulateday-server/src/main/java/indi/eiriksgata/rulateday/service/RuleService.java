@@ -9,5 +9,5 @@ import indi.eiriksgata.rulateday.pojo.RuleBook;
  * date: 2020/11/4
  **/
 public interface RuleService {
-    RuleBook selectRule(String title);
+    String selectRule(String title);
 }

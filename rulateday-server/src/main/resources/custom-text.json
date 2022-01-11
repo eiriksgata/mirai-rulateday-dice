@@ -38,6 +38,7 @@
   "coc7.roll.hide": "进行了一次暗骰",
   "coc7.role.create.size.max": "参数范围需要在1-20内",
   "coc7.rule.not.found": "找不到COC7规则书内容",
+  "coc7.rule.multiple.query.result": "COC7查询结果有多个，请输入更为精准的关键字",
   "dr5e.rule.not.parameter": "请输入关键字参数",
   "dr5e.rule.lib.result.list.title": "查询结果存在多个，请在3分钟以内回复清单的数字来查阅内容:",
   "dr5e.rule.lib.result.list.tail": "\n最多显示20条数据。如果需要查询更多信息，请前往网站查询：https://eiriksgata.github.io/rulateday-dnd5e-wiki/#/",
