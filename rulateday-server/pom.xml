@@ -18,7 +18,6 @@
             <id>jitpack.io</id>
             <url>https://www.jitpack.io</url>
         </repository>
-
     </repositories>
 
     <properties>

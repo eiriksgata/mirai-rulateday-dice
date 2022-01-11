@@ -23,6 +23,9 @@ public class RuleServiceImpl implements RuleService {
     @Override
     public String selectRule(String title) {
         List<RuleBook> list = ruleBookMapper.selectByTitle("%" + title + "%");
+        if (list.size() == 0) {
+            return CustomText.getText("coc7.rule.not.found");
+        }
         if (list.size() > 1) {
             return CustomText.getText("coc7.rule.multiple.query.result");
         }
