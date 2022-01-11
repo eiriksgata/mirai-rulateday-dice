@@ -1,4 +1,5 @@
 {
+  "custom-text.version": "1.0.0",
   "dice.base.parameter.error": "指令中的参数不正确。",
   "dice.pool.parameter.format.error": "参数格式不正确",
   "dice.pool.parameter.range.error": "参数必须要 大于0 & 小于300",
@@ -37,8 +38,7 @@
   "coc7.roll.hide": "进行了一次暗骰",
   "coc7.role.create.size.max": "参数范围需要在1-20内",
   "coc7.rule.not.found": "找不到COC7规则书内容",
-
-  "dr5e.rule.not.parameter" : "请输入关键字参数",
+  "dr5e.rule.not.parameter": "请输入关键字参数",
   "dr5e.rule.lib.result.list.title": "查询结果存在多个，请在3分钟以内回复清单的数字来查阅内容:",
   "dr5e.rule.lib.result.list.tail": "\n最多显示20条数据。如果需要查询更多信息，请前往网站查询：https://eiriksgata.github.io/rulateday-dnd5e-wiki/#/",
   "dr5e.rule.lib.result.list.not.found": "查询不到结果，欢迎联系QQ:2353686862提供更多的数据",
@@ -46,7 +46,6 @@
   "instructions.help.result": "插件名称:Rulateda v0.1.0 by Eiriksgata\n反馈联系Github：https://github.com/Eiriksgata/mirai-rulateday-dice\n所有指令：.help指令\nDND5eWiki:https://keith404.gitee.io/rulateday-dnd5e-wiki/#/",
   "instructions.all.result": "骰子常用指令列表:\n.st 属性设置\n.ra|.rc 属性检测\n.rb 奖励骰|.rp惩罚骰\n.cr coc7规则书查询\n.dr dnd5e信息查询\n.ti 随机获取发疯情况\n.li 发疯后总结\n.sc 理智检测\n.rh 暗骰\n.set 设置默认骰\n.coc 随机coc7角色属性\n.dnd 随机dnd5e角色属性\n.r 随机数生成\n.rd 默认骰数值生成\n.ww 骰池功能\n.kkp 随机图片速览(测试)\n.atk 先攻指令系列，详情请看文档\n.botoff | .boton 启用骰子开关\n更多的指令详情请查看:https://keith404.gitee.io/mirai-rulateday-dice/#/instruction\n备用文档:https://gitee.com/Keith404/mirai-rulateday-dice/blob/master/docs/instruction.md",
   "api.request.error": "请求云端服务器接口失败。请联系相关开发人员。",
-
   "cards.type.not.found": "当前存储库没有卡组类型,可以通过指令.cardsAdd进行添加。",
   "cards.type.list.title": "当前存储库下有以下卡组类型:",
   "cards.add.parameter.format.error": "参数类型不正确，正确格式应该是[卡组名称 卡组数据]例如:麻将 白板,红中,发字,东风,南风",
@@ -63,7 +62,6 @@
   "cards.draw.hide.success": "抽出结果已私发。",
   "cards.draw.success": "抽取结果：{0}",
   "cards.draw.clear": "已清空当前牌堆所有数据。",
-
   "initiative.delete.oneself": "已删除你的先攻骰",
   "initiative.delete.other": "已删除{0}的先攻骰",
   "initiative.clear": "已清空当前的先攻池",
@@ -72,21 +70,16 @@
   "initiative.parameter.format.error": "先攻数值生成不符合要求，请符合整数型",
   "initiative.null": "目前先攻池内没有任何数据记录",
   "initiative.show": "先攻顺序为:{0}",
-
   "names.create.size.max": "参数范围在1-20内",
-
   "dice.en.parameter.null": "请输入属性名和数值或者属性名",
   "dice.en.parameter.format.error": "请输入正确的参数形式",
   "dice.en.not.set.attribute": "你尚未设置你的个人属性可以通过.st进行设置",
   "dice.en.not.found.attribute": "你通过.st设置的属性中，不存在[{0}]这个技能",
   "dice.en.success": "D100={0}/{1} [{2}] 成长成功！你当前的[{3}]为D10={4}+{5}={6}",
   "dice.en.fail": "D100={0}/{1} [{2}] 成长失败!",
-
   "dice.sa.parameter.null": "你输入的指令参数中没有需要更改的数值",
   "dice.sa.parameter.error": "你输入的指令参数中没有需要更改的数值",
   "dice.sa.not.set.attribute": "你尚未设置属性，可以通过指令.st来进行设置",
   "dice.sa.not.found.attribute": "你的属性中，不存在该属性，请通过.st重新设置",
   "dice.sa.update.success": "您的属性已更新:{0}=>{1}{2}"
-
-
 }
