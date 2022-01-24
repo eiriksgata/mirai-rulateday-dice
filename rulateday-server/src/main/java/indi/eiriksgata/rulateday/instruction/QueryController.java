@@ -69,7 +69,7 @@ public class QueryController {
     @InstructReflex(value = {".cr", "。cr", ".cr7"})
     public String queryCoc7Rule(MessageData<?> data) {
         data.setMessage(data.getMessage().replaceAll(" ", ""));
-        return  ruleService.selectRule(data.getMessage());
+        return ruleService.selectRule(data.getMessage());
     }
 
     @InstructReflex(value = {".dr", "。dr", ".d5er", ".Dr", ".DR"})

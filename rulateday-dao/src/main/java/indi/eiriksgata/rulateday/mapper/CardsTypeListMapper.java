@@ -1,6 +1,5 @@
 package indi.eiriksgata.rulateday.mapper;
 
-import indi.eiriksgata.rulateday.pojo.CardsGroupData;
 import indi.eiriksgata.rulateday.pojo.CardsTypeList;
 import org.apache.ibatis.annotations.*;
 
