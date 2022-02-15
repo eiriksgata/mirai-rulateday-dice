@@ -9,6 +9,8 @@ package indi.eiriksgata.rulateday.service;
 public interface BotControlService {
     boolean groupIsEnable(long groupId);
 
+    boolean groupIsBlacklist(long groupId);
+
     void groupEnable(long groupId);
 
     void groupDisable(long groupId);

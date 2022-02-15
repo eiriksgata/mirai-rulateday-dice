@@ -5,6 +5,8 @@ import indi.eiriksgata.rulateday.service.BotControlService;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
 import org.apache.ibatis.exceptions.PersistenceException;
 
+import java.util.Objects;
+
 /**
  * author: create by Keith
  * version: v1.0
@@ -23,6 +25,16 @@ public class BotControlServiceImpl implements BotControlService {
         } catch (PersistenceException e) {
             speakersGroupListMapper.createTable();
             return true;
+        }
+    }
+
+    @Override
+    public boolean groupIsBlacklist(long groupId) {
+        try {
+            Boolean isBlacklist = speakersGroupListMapper.selectBlacklistByGroupId(groupId);
+            return Objects.requireNonNullElse(isBlacklist, false);
+        } catch (PersistenceException e) {
+            return false;
         }
     }
 
