@@ -29,6 +29,7 @@
         <mapper class="indi.eiriksgata.rulateday.mapper.NamesCorpusMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.CardsGroupDataMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.CardsTypeListMapper"/>
+        <mapper class="indi.eiriksgata.rulateday.mapper.DiceConfigMapper"/>
     </mappers>
 
 </configuration>
