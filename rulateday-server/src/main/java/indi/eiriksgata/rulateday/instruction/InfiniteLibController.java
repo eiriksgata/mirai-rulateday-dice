@@ -1,6 +1,5 @@
 package indi.eiriksgata.rulateday.instruction;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import indi.eiriksgata.dice.injection.InstructReflex;
@@ -8,6 +7,7 @@ import indi.eiriksgata.dice.injection.InstructService;
 import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
+import indi.eiriksgata.rulateday.service.DiceConfigService;
 import indi.eiriksgata.rulateday.service.UserConversationService;
 import indi.eiriksgata.rulateday.service.impl.UserConversationImpl;
 import indi.eiriksgata.rulateday.utlis.RestUtil;
@@ -28,6 +28,10 @@ public class InfiniteLibController {
 
     @InstructReflex(value = {".ir"})
     public String infiniteLibOnlineQuery(MessageData<?> data) {
+        if (!DiceConfigService.diceConfigMapper.selectById().getBeta_version()) {
+            return "该功能骰主尚未开启。";
+        }
+
         //如果输入的数据是无关键字的
         if (data.getMessage().equals("")) {
             return CustomText.getText("dr5e.rule.not.parameter");
