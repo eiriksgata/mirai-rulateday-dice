@@ -14,6 +14,9 @@ public interface SpeakersGroupListMapper {
     @Select("select is_enable from speakers_group_list where id = #{id} ")
     Boolean selectByGroupId(@Param("id") long groupId);
 
+    @Select("select is_blacklist from speakers_group_list where id = #{id}")
+    Boolean selectBlacklistByGroupId(@Param("id") long groupId);
+
     @Insert("insert into speakers_group_list (id,is_enable) values (#{id},#{isEnable})")
     void insert(@Param("id") long id, @Param("isEnable") boolean isEnable);
 
