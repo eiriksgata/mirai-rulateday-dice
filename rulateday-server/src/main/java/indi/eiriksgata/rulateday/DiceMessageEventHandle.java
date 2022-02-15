@@ -6,6 +6,7 @@ import indi.eiriksgata.dice.message.handle.InstructHandle;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.instruction.BotServiceControl;
 import indi.eiriksgata.rulateday.service.ApiReport;
+import indi.eiriksgata.rulateday.service.DiceConfigService;
 import indi.eiriksgata.rulateday.service.impl.ApiReportImpl;
 import indi.eiriksgata.rulateday.service.impl.UserConversationImpl;
 import indi.eiriksgata.rulateday.utlis.ExceptionUtils;
@@ -49,6 +50,12 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
 
     @EventHandler()
     public ListeningStatus OnGroupTempMessageEvent(GroupTempMessageEvent event) {
+
+        if (!DiceConfigService.diceConfigMapper.selectById().getPrivate_chat()) {
+            event.getGroup().sendMessage("私聊功能已被禁止，请拉入群聊使用。或让骰主开启私聊功能。");
+            return ListeningStatus.LISTENING;
+        }
+
         MessageData<GroupTempMessageEvent> messageData = new MessageData<>();
         messageData.setMessage(event.getMessage().contentToString());
         messageData.setQqID(event.getSender().getId());
@@ -68,6 +75,12 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
 
     @EventHandler()
     public ListeningStatus onFriendMessage(FriendMessageEvent event) {
+        RulatedayCore.INSTANCE.getLogger().info(DiceConfigService.diceConfigMapper.selectById().toString());
+
+        if (!DiceConfigService.diceConfigMapper.selectById().getPrivate_chat()) {
+            return ListeningStatus.LISTENING;
+        }
+
         MessageData<FriendMessageEvent> messageData = new MessageData<>();
         messageData.setMessage(event.getMessage().contentToString());
         messageData.setQqID(event.getSender().getId());
@@ -100,10 +113,16 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
     //处理在处理事件中发生的未捕获异常
     @Override
     public void handleException(@NotNull CoroutineContext context, @NotNull Throwable exception) {
+        apiReport.exceptionReport("在事件处理中发生异常", exception.toString(), -1L);
         throw new RuntimeException("在事件处理中发生异常", exception);
     }
 
     private static void groupMessageHandle(GroupMessageEvent event) {
+        //判断群是否是黑名单，具体功能尚未实现
+        if (botControl.isBlacklist(event)) {
+            return;
+        }
+
         //群消息的回复
         //回复群的筛选
         if (botControl.groupBotOff(event) || botControl.groupBotOn(event)) {

@@ -8,6 +8,6 @@ package indi.eiriksgata.rulateday.service;
  **/
 public interface ApiReport {
 
-
     void exceptionReport(String title, String content, Long qqId);
+
 }
