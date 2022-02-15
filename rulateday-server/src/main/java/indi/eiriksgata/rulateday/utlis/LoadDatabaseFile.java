@@ -1,10 +1,16 @@
 package indi.eiriksgata.rulateday.utlis;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import indi.eiriksgata.dice.utlis.VersionUtils;
 import indi.eiriksgata.rulateday.RulatedayCore;
+import indi.eiriksgata.rulateday.config.GlobalData;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 
+import static indi.eiriksgata.dice.reply.CustomText.*;
 import static org.apache.ibatis.io.Resources.getResourceAsStream;
 
 /**
@@ -28,6 +34,7 @@ public class LoadDatabaseFile {
             createCustomTextConfigFile();
             createImageFile();
             createDatabaseFile();
+            createConfigFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -40,15 +47,73 @@ public class LoadDatabaseFile {
         }
     }
 
+
     public static void createCustomTextConfigFile() throws IOException {
         String customTextConfigFileName = "custom-text.json";
-        File file = new File( "config/indi.eiriksgata.rulateday-dice/" + customTextConfigFileName);
-        InputStream inputStream = getResourceAsStream(customTextConfigFileName);
+        File file = new File("config/indi.eiriksgata.rulateday-dice/" + customTextConfigFileName);
         if (!file.exists()) {
             System.out.println("create custom text config file...");
+            InputStream inputStream = getResourceAsStream(customTextConfigFileName);
             fileOut(file, inputStream);
         }
     }
+
+    public static void createConfigFile() throws IOException {
+        String configFileName = "config.json";
+        String path = "config/indi.eiriksgata.rulateday-dice/" + configFileName;
+        File file = new File(path);
+        if (!file.exists()) {
+            System.out.println("create custom text config file...");
+            InputStream inputStream = getResourceAsStream(configFileName);
+            fileOut(file, inputStream);
+        }
+        loadConfigFile(path);
+        checkMasterNumber();
+    }
+
+    public static void checkMasterNumber() {
+        String number = GlobalData.configData.getString("master.QQ.number");
+        RulatedayCore.INSTANCE.getLogger().info(GlobalData.configData.toJSONString());
+        if (number.equals("")) {
+            RulatedayCore.INSTANCE.getLogger().warning("-----------Rulateday-dice Waring--------------");
+            RulatedayCore.INSTANCE.getLogger().warning("检测到当前还没有配置主人QQ，请在当前程序运行目录下的: /config/indi.eiriksgata.rulateday-dice/config.json 文件中的 'master.QQ.number' 进行设置");
+            RulatedayCore.INSTANCE.getLogger().warning("设置完毕后，请重新启动该程序");
+            RulatedayCore.INSTANCE.getLogger().warning("----------------------------------------------");
+        }
+    }
+
+
+    public static void loadConfigFile(String filePath) {
+        try {
+            GlobalData.configData = JSON.parseObject(new String(
+                    fileRead(new File(filePath)), StandardCharsets.UTF_8
+            ));
+            String loadFileVersion = GlobalData.configData.getString("file.version");
+            InputStream inputStream = getResourceAsStream("config.json");
+            JSONObject defaultJSONObject = JSON.parseObject(new String(
+                    inputStreamRead(inputStream), StandardCharsets.UTF_8
+            ));
+            String defaultFileVersion = defaultJSONObject.getString("file.version");
+            if (loadFileVersion == null) {
+                merge(defaultJSONObject);
+            } else {
+                int result = new VersionUtils().compareVersion(loadFileVersion, defaultFileVersion);
+                if (result == -1) {
+                    merge(defaultJSONObject);
+                }
+            }
+        } catch (IOException e) {
+            try {
+                InputStream inputStream = getResourceAsStream("config.json");
+                GlobalData.configData = JSON.parseObject(new String(
+                        inputStreamRead(inputStream), StandardCharsets.UTF_8
+                ));
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
 
     public static void createImageFile() throws IOException {
         File mmImages = new File(path + "/mm-images");
