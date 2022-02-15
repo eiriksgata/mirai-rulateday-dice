@@ -26,7 +26,7 @@ public class InfiniteLibController {
     private final UserConversationService conversationService = new UserConversationImpl();
 
 
-    @InstructReflex(value = {".ir"})
+    @InstructReflex(value = {".ir2"})
     public String infiniteLibOnlineQuery(MessageData<?> data) {
         if (!DiceConfigService.diceConfigMapper.selectById().getBeta_version()) {
             return "该功能骰主尚未开启。";

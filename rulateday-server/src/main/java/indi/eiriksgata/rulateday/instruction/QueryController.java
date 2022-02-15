@@ -10,7 +10,6 @@ import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.event.EventAdapter;
 import indi.eiriksgata.rulateday.event.EventUtils;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
-import indi.eiriksgata.rulateday.pojo.RuleBook;
 import indi.eiriksgata.rulateday.service.CrazyLibraryService;
 import indi.eiriksgata.rulateday.service.Dnd5eLibService;
 import indi.eiriksgata.rulateday.service.RuleService;
@@ -114,7 +113,6 @@ public class QueryController {
             return result.get(0).getName() + "\n" + result.get(0).getDescribe().replaceAll("\n\n", "\n");
         }
     }
-
 
     @InstructReflex(value = {".help", "。help"})
     public String help(MessageData<?> data) {
