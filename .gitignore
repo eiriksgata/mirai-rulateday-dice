@@ -43,6 +43,6 @@ rulateday-server/src/main/resources/query/
 rulateday-server/src/main/resources/coctext/
 rulateday-dao/src/main/resources/mapper/
 
-config/
+/config/
 /rulateday-server/data/indi.eiriksgata.rulateday-dice/rulateday.db
 /rulateday-server/data/indi.eiriksgata.rulateday-dice/rulateday0.3.6.db
