@@ -49,4 +49,9 @@ public class BotServiceControl {
         return botControl.groupIsEnable(groupId);
     }
 
+    public boolean isBlacklist(GroupMessageEvent event) {
+        long groupId = event.getGroup().getId();
+        return botControl.groupIsBlacklist(groupId);
+    }
+
 }
