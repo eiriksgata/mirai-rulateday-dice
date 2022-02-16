@@ -68,7 +68,7 @@ public class UserInitiativeServerImpl {
         }
         if (initiativeDataList.size() == 1) {
             return CustomText.getText(
-                    "dice.initiative.show",
+                    "initiative.show",
                     initiativeDataList.get(0).getName() +
                             "[" + initiativeDataList.get(0).getValue() + "]");
         }
