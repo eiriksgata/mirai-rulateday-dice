@@ -37,6 +37,8 @@ public class LoadDatabaseFile {
             createCustomDoc();
             createDatabaseFile();
             createConfigFile();
+
+            LoadDatabaseFile.loadCustomDocument();
         } catch (IOException e) {
             e.printStackTrace();
         }
