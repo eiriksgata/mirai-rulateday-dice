@@ -7,6 +7,7 @@ import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.injection.InstructService;
 import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.dice.vo.MessageData;
+import indi.eiriksgata.rulateday.config.CustomDocumentHandler;
 import indi.eiriksgata.rulateday.event.EventAdapter;
 import indi.eiriksgata.rulateday.event.EventUtils;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
@@ -16,6 +17,7 @@ import indi.eiriksgata.rulateday.service.RuleService;
 import indi.eiriksgata.rulateday.service.UserConversationService;
 import indi.eiriksgata.rulateday.service.impl.*;
 import indi.eiriksgata.rulateday.utlis.HexConvertUtil;
+import indi.eiriksgata.rulateday.utlis.LoadDatabaseFile;
 import indi.eiriksgata.rulateday.vo.ResponseBaseVo;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
@@ -23,6 +25,7 @@ import net.mamoe.mirai.event.events.GroupTempMessageEvent;
 import net.mamoe.mirai.utils.ExternalResource;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -183,5 +186,58 @@ public class QueryController {
         return "null";
     }
 
+    @InstructReflex(value = {".modlist"})
+    public String queryModList(MessageData<?> data) {
+        return "null";
+    }
 
+    @InstructReflex(value = {".modon"})
+    public String modOpen(MessageData<?> data) {
+
+        return "null";
+    }
+
+    @InstructReflex(value = {".modoff"})
+    public String modClose(MessageData<?> data) {
+        return "null";
+    }
+
+    @InstructReflex(value = {".reload"})
+    public String fileReload() {
+        try {
+            LoadDatabaseFile.loadCustomDocument();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "重新载入系统配置失败，请检查控制台报错信息";
+        }
+        return "重新载入系统配置";
+    }
+
+    @InstructReflex(value = {".q", "。q", ".Q", "。Q"}, priority = 3)
+    public String queryModelCustom(MessageData<?> data) {
+        List<QueryDataBase> result = CustomDocumentHandler.find(data.getMessage());
+        List<QueryDataBase> saveData = new ArrayList<>();
+        if (result.size() > 1) {
+            StringBuilder text = new StringBuilder(CustomText.getText("query.doc.lib.result.list.title"));
+            int count = 0;
+            for (QueryDataBase temp : result) {
+                if (count >= 20) {
+                    text.append(CustomText.getText("query.doc.lib.result.list.tail"));
+                    break;
+                } else {
+                    text.append("\n").append(count).append(". ").append(temp.getName());
+                    saveData.add(temp);
+                }
+                count++;
+            }
+            //将记录暂时存入数据库
+            conversationService.saveConversation(data.getQqID(), saveData);
+            return text.toString();
+        } else {
+            if (result.size() == 0) {
+                return CustomText.getText("query.doc.lib.result.list.not.found");
+            }
+            return result.get(0).getName() + "\n" + result.get(0).getDescribe();
+        }
+    }
 }

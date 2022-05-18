@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import indi.eiriksgata.dice.utlis.VersionUtils;
 import indi.eiriksgata.rulateday.RulatedayCore;
+import indi.eiriksgata.rulateday.config.CustomDocumentHandler;
 import indi.eiriksgata.rulateday.config.GlobalData;
 
 import java.io.*;
@@ -33,6 +34,7 @@ public class LoadDatabaseFile {
             createProjectFile();
             createCustomTextConfigFile();
             createImageFile();
+            createCustomDoc();
             createDatabaseFile();
             createConfigFile();
         } catch (IOException e) {
@@ -82,6 +84,31 @@ public class LoadDatabaseFile {
         }
     }
 
+    public static void loadCustomDocument() throws IOException {
+        createCustomDoc();
+        String path = "data/indi.eiriksgata.rulateday-dice/custom-doc";
+        RulatedayCore.INSTANCE.getLogger().info("-----------Rulateday-dice doc files loading-----------");
+        //TODO: 扫描目录的json文档文件
+        File folder = new File(path);
+        File[] files = folder.listFiles();
+        if (files != null) {
+            int i = 0;
+            for (File file : files) {
+                i++;
+                RulatedayCore.INSTANCE.getLogger().info(i + "." + file.getName());
+                JSONObject document = JSON.parseObject(new String(
+                        fileRead(new File(path + "/" + file.getName())), StandardCharsets.UTF_8
+                ));
+                String documentName = document.getString("mod");
+                JSONObject helpDoc = document.getJSONObject("helpdoc");
+                helpDoc.forEach((name, describe) -> {
+                    CustomDocumentHandler.save(documentName, name, (String) describe);
+                });
+            }
+        }
+        RulatedayCore.INSTANCE.getLogger().info("-----------Rulateday-dice load end-----------");
+    }
+
 
     public static void loadConfigFile(String filePath) {
         try {
@@ -119,6 +146,13 @@ public class LoadDatabaseFile {
         File mmImages = new File(path + "/mm-images");
         if (!mmImages.exists()) {
             mmImages.mkdirs();
+        }
+    }
+
+    public static void createCustomDoc() throws IOException {
+        File document = new File(path + "/custom-doc");
+        if (!document.exists()) {
+            document.mkdir();
         }
     }
 

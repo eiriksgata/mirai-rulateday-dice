@@ -1,11 +1,22 @@
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import indi.eiriksgata.dice.utlis.RegularExpressionUtils;
+import indi.eiriksgata.rulateday.RulatedayCore;
+import indi.eiriksgata.rulateday.config.CustomDocumentHandler;
+import indi.eiriksgata.rulateday.config.GlobalData;
 import indi.eiriksgata.rulateday.mapper.Dnd5ePhbDataMapper;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static indi.eiriksgata.dice.reply.CustomText.fileRead;
 
 /**
  * author: create by Keith
@@ -117,5 +128,55 @@ public class DocTextOut {
         }
     }
 
+    @Test
+    public void fileListShow() {
+        String path = "data/indi.eiriksgata.rulateday-dice/custom-doc";
+        File directory = new File(path);
+        File[] importFiles = directory.listFiles();
+        assert importFiles != null;
+        for (File file : importFiles) {
+            System.out.println(file.getName());
+        }
+    }
+
+    @Test
+    public void mapFind() {
+        Map<String, String> map = new HashMap<>();
+        map.put("a", "b");
+
+        map.forEach((name, value) -> {
+            System.out.println(name + " " + value);
+        });
+    }
+
+    @Test
+    public void loadAndFindCustomDocument() throws Exception {
+        String path = "data/indi.eiriksgata.rulateday-dice/custom-doc";
+        System.out.println("-----------Rulateday-dice doc mod loading-----------");
+        //TODO: 扫描目录的json文档文件
+        File folder = new File(path);
+        File[] files = folder.listFiles();
+        if (files != null) {
+            int i = 0;
+            for (File file : files) {
+                i++;
+                System.out.println(i + "." + file.getName());
+                JSONObject document = JSON.parseObject(new String(
+                        fileRead(new File(path + "/" + file.getName())), StandardCharsets.UTF_8
+                ));
+                String documentName = document.getString("mod");
+                JSONObject helpDoc = document.getJSONObject("helpdoc");
+                helpDoc.forEach((name, describe) -> {
+                    CustomDocumentHandler.save(documentName, name, (String) describe);
+                });
+            }
+        }
+        System.out.println("-----------Rulateday-dice load end-----------");
+
+        String searchName = "黄衣";
+
+        CustomDocumentHandler.find(searchName);
+
+    }
 
 }
