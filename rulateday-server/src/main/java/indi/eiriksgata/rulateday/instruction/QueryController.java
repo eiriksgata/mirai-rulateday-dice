@@ -171,18 +171,18 @@ public class QueryController {
         return null;
     }
 
-    @InstructReflex(value = {".rmi", "。rmi"})
-    public String rollMagicItem() {
+    @InstructReflex(value = {".rmi", "。rmi"}, priority = 3)
+    public String rollMagicItem(MessageData<?> data) {
         return "null";
     }
 
-    @InstructReflex(value = {".rt", "。rt"})
-    public String rollTool() {
+    @InstructReflex(value = {".rt", "。rt"}, priority = 3)
+    public String rollTool(MessageData<?> data) {
         return "null";
     }
 
-    @InstructReflex(value = {".drw", "。drw"})
-    public String rollWeapon() {
+    @InstructReflex(value = {".drw", "。drw"}, priority = 4)
+    public String rollWeapon(MessageData<?> data) {
         return "null";
     }
 
@@ -202,8 +202,8 @@ public class QueryController {
         return "null";
     }
 
-    @InstructReflex(value = {".reload"})
-    public String fileReload() {
+    @InstructReflex(value = {".reload"}, priority = 3)
+    public String fileReload(MessageData<?> data) {
         try {
             LoadDatabaseFile.loadCustomDocument();
         } catch (IOException e) {
@@ -216,6 +216,9 @@ public class QueryController {
     @InstructReflex(value = {".q", "。q", ".Q", "。Q"}, priority = 3)
     public String queryModelCustom(MessageData<?> data) {
         List<QueryDataBase> result = CustomDocumentHandler.find(data.getMessage());
+        if (result == null) {
+            return CustomText.getText("query.doc.lib.result.list.not.found");
+        }
         List<QueryDataBase> saveData = new ArrayList<>();
         if (result.size() > 1) {
             StringBuilder text = new StringBuilder(CustomText.getText("query.doc.lib.result.list.title"));

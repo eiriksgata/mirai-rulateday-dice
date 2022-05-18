@@ -25,6 +25,9 @@ public class CustomDocumentHandler {
 
 
     public static List<QueryDataBase> find(String key) {
+        if (GlobalData.documentContext == null) {
+            return null;
+        }
         AtomicInteger index = new AtomicInteger();
         List<QueryDataBase> result = new ArrayList<>();
         GlobalData.documentContext.forEach((docName, dataMap) -> {
