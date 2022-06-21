@@ -119,12 +119,12 @@ public class QueryController {
 
     @InstructReflex(value = {".help", "。help"})
     public String help(MessageData<?> data) {
-        return CustomText.getText("instructions.help.result");
+        return CustomText.getText("instructions.help.result1");
     }
 
     @InstructReflex(value = {".help指令", "。help指令"}, priority = 3)
     public String helpInstruct(MessageData<?> data) {
-        return CustomText.getText("instructions.all.result");
+        return CustomText.getText("instructions.all.result1");
     }
 
     @InstructReflex(value = {".rmm", "。rmm"})
