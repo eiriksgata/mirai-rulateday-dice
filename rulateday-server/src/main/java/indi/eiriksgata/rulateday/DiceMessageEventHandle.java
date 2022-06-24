@@ -4,6 +4,7 @@ import indi.eiriksgata.dice.exception.DiceInstructException;
 import indi.eiriksgata.dice.exception.ExceptionEnum;
 import indi.eiriksgata.dice.message.handle.InstructHandle;
 import indi.eiriksgata.dice.vo.MessageData;
+import indi.eiriksgata.rulateday.config.GlobalData;
 import indi.eiriksgata.rulateday.instruction.BotServiceControl;
 import indi.eiriksgata.rulateday.service.ApiReport;
 import indi.eiriksgata.rulateday.service.DiceConfigService;
@@ -31,7 +32,9 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
     @EventHandler()
     public ListeningStatus onBotGroupRequest(BotInvitedJoinGroupRequestEvent event) {
         //收到邀请自动加入
-        event.accept();
+        if (GlobalData.configData.getBooleanValue("auto.accept.friend.request")) {
+            event.accept();
+        }
         return ListeningStatus.LISTENING;
     }
 

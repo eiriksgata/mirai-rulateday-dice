@@ -5,6 +5,7 @@ import indi.eiriksgata.dice.operation.impl.SanCheckImpl;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.instruction.RollController;
 import indi.eiriksgata.rulateday.utlis.LoadDatabaseFile;
+import indi.eiriksgata.rulateday.utlis.WeightRandom;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
@@ -68,8 +69,6 @@ public class DiceTest {
             ex.printStackTrace();
         }
     }
-
-
 
 
     @Test
@@ -142,4 +141,13 @@ public class DiceTest {
         System.out.println(imagesUrl);
         System.out.println(localPath);
     }
+
+    @Test
+    void weight() {
+
+        WeightRandom.ItemWithWeight<String> item = new WeightRandom.ItemWithWeight<>("server1", 1.0);
+
+    }
+
+
 }

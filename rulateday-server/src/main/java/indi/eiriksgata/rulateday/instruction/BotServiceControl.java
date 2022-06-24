@@ -6,7 +6,6 @@ import indi.eiriksgata.rulateday.service.impl.BotControlServiceImpl;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 
-
 /**
  * author: create by Keith
  * version: v1.0

@@ -158,6 +158,13 @@ public class LoadDatabaseFile {
         }
     }
 
+    public static void createGalGame() throws IOException {
+        File file = new File(path + "/galgame");
+        if (!file.exists()) {
+            file.mkdir();
+        }
+    }
+
 
     public static void createDatabaseFile() throws IOException {
         //读取db配置文件
