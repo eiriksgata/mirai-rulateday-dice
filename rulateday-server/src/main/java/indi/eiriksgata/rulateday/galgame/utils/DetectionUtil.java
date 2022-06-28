@@ -1,7 +1,7 @@
-package indi.eiriksgata.rulateday.galgame;
+package indi.eiriksgata.rulateday.galgame.utils;
 
 import indi.eiriksgata.dice.utlis.RegularExpressionUtils;
-import lombok.Data;
+import indi.eiriksgata.rulateday.galgame.DetectionEntity;
 import org.apache.commons.lang3.RandomUtils;
 
 public class DetectionUtil {
@@ -58,5 +58,7 @@ public class DetectionUtil {
         }
         return detectionEntity;
     }
+
+
 }
 

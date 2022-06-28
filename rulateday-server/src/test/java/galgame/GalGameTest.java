@@ -1,11 +1,13 @@
+package galgame;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import indi.eiriksgata.dice.operation.impl.RollBasicsImpl;
 import indi.eiriksgata.dice.utlis.RegularExpressionUtils;
 import indi.eiriksgata.rulateday.galgame.DetectionEntity;
-import indi.eiriksgata.rulateday.galgame.DetectionUtil;
+import indi.eiriksgata.rulateday.galgame.GameData;
+import indi.eiriksgata.rulateday.galgame.entity.PlayerRoleDataEntity;
+import indi.eiriksgata.rulateday.galgame.utils.DetectionUtil;
 import indi.eiriksgata.rulateday.utlis.FileUtil;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Test;
@@ -39,6 +41,9 @@ public class GalGameTest {
         Map<String, JSONObject> role = modelJSON.getJSONObject("importData").getJSONObject("role").toJavaObject(new TypeReference<Map<String, JSONObject>>() {
         }.getType());
 
+        Map<String, JSONObject> nodeMap = modelJSON.getJSONObject("event").getJSONObject("node").toJavaObject(new TypeReference<Map<String, JSONObject>>() {
+        }.getType());
+
         //合并用户数据
         JSONObject playerTempJSONObject = new JSONObject();
         playerTempJSONObject.put("attribute", playerAttribute);
@@ -53,14 +58,14 @@ public class GalGameTest {
         System.out.println("简介:" + modelJSON.getString("introduction"));
 
         while (true) {
-            String context = modelJSON.getJSONObject("event").getJSONObject("node").getJSONObject(nodeId).getString("text");
+            String context = nodeMap.get(nodeId).getString("text");
             System.out.println(context);
 
-            if (modelJSON.getJSONObject("event").getJSONObject("node").getJSONObject(nodeId).getBooleanValue("end")) {
+            if (nodeMap.get(nodeId).getBooleanValue("end")) {
                 return;
             }
 
-            JSONArray optionArray = modelJSON.getJSONObject("event").getJSONObject("node").getJSONObject(nodeId).getJSONArray("option");
+            JSONArray optionArray = nodeMap.get(nodeId).getJSONArray("option");
 
             StringBuilder optionOutText = new StringBuilder();
             Map<String, String> optionMap = new HashMap<>();
@@ -80,8 +85,8 @@ public class GalGameTest {
             String str = input.next();
 
             String optionId = optionMap.get(str);
-            if (optionId==null){
-                System.out.println("没有这个动作");
+            if (optionId == null) {
+                System.out.println("没有这个选项");
                 continue;
             }
 
@@ -229,5 +234,19 @@ public class GalGameTest {
 
     }
 
+    @Test
+    void mapTest() {
+        PlayerRoleDataEntity entity = new PlayerRoleDataEntity();
+        entity.setSkill("123456");
+        GameData.playerRoleSaveDataMap.put(1L, entity);
+
+        System.out.println(GameData.playerRoleSaveDataMap.get(1L));
+
+
+        GameData.playerRoleSaveDataMap.get(1L).setAttribute("456789");
+        System.out.println(GameData.playerRoleSaveDataMap.get(1L));
+
+
+    }
 
 }
