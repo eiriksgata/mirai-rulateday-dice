@@ -1,6 +1,6 @@
 package galgame;
 
-import indi.eiriksgata.rulateday.galgame.RoleDataHandler;
+import indi.eiriksgata.rulateday.trpggame.RoleDataHandler;
 import org.junit.jupiter.api.Test;
 
 public class RoleDataHandlerTest {

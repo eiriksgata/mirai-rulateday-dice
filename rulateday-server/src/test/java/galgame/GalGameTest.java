@@ -4,10 +4,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import indi.eiriksgata.dice.utlis.RegularExpressionUtils;
-import indi.eiriksgata.rulateday.galgame.DetectionEntity;
-import indi.eiriksgata.rulateday.galgame.GameData;
-import indi.eiriksgata.rulateday.galgame.entity.PlayerRoleDataEntity;
-import indi.eiriksgata.rulateday.galgame.utils.DetectionUtil;
+import indi.eiriksgata.rulateday.trpggame.DetectionEntity;
+import indi.eiriksgata.rulateday.trpggame.GameData;
+import indi.eiriksgata.rulateday.trpggame.TrpgGameServiceImpl;
+import indi.eiriksgata.rulateday.trpggame.entity.PlayerRoleDataEntity;
+import indi.eiriksgata.rulateday.trpggame.utils.DetectionUtil;
 import indi.eiriksgata.rulateday.utlis.FileUtil;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Test;
@@ -246,7 +247,12 @@ public class GalGameTest {
         GameData.playerRoleSaveDataMap.get(1L).setAttribute("456789");
         System.out.println(GameData.playerRoleSaveDataMap.get(1L));
 
+    }
 
+    @Test
+    void filesListShowTest() {
+        String result = TrpgGameServiceImpl.getAllTrpgModelFiles();
+        System.out.println(result);
     }
 
 }

@@ -1,7 +1,7 @@
-package indi.eiriksgata.rulateday.galgame.utils;
+package indi.eiriksgata.rulateday.trpggame.utils;
 
 import indi.eiriksgata.dice.utlis.RegularExpressionUtils;
-import indi.eiriksgata.rulateday.galgame.DetectionEntity;
+import indi.eiriksgata.rulateday.trpggame.DetectionEntity;
 import org.apache.commons.lang3.RandomUtils;
 
 public class DetectionUtil {
@@ -21,10 +21,10 @@ public class DetectionUtil {
         int checkValue = Integer.parseInt(result.substring(checkName.length()));
         detectionEntity.setCheckValue(checkValue);
         detectionEntity.setRandomValue(randomValue);
-        if (randomValue <= checkValue ) {
+        if (randomValue <= checkValue) {
             detectionEntity.setResult(true);
             detectionEntity.setDiceText("[" + result + "]检定！D100=" + randomValue + " 成功！");
-        }else {
+        } else {
             detectionEntity.setDiceText("[" + result + "]检定！D100=" + randomValue + " 失败！");
         }
         return detectionEntity;
@@ -46,6 +46,9 @@ public class DetectionUtil {
 
         //检测消耗品
         String holdString = RegularExpressionUtils.getMatcher(checkName + "[0-9]+", source);
+        if (holdString == null) {
+            return null;
+        }
         int holdValue = Integer.parseInt(holdString.substring(checkName.length()));
         int checkValue = Integer.parseInt(symbolValue.substring(1));
         switch (symbolValue.substring(0, 1)) {

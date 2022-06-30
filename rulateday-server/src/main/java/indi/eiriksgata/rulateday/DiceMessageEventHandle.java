@@ -40,7 +40,9 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
 
     @EventHandler()
     public ListeningStatus onFriendRequest(NewFriendRequestEvent event) {
-        event.accept();
+        if (GlobalData.configData.getBooleanValue("auto.accept.friend.request")) {
+            event.accept();
+        }
         return ListeningStatus.LISTENING;
     }
 
@@ -161,10 +163,11 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             result = e.getErrMsg();
             apiReport.exceptionReport(event.getMessage().contentToString(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
         } catch (IllegalAccessException | InstantiationException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             result = e.getMessage();
             apiReport.exceptionReport(event.getMessage().contentToString(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
         } catch (InvocationTargetException e) {
+            e.printStackTrace();
             result = e.getCause().toString();
             apiReport.exceptionReport(event.getMessage().contentToString(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
         } catch (Exception e) {

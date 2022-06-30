@@ -1,8 +1,8 @@
-package indi.eiriksgata.rulateday.galgame.utils;
+package indi.eiriksgata.rulateday.trpggame.utils;
 
 import indi.eiriksgata.dice.utlis.RegularExpressionUtils;
-import indi.eiriksgata.rulateday.galgame.GameData;
-import indi.eiriksgata.rulateday.galgame.entity.PlayerRoleDataEntity;
+import indi.eiriksgata.rulateday.trpggame.GameData;
+import indi.eiriksgata.rulateday.trpggame.entity.PlayerRoleDataEntity;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.util.List;
@@ -11,11 +11,12 @@ public class PlayerRoleAttributeSetUtil {
 
     public static String roleDataShow(Long id) {
         if (GameData.playerRoleSaveDataMap.get(id) == null) {
-            return "你当前没有人物数据";
+            return "你当前没有人物数据，参考指令[.trpg-role-set]来设置使用";
         }
         return "人物名称:" + GameData.playerRoleSaveDataMap.get(id).getName() +
-                "属性:" + GameData.playerRoleSaveDataMap.get(id).getAttribute() +
-                "衍生数值" + GameData.playerRoleSaveDataMap.get(id).getConsumables();
+                "\n属性:" + GameData.playerRoleSaveDataMap.get(id).getAttribute() +
+                "\n衍生数值:" + GameData.playerRoleSaveDataMap.get(id).getConsumables() +
+                "\n技能:" + GameData.playerRoleSaveDataMap.get(id).getSkill();
     }
 
     public static String nameCheck(Long id, String inputString) {
@@ -27,7 +28,7 @@ public class PlayerRoleAttributeSetUtil {
             } else {
                 GameData.playerRoleSaveDataMap.get(id).setName(inputString);
             }
-            return "设置完毕";
+            return "名字设置完毕";
         }
         return "名字长度范围需要在(0,10]范围内";
     }
@@ -36,7 +37,7 @@ public class PlayerRoleAttributeSetUtil {
         String errorSkillName = "力量|体质|体型|敏捷|外貌|智力|意志|教育|幸运|生命";
         List<String> list = RegularExpressionUtils.getMatchers(errorSkillName, inputString);
         if (list.size() != 0) {
-            return "不可以出现任何与基础属性相关的关键词";
+            return "技能不可以出现任何与基础属性相关的关键词";
         }
         int count = 0;
         list = RegularExpressionUtils.getMatchers("[0-9]+", inputString);
@@ -45,7 +46,7 @@ public class PlayerRoleAttributeSetUtil {
             if (value >= 0 && value <= 80) {
                 count += value;
             } else {
-                return "数据范围需要在[0,80]";
+                return "技能数据范围需要在[0,80]";
             }
         }
         if (count == 380) {
@@ -56,9 +57,9 @@ public class PlayerRoleAttributeSetUtil {
             } else {
                 GameData.playerRoleSaveDataMap.get(id).setSkill(inputString);
             }
-            return "设置成功最终输出:" + inputString;
+            return "技能设置成功最终输出:" + inputString;
         }
-        return "统计不符合380数值，请重新分配。";
+        return "技能总计数值不符合380。";
     }
 
 
@@ -89,11 +90,11 @@ public class PlayerRoleAttributeSetUtil {
                     valueCount += attributeValue;
                     result.append(temp);
                 } else {
-                    return "检测到[" + temp + "]不符合要求。请重新设置区间:[40,80]";
+                    return "属性设置检测到[" + temp + "]不符合要求。请重新设置区间:[40,80]";
                 }
             }
         } else {
-            return "输入的格式不符合要求，输入的属性必须为8项[力量|体质|体型|敏捷|外貌|智力|意志|教育]，多和少都不可以";
+            return "属性输入的格式不符合要求，输入的属性必须为8项[力量|体质|体型|敏捷|外貌|智力|意志|教育]，多和少都不可以";
         }
 
         if (valueCount == 470) {
@@ -109,11 +110,11 @@ public class PlayerRoleAttributeSetUtil {
                 entity.setConsumables(consumables.toString());
             } else {
                 GameData.playerRoleSaveDataMap.get(id).setAttribute(result.toString());
-                GameData.playerRoleSaveDataMap.get(id).setAttribute(consumables.toString());
+                GameData.playerRoleSaveDataMap.get(id).setConsumables(consumables.toString());
             }
-            return "最终输出(幸运随机仅随机生成)\n 基础属性:" + result + "\n 衍生数值:" + consumables;
+            return "属性最终输出(幸运随机仅随机生成)\n 基础属性:" + result + "\n 衍生数值:" + consumables;
         } else {
-            return "总计数值不符合470";
+            return "属性总计数值不符合470。";
         }
     }
 }

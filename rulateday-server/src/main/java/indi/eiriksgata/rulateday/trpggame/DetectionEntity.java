@@ -1,4 +1,4 @@
-package indi.eiriksgata.rulateday.galgame;
+package indi.eiriksgata.rulateday.trpggame;
 
 import lombok.Data;
 
