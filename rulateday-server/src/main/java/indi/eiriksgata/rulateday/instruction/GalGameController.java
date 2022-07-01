@@ -36,6 +36,17 @@ public class GalGameController {
 
     @InstructReflex(value = {".trpg-load"}, priority = 3)
     public String trpgGameLoad(MessageData<?> data) {
+        //TODO: 检测玩家数据是否满足要求
+        if (GameData.playerRoleSaveDataMap.get(data.getQqID()) == null ||
+                GameData.playerRoleSaveDataMap.get(data.getQqID()).getName() == null ||
+                GameData.playerRoleSaveDataMap.get(data.getQqID()).getAttribute() == null ||
+                GameData.playerRoleSaveDataMap.get(data.getQqID()).getSkill() == null ||
+                GameData.playerRoleSaveDataMap.get(data.getQqID()).getName().equals("") ||
+                GameData.playerRoleSaveDataMap.get(data.getQqID()).getAttribute().equals("") ||
+                GameData.playerRoleSaveDataMap.get(data.getQqID()).getSkill().equals("")
+        ) {
+            return "请先通过指令完善你的人物属性再进行游戏";
+        }
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
             public void group(GroupMessageEvent event) {

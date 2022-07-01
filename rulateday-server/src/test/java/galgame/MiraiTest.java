@@ -19,7 +19,7 @@ public class MiraiTest {
 
         String attributeSet = "克里斯,侦查80聆听80图书馆80闪避60信用30急救50,力量40体质55体型60敏捷75外貌60智力80意志50教育50";
 
-        String fileName = "trpg-event-model.json";
+        String fileName = "古茂密林之中.json";
 
         String[] inputText = attributeSet.split(",");
         PlayerRoleAttributeSetUtil.nameCheck(qqId, inputText[0]);

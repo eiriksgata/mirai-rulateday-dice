@@ -39,15 +39,6 @@ public class TrpgGameServiceImpl {
     }
 
     public static String loadScriptData(Long id, String fileName) {
-        //TODO: 检测玩家数据是否满足要求
-        if (GameData.playerRoleSaveDataMap.get(id).getName() == null ||
-                GameData.playerRoleSaveDataMap.get(id).getAttribute() == null ||
-                GameData.playerRoleSaveDataMap.get(id).getName().equals("") ||
-                GameData.playerRoleSaveDataMap.get(id).getAttribute().equals("")
-        ) {
-            return "请先通过指令完善你的人物属性再进行游戏";
-        }
-
         String jsonText = FileUtil.readJsonFile("data/indi.eiriksgata.rulateday-dice/trpg-game/" + fileName);
         if (jsonText == null) {
             return "找不到文件：" + fileName;
@@ -66,7 +57,12 @@ public class TrpgGameServiceImpl {
 
         Map<String, JSONObject> role = modelJSON.getJSONObject("importData").getJSONObject("role").toJavaObject(new TypeReference<Map<String, JSONObject>>() {
         }.getType());
+        //玩家的预设的属性
+        role.get("player").put("attribute",
+                GameData.playerRoleSaveDataMap.get(id).getAttribute() +
+                        GameData.playerRoleSaveDataMap.get(id).getSkill());
         GameData.roleMap.put(id, role);
+
 
         Map<String, JSONObject> nodeMap = modelJSON.getJSONObject("event").getJSONObject("node").toJavaObject(new TypeReference<Map<String, JSONObject>>() {
         }.getType());
@@ -149,19 +145,21 @@ public class TrpgGameServiceImpl {
         resultText += optionJsonMap.getString("text");
 
         //TODO: 更改玩家的属性、或者消耗品
-        roleDataUpdate(id,
-                optionJsonMap.getJSONObject("update").toJavaObject(
-                        new TypeReference<Map<String, String>>() {
-                        }.getType()
-                ));
-
+        if (optionJsonMap.getJSONObject("update") != null) {
+            roleDataUpdate(id,
+                    optionJsonMap.getJSONObject("update").toJavaObject(
+                            new TypeReference<Map<String, String>>() {
+                            }.getType()
+                    ));
+        }
+        
         //最后才更改nodeId
         GameData.nodeId.put(id, optionJsonMap.getString("nextNode"));
         return resultText;
     }
 
     public static void roleDataUpdate(Long id, Map<String, String> updateDataMap) {
-        String items = "attribute|consumables|skill";
+        String items = "attribute|consumables";
         String roleName = updateDataMap.get("role");
         if (roleName == null) {
             return;

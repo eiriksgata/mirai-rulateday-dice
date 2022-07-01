@@ -25,7 +25,7 @@ public class GalGameTest {
     @Test
     public void readFile() throws Exception {
 
-        String jsonText = FileUtil.readJsonFile("D:\\workspace\\mirai-rulateday-dice\\rulateday-server\\src\\main\\resources\\coctext\\trpg-event-model.json");
+        String jsonText = FileUtil.readJsonFile("D:\\workspace\\mirai-rulateday-dice\\rulateday-server\\src\\main\\resources\\coctext\\古茂密林之中.json");
         JSONObject modelJSON = JSONObject.parseObject(jsonText);
 
         String playerAttribute = "力量40体质55体型60敏捷75外貌60智力80意志50教育50幸运60生命11魔法10";
