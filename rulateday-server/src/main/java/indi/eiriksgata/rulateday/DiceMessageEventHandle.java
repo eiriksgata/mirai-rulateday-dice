@@ -32,7 +32,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
     @EventHandler()
     public ListeningStatus onBotGroupRequest(BotInvitedJoinGroupRequestEvent event) {
         //收到邀请自动加入
-        if (GlobalData.configData.getBooleanValue("auto.accept.friend.request")) {
+        if (GlobalData.configData.getBooleanValue("auto.accept.group.request")) {
             event.accept();
         }
         return ListeningStatus.LISTENING;
