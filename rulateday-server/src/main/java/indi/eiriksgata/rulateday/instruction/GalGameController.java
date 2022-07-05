@@ -34,7 +34,7 @@ public class GalGameController {
                 PlayerRoleAttributeSetUtil.attributeCheck(data.getQqID(), inputText[2]);
     }
 
-    @InstructReflex(value = {".trpg-load"}, priority = 3)
+    @InstructReflex(value = {".trpg-reload"}, priority = 3)
     public String trpgGameLoad(MessageData<?> data) {
         //TODO: 检测玩家数据是否满足要求
         if (GameData.playerRoleSaveDataMap.get(data.getQqID()) == null ||

@@ -141,7 +141,7 @@ public class RollController {
         }
 
         //优先检测指令是否包含有数值
-        if (data.getMessage().matches("(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+/(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+ [0-9]+")) {
+        if (data.getMessage().matches("^(([1-9]|[1-9][0-9])?[dD]?([1-9][0-9][0-9]|[1-9][0-9]|[1-9])\\+{0,1})+/(([1-9]|[1-9][0-9])?[dD]?([1-9][0-9][0-9]|[1-9][0-9]|[1-9])\\+?)+ ([0-9]|[1-9][0-9]|100)$")) {
             //检测到包含数值 进行 空格符 分割 0为计算公式，1为给定的数值
             String[] tempArr = data.getMessage().split(" ");
             return rollBasics.sanCheck(tempArr[0], "san" + tempArr[1], (attribute, random, sanValue, calculationProcess, surplus) -> {
@@ -149,7 +149,7 @@ public class RollController {
         }
 
         //检测用户输入的指令格式是否正确
-        if (data.getMessage().matches("(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+/(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+")) {
+        if (data.getMessage().matches("^(([1-9]|[1-9][0-9])?[dD]?([1-9][0-9][0-9]|[1-9][0-9]|[1-9])\\+{0,1})+/(([1-9]|[1-9][0-9])?[dD]?([1-9][0-9][0-9]|[1-9][0-9]|[1-9])\\+?)+$")) {
             //查询用户数据
             String attribute = userTempDataService.getUserAttribute(data.getQqID());
             String inputData = RegularExpressionUtils.getMatcher("(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+/(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+", data.getMessage());

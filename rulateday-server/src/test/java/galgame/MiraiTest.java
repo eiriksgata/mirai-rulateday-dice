@@ -1,7 +1,6 @@
 package galgame;
 
 import com.alibaba.fastjson.JSONObject;
-import indi.eiriksgata.rulateday.trpggame.GameData;
 import indi.eiriksgata.rulateday.trpggame.RoleDataHandler;
 import indi.eiriksgata.rulateday.trpggame.TrpgGameServiceImpl;
 import indi.eiriksgata.rulateday.trpggame.utils.PlayerRoleAttributeSetUtil;
@@ -28,8 +27,7 @@ public class MiraiTest {
 
         System.out.println(TrpgGameServiceImpl.loadScriptData(qqId, fileName));
 
-        System.out.println(GameData.optionCountMap);
-        System.out.println(TrpgGameServiceImpl.loadEventText(qqId));
+         System.out.println(TrpgGameServiceImpl.loadEventText(qqId));
 
     }
 

@@ -32,7 +32,6 @@ public class TrpgGameServiceImpl {
         GameData.nodeId.remove(id);
         GameData.nodeMap.remove(id);
         GameData.roleMap.remove(id);
-        GameData.optionCountMap.remove(id);
         GameData.optionJSONObjectMap.remove(id);
         GameData.optionMappingMap.remove(id);
         GameData.TrpgGamePlayerList.remove(id);
@@ -44,12 +43,6 @@ public class TrpgGameServiceImpl {
             return "找不到文件：" + fileName;
         }
         JSONObject modelJSON = JSONObject.parseObject(jsonText);
-
-        Map<String, Integer> optionCount = modelJSON.getJSONObject("config")
-                .getJSONObject("optionNumber")
-                .toJavaObject(new TypeReference<Map<String, Integer>>() {
-                }.getType());
-        GameData.optionCountMap.put(id, optionCount);
 
         Map<String, JSONObject> optionJSONObject = modelJSON.getJSONObject("option").toJavaObject(new TypeReference<Map<String, JSONObject>>() {
         }.getType());
@@ -86,7 +79,7 @@ public class TrpgGameServiceImpl {
         Map<String, String> optionMap = new HashMap<>();
         for (int i = 0; i < optionArray.size(); i++) {
             String optionId = optionArray.getString(i);
-            if (GameData.optionCountMap.get(id).get(optionId) > 0) {
+            if (GameData.optionJSONObjectMap.get(id).get(optionId).getInteger("count") > 0) {
                 optionMap.put(i + "", optionId);
                 optionOutText.append(i).append(".").append(
                         GameData.optionJSONObjectMap.get(id).get(optionId).getString("text")).append("\n");
@@ -136,7 +129,7 @@ public class TrpgGameServiceImpl {
         }
 
         //将选项次数减少
-        GameData.optionCountMap.get(id).put(optionId, GameData.optionCountMap.get(id).get(optionId) - 1);
+        GameData.optionJSONObjectMap.get(id).get(optionId).put("count", GameData.optionJSONObjectMap.get(id).get(optionId).getIntValue("count") - 1);
         String passResult = passOption ? "success" : "fail";
         JSONObject optionJsonMap = GameData.optionJSONObjectMap.get(id).get(optionId).getJSONObject("detection")
                 .getJSONObject(passResult);
@@ -152,7 +145,7 @@ public class TrpgGameServiceImpl {
                             }.getType()
                     ));
         }
-        
+
         //最后才更改nodeId
         GameData.nodeId.put(id, optionJsonMap.getString("nextNode"));
         return resultText;
