@@ -221,7 +221,7 @@ public class RollController {
         return rollRole.createCocRole(createNumber);
     }
 
-    @InstructReflex(value = {".dnd", "。dnd", ".Dnd", "。DND"})
+    @InstructReflex(value = {".dnd", "。dnd", ".Dnd", "。DND"}, priority = 3)
     public String randomDndRole(MessageData<?> data) {
         int createNumber;
         createNumber = checkCreateRandomRoleNumber(data.getMessage());
@@ -231,6 +231,12 @@ public class RollController {
         }
         return rollRole.createDndRole(createNumber);
     }
+
+    @InstructReflex(value = {".dnd5e", "。dnd5e", ".Dnd5e", "。DND5e"}, priority = 4)
+    public String randomDnd5eRole(MessageData<?> data) {
+        return "\n" + rollRole.createDnd5eRole();
+    }
+
 
     @InstructReflex(value = {".jrrp", ".JRRP", "。jrrp", ".todayRandom"})
     public String todayRandom(MessageData<?> data) {

@@ -1,6 +1,7 @@
 import indi.eiriksgata.dice.callback.SanCheckCallback;
 import indi.eiriksgata.dice.exception.DiceInstructException;
 import indi.eiriksgata.dice.message.handle.InstructHandle;
+import indi.eiriksgata.dice.operation.impl.RollRoleImpl;
 import indi.eiriksgata.dice.operation.impl.SanCheckImpl;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.instruction.RollController;
@@ -149,5 +150,10 @@ public class DiceTest {
 
     }
 
+
+    @Test
+    void rollRoleImplByDndRoleCreateTest() {
+        System.out.println(new RollRoleImpl().createDnd5eRole());
+    }
 
 }
