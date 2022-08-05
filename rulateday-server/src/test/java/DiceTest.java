@@ -9,6 +9,7 @@ import indi.eiriksgata.rulateday.utlis.LoadDatabaseFile;
 import indi.eiriksgata.rulateday.utlis.WeightRandom;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
@@ -154,6 +155,13 @@ public class DiceTest {
     @Test
     void rollRoleImplByDndRoleCreateTest() {
         System.out.println(new RollRoleImpl().createDnd5eRole());
+    }
+
+
+    @Test
+    void getName() {
+        String name = new File(ClassLoader.getSystemClassLoader().getResource("[mainclass]").getPath()).getAbsolutePath();
+        System.out.println(name);
     }
 
 }
