@@ -6,6 +6,7 @@ import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.config.GlobalData;
 import indi.eiriksgata.rulateday.service.DiceConfigService;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
+import java.util.ResourceBundle;
 
 @InstructService
 public class ConfigController {
@@ -69,6 +70,12 @@ public class ConfigController {
         } else {
             return "你不是骰主，无法禁用公开测试功能";
         }
+    }
+
+    @InstructReflex(value = {".version"}, priority = 3)
+    public String getProgramVersion(MessageData<?> data) {
+        ResourceBundle config = ResourceBundle.getBundle("application");
+        return "\n" + config.getString("version");
     }
 
 }
