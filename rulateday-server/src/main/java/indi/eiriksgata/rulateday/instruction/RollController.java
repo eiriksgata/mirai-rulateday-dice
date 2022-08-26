@@ -152,12 +152,18 @@ public class RollController {
         if (data.getMessage().matches("^(([1-9]|[1-9][0-9])?[dD]?([1-9][0-9][0-9]|[1-9][0-9]|[1-9])\\+?){1,10}/(([1-9]|[1-9][0-9])?[dD]?([1-9][0-9][0-9]|[1-9][0-9]|[1-9])\\+?){1,10}")) {
             //查询用户数据
             String attribute = userTempDataService.getUserAttribute(data.getQqID());
-            String inputData = RegularExpressionUtils.getMatcher("(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+/(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+", data.getMessage());
-            //要进行是否有用户属性确认
+
             //对于没有属性的用户 返回错误
             if (attribute == null) {
                 return CustomText.getText("dice.sc.not-found.error");
             }
+
+            if (!attribute.matches("san\\d{1,3}")) {
+                return CustomText.getText("dice.sc.not-found.error");
+            }
+
+            String inputData = RegularExpressionUtils.getMatcher("(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+/(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+", data.getMessage());
+            //要进行是否有用户属性确认
 
             return rollBasics.sanCheck(inputData, attribute, (resultAttribute, random, sanValue, calculationProcess, surplus) -> {
                 //修改属性
