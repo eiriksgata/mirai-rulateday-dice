@@ -141,7 +141,7 @@ public class RollController {
         }
 
         //优先检测指令是否包含有数值
-        if (data.getMessage().matches("^(([1-9]|[1-9][0-9])?[dD]?([1-9][0-9][0-9]|[1-9][0-9]|[1-9])\\+?){1,10}/(([1-9]|[1-9][0-9])?[dD]?([1-9][0-9][0-9]|[1-9][0-9]|[1-9])\\+?){1,10} ([0-9]|[1-9][0-9]|100)$")) {
+        if (data.getMessage().matches("^(([1-9]|[1-9]\\d)?[dD]?([1-9]\\d\\d|[1-9]\\d|[1-9])\\+?){1,10}/(([1-9]|[1-9]\\d)?[dD]?([1-9]\\d\\d|[1-9]\\d|[1-9])\\+?){1,10} (\\d|[1-9]\\d|100)$")) {
             //检测到包含数值 进行 空格符 分割 0为计算公式，1为给定的数值
             String[] tempArr = data.getMessage().split(" ");
             return rollBasics.sanCheck(tempArr[0], "san" + tempArr[1], (attribute, random, sanValue, calculationProcess, surplus) -> {
@@ -149,7 +149,7 @@ public class RollController {
         }
 
         //检测用户输入的指令格式是否正确
-        if (data.getMessage().matches("^(([1-9]|[1-9][0-9])?[dD]?([1-9][0-9][0-9]|[1-9][0-9]|[1-9])\\+?){1,10}/(([1-9]|[1-9][0-9])?[dD]?([1-9][0-9][0-9]|[1-9][0-9]|[1-9])\\+?){1,10}")) {
+        if (data.getMessage().matches("^(([1-9]|[1-9]\\d)?[dD]?([1-9]\\d\\d|[1-9]\\d|[1-9])\\+?){1,10}/(([1-9]|[1-9]\\d)?[dD]?([1-9]\\d\\d|[1-9]\\d|[1-9])\\+?){1,10}")) {
             //查询用户数据
             String attribute = userTempDataService.getUserAttribute(data.getQqID());
 
@@ -162,7 +162,7 @@ public class RollController {
                 return CustomText.getText("dice.sc.not-found.error");
             }
 
-            String inputData = RegularExpressionUtils.getMatcher("(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+/(([0-9]?[Dd][0-9]+|[Dd]|[0-9])\\+?)+", data.getMessage());
+            String inputData = RegularExpressionUtils.getMatcher("((\\d?[Dd]\\d+|[Dd]|\\d)\\+?)+/((\\d?[Dd]\\d+|[Dd]|\\d)\\+?)+", data.getMessage());
             //要进行是否有用户属性确认
 
             return rollBasics.sanCheck(inputData, attribute, (resultAttribute, random, sanValue, calculationProcess, surplus) -> {
@@ -279,7 +279,7 @@ public class RollController {
         if (data.getMessage().equals("")) {
             return CustomText.getText("dice.en.parameter.null");
         }
-        String checkAttribute = RegularExpressionUtils.getMatcher("[\\u4E00-\\u9FA5A-z]+[0-9]+", data.getMessage());
+        String checkAttribute = RegularExpressionUtils.getMatcher("[\\u4E00-\\u9FA5A-z]+\\d+", data.getMessage());
         if (checkAttribute == null) {
             checkAttribute = RegularExpressionUtils.getMatcher("[\\u4E00-\\u9FA5A-z]+", data.getMessage());
             if (checkAttribute == null) {
@@ -291,7 +291,7 @@ public class RollController {
                 return CustomText.getText("dice.en.not.set.attribute");
             }
 
-            String tempData = RegularExpressionUtils.getMatcher(checkAttribute + "[0-9]+", userAttribute);
+            String tempData = RegularExpressionUtils.getMatcher(checkAttribute + "\\d+", userAttribute);
             if (tempData == null) {
                 return CustomText.getText("dice.en.not.found.attribute", checkAttribute);
             }
@@ -310,7 +310,7 @@ public class RollController {
         }
 
         int randomNumber = new SecureRandom().nextInt(100);
-        int checkNumber = Integer.parseInt(RegularExpressionUtils.getMatcher("[0-9]+", checkAttribute));
+        int checkNumber = Integer.parseInt(RegularExpressionUtils.getMatcher("\\d+", checkAttribute));
         if (randomNumber > checkNumber) {
             int addValue = new SecureRandom().nextInt(10);
             int count = addValue + checkNumber;
@@ -322,7 +322,7 @@ public class RollController {
 
     @InstructReflex(value = {".sa", "。sa"})
     public String attributeSetAttribute(MessageData<?> data) {
-        String changeValue = RegularExpressionUtils.getMatcher("[0-9]+", data.getMessage());
+        String changeValue = RegularExpressionUtils.getMatcher("\\d+", data.getMessage());
         if (changeValue == null) {
             return CustomText.getText("dice.sa.parameter.null");
         }
