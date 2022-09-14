@@ -16,7 +16,7 @@ public class JSONFileUtils {
                 GlobalData.configData.put(key, value);
             }
         });
-        GlobalData.configData.put("custom-text.version", defaultJSONObject.getString("custom-text.version"));
+        GlobalData.configData.put("file.version", defaultJSONObject.getString("file.version"));
         try {
             CustomText.fileOut(new File(filePath), GlobalData.configData.toJSONString());
         } catch (IOException e) {
