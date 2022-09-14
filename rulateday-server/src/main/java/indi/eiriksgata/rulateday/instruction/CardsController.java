@@ -187,7 +187,7 @@ public class CardsController {
         return CustomText.getText("cards.draw.hide.success");
     }
 
-    @InstructReflex(value = {".draw"})
+    @InstructReflex(value = {".draw"}, priority = 5)
     public String drawOut(MessageData<?> data) {
         final long[] groupId = new long[1];
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {

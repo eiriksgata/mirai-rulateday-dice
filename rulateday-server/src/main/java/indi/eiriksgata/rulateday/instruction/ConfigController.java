@@ -4,8 +4,13 @@ import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.injection.InstructService;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.config.GlobalData;
+import indi.eiriksgata.rulateday.event.EventAdapter;
+import indi.eiriksgata.rulateday.event.EventUtils;
 import indi.eiriksgata.rulateday.service.DiceConfigService;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
+import net.mamoe.mirai.contact.MemberPermission;
+import net.mamoe.mirai.event.events.GroupMessageEvent;
+
 import java.util.ResourceBundle;
 
 @InstructService
@@ -78,4 +83,21 @@ public class ConfigController {
         return "\n" + config.getString("version");
     }
 
+    @InstructReflex(value = {".dismiss"}, priority = 3)
+    public String dismissCurrentGroup(MessageData<?> data) {
+        EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
+            @Override
+            public void group(GroupMessageEvent event) {
+                event.getGroup().sendMessage("正在退出群聊，请稍等。");
+
+                if (event.getSender().getPermission().getLevel() == MemberPermission.ADMINISTRATOR.getLevel() ||
+                        event.getSender().getPermission().getLevel() == MemberPermission.OWNER.getLevel()) {
+                    event.getGroup().quit();
+                } else {
+                    event.getGroup().sendMessage("需要群主或者管理员权限，才能退出当前群聊。");
+                }
+            }
+        });
+        return null;
+    }
 }
