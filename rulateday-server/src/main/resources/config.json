@@ -1,6 +1,7 @@
 {
-  "file.version": "1.0.2",
+  "file.version": "1.0.3",
   "master.QQ.number": "",
   "auto.accept.friend.request": true,
-  "auto.accept.group.request": true
+  "auto.accept.group.request": true,
+  "reply.at.user": false
 }

@@ -124,11 +124,12 @@ public class LoadDatabaseFile {
             ));
             String defaultFileVersion = defaultJSONObject.getString("file.version");
             if (loadFileVersion == null) {
-                merge(defaultJSONObject);
+                JSONFileUtils.configFileMerge(filePath, defaultJSONObject);
             } else {
                 int result = new VersionUtils().compareVersion(loadFileVersion, defaultFileVersion);
                 if (result == -1) {
-                    merge(defaultJSONObject);
+                    JSONFileUtils.configFileMerge(filePath, defaultJSONObject);
+                    RulatedayCore.INSTANCE.getLogger().info("检测到新的配置文件项，正在合并！");
                 }
             }
         } catch (IOException e) {
