@@ -16,6 +16,7 @@ import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.ListeningStatus;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.*;
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.reflection.ExceptionUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -170,6 +171,9 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             e.printStackTrace();
             result = e.getCause().toString();
             apiReport.exceptionReport(event.getMessage().contentToString(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
+        } catch (PersistenceException e) {
+            e.printStackTrace();
+            result = "数据库操作异常，可以尝试重启程序，如果还存在这种情况，可以联系开发人员进行反馈";
         } catch (Exception e) {
             e.printStackTrace();
             RulatedayCore.INSTANCE.getLogger().error(ExceptionUtil.unwrapThrowable(e));
