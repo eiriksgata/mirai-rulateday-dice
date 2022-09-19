@@ -79,7 +79,7 @@ public class CardsController {
         }
         CardsTypeList cardsTypeList = cardsTypeListMapper.selectByName(data.getMessage());
         if (cardsTypeList == null) {
-            return "cards.draw.not.found";
+            return CustomText.getText("cards.draw.not.found");
         }
         String[] addDataArr = cardsTypeList.getContent().split(",");
         final Long[] groupId = new Long[1];
@@ -187,7 +187,7 @@ public class CardsController {
         return CustomText.getText("cards.draw.hide.success");
     }
 
-    @InstructReflex(value = {".draw"}, priority = 5)
+    @InstructReflex(value = {".draw"}, priority = 2)
     public String drawOut(MessageData<?> data) {
         final long[] groupId = new long[1];
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
