@@ -39,7 +39,7 @@ public class InfiniteLibController {
         if (data.getMessage().equals(" ")) {
             return CustomText.getText("dr5e.rule.not.parameter");
         }
-        String url = apiUrl + "/infinite/lib/query/name";
+        String url = apiUrl + "/openapi/v1/infinite/lib/query/name";
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("name", data.getMessage());
         ResponseBaseVo<List<QueryDataBase>> result =
