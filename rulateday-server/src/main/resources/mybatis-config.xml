@@ -26,7 +26,6 @@
         <mapper class="indi.eiriksgata.rulateday.mapper.Dnd5ePhbDataMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.UserConversationMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.UserInitiativeDataMapper"/>
-        <mapper class="indi.eiriksgata.rulateday.mapper.NamesCorpusMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.CardsGroupDataMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.CardsTypeListMapper"/>
         <mapper class="indi.eiriksgata.rulateday.mapper.DiceConfigMapper"/>
