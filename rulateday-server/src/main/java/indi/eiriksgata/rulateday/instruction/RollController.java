@@ -1,5 +1,6 @@
 package indi.eiriksgata.rulateday.instruction;
 
+import com.alibaba.fastjson.JSONObject;
 import indi.eiriksgata.dice.operation.RollBasics;
 import indi.eiriksgata.dice.operation.RollRole;
 import indi.eiriksgata.dice.operation.impl.RollRoleImpl;
@@ -15,11 +16,11 @@ import indi.eiriksgata.dice.operation.impl.RollBasicsImpl;
 import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.rulateday.event.EventAdapter;
 import indi.eiriksgata.rulateday.event.EventUtils;
-import indi.eiriksgata.rulateday.service.HumanNameService;
 import indi.eiriksgata.rulateday.service.UserTempDataService;
-import indi.eiriksgata.rulateday.service.impl.HumanNameServiceImpl;
+import indi.eiriksgata.rulateday.service.impl.ApiReportImpl;
 import indi.eiriksgata.rulateday.service.impl.UserTempDataServiceImpl;
 import indi.eiriksgata.rulateday.utlis.CharacterUtils;
+import indi.eiriksgata.rulateday.utlis.RestUtil;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.GroupTempMessageEvent;
@@ -50,9 +51,6 @@ public class RollController {
 
     @Resource
     public static final RollRole rollRole = new RollRoleImpl();
-
-    @Resource
-    public static final HumanNameService humanNameService = new HumanNameServiceImpl();
 
     @InstructReflex(value = {".ra", ".rc", "。ra", "。rc"}, priority = 2)
     public String attributeCheck(MessageData<?> data) {
@@ -252,6 +250,8 @@ public class RollController {
 
     @InstructReflex(value = {".name"})
     public String randomName(MessageData<?> data) {
+        JSONObject jsonObject = new JSONObject();
+        String url = ApiReportImpl.apiUrl + "/openapi/v1/random/human/name";
         if (StringUtils.isNumeric(data.getMessage())) {
             int number;
             try {
@@ -259,12 +259,15 @@ public class RollController {
             } catch (Exception e) {
                 return CustomText.getText("dice.base.parameter.error");
             }
+
             if (number > 0 && number <= 20) {
-                return humanNameService.randomName(Integer.parseInt(data.getMessage()));
+                jsonObject.put("number", number);
+                return "随机名字：" + JSONObject.parseObject(RestUtil.postForJson(url, jsonObject.toJSONString())).getString("data");
             }
             return CustomText.getText("names.create.size.max");
         } else {
-            return humanNameService.randomName(1);
+            jsonObject.put("number", 1);
+            return "随机名字：" + JSONObject.parseObject(RestUtil.postForJson(url, jsonObject.toJSONString())).getString("data");
         }
     }
 
