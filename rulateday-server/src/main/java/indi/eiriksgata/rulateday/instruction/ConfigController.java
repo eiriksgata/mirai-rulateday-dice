@@ -8,7 +8,9 @@ import indi.eiriksgata.rulateday.event.EventAdapter;
 import indi.eiriksgata.rulateday.event.EventUtils;
 import indi.eiriksgata.rulateday.service.DiceConfigService;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
+import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.contact.MemberPermission;
+import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 
 import java.util.ResourceBundle;
@@ -85,19 +87,69 @@ public class ConfigController {
 
     @InstructReflex(value = {".dismiss"}, priority = 3)
     public String dismissCurrentGroup(MessageData<?> data) {
+        String number = GlobalData.configData.getString("master.QQ.number");
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
             public void group(GroupMessageEvent event) {
                 event.getGroup().sendMessage("正在退出群聊，请稍等。");
 
                 if (event.getSender().getPermission().getLevel() == MemberPermission.ADMINISTRATOR.getLevel() ||
-                        event.getSender().getPermission().getLevel() == MemberPermission.OWNER.getLevel()) {
+                        event.getSender().getPermission().getLevel() == MemberPermission.OWNER.getLevel() ||
+                        data.getQqID() == Long.parseLong(number)
+                ) {
                     event.getGroup().quit();
                 } else {
-                    event.getGroup().sendMessage("需要群主或者管理员权限，才能退出当前群聊。");
+                    event.getGroup().sendMessage("需要群主或者管理员或者骰主权限，才能退出当前群聊。");
                 }
             }
         });
+        return null;
+    }
+
+    @InstructReflex(value = {".quitGroup"}, priority = 3)
+    public String quitGroupByMaster(MessageData<?> data) {
+        String number = GlobalData.configData.getString("master.QQ.number");
+        if (!number.equals("" + data.getQqID())) {
+            return "您不是骰主，不可以使用该指令";
+        }
+        int groupId;
+        if (data.getMessage().matches("^\\d{1,20}$")) {
+            groupId = Integer.parseInt(data.getMessage());
+        } else {
+            return "输入的群号格式不对";
+        }
+
+        EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
+            @Override
+            public void group(GroupMessageEvent event) {
+                Group group = event.getBot().getGroup(groupId);
+                if (group == null) {
+                    event.getGroup().sendMessage("尚未加入该群聊：" + groupId);
+                } else {
+                    if (group.quit()) {
+                        event.getGroup().sendMessage("已退出该群聊：" + groupId);
+                    } else {
+                        event.getGroup().sendMessage("退出群聊失败：" + groupId);
+                    }
+
+                }
+            }
+
+            @Override
+            public void friend(FriendMessageEvent event) {
+                Group group = event.getBot().getGroup(groupId);
+                if (group == null) {
+                    event.getSender().sendMessage("尚未加入该群聊：" + groupId);
+                } else {
+                    if (group.quit()) {
+                        event.getSender().sendMessage("已退出该群聊：" + groupId);
+                    } else {
+                        event.getSender().sendMessage("退出群聊失败：" + groupId);
+                    }
+                }
+            }
+        });
+
         return null;
     }
 }
