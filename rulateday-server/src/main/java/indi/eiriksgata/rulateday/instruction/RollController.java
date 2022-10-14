@@ -16,6 +16,7 @@ import indi.eiriksgata.dice.operation.impl.RollBasicsImpl;
 import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.rulateday.event.EventAdapter;
 import indi.eiriksgata.rulateday.event.EventUtils;
+import indi.eiriksgata.rulateday.service.DiceConfigService;
 import indi.eiriksgata.rulateday.service.UserTempDataService;
 import indi.eiriksgata.rulateday.service.impl.ApiReportImpl;
 import indi.eiriksgata.rulateday.service.impl.UserTempDataServiceImpl;
@@ -174,27 +175,28 @@ public class RollController {
 
     @InstructReflex(value = {".rh", "。rh"}, priority = 3)
     public String rollHide(MessageData<?> data) {
+        if (!DiceConfigService.diceConfigMapper.selectById().getPrivate_chat()) {
+            return "骰主尚未允许私聊模式";
+        }
+        EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
+            @Override
+            public void group(GroupMessageEvent event) {
+                event.getSender().sendMessage(
+                        roll(data)
+                );
+            }
 
-        return "该指令会导致冻结风险，因此暂时关闭。如要使用，请新建群聊然后拉入使用。";
-//        EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
-//            @Override
-//            public void group(GroupMessageEvent event) {
-//                event.getSender().sendMessage(
-//                        roll(data)
-//                );
-//            }
-//
-//            @Override
-//            public void friend(FriendMessageEvent event) {
-//                event.getFriend().sendMessage(roll(data));
-//            }
-//
-//            @Override
-//            public void groupTemp(GroupTempMessageEvent event) {
-//                event.getSender().sendMessage(roll(data));
-//            }
-//        });
-//        return CustomText.getText("coc7.roll.hide");
+            @Override
+            public void friend(FriendMessageEvent event) {
+                event.getFriend().sendMessage(roll(data));
+            }
+
+            @Override
+            public void groupTemp(GroupTempMessageEvent event) {
+                event.getSender().sendMessage(roll(data));
+            }
+        });
+        return CustomText.getText("coc7.roll.hide");
     }
 
     @InstructReflex(value = {".rb", "。rb", ",rb"}, priority = 3)
