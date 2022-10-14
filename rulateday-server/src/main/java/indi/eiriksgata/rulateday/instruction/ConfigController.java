@@ -106,7 +106,7 @@ public class ConfigController {
         return null;
     }
 
-    @InstructReflex(value = {".quitGroup"}, priority = 3)
+    @InstructReflex(value = {".quitGroup",".quitgroup"}, priority = 4)
     public String quitGroupByMaster(MessageData<?> data) {
         String number = GlobalData.configData.getString("master.QQ.number");
         if (!number.equals("" + data.getQqID())) {
