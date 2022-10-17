@@ -96,7 +96,7 @@ public class RollController {
             return rollBasics.rollRandom("d", data.getQqID());
         } else {
             //正则筛选
-            String result = RegularExpressionUtils.getMatcher("[0-9]?[dD]?[0-9]{1,5}([\\+\\-\\*\\/][0-9]?[dD]?[0-9]{1,5})*", data.getMessage());
+            String result = RegularExpressionUtils.getMatcher("[0-9]{0,2}[dD]?[0-9]{1,5}([\\+\\-\\*\\/][0-9]{0,2}[dD]?[0-9]{1,5})*", data.getMessage());
             if (result != null) {
                 return rollBasics.rollRandom(result, data.getQqID()) + data.getMessage().replace(result, "");
             }
