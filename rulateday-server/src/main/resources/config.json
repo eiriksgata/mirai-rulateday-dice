@@ -1,7 +1,12 @@
 {
-  "file.version": "1.0.3",
+  "file.version": "1.0.4",
   "master.QQ.number": "",
   "auto.accept.friend.request": true,
   "auto.accept.group.request": true,
-  "reply.at.user": false
+  "reply.at.user": false,
+  "ai-drawing": {
+    "url": "ws://localhost:16467",
+    "remote": true,
+    "userId": ""
+  }
 }

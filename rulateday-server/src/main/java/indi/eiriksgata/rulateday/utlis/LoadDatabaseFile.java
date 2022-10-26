@@ -6,6 +6,7 @@ import indi.eiriksgata.dice.utlis.VersionUtils;
 import indi.eiriksgata.rulateday.RulatedayCore;
 import indi.eiriksgata.rulateday.config.CustomDocumentHandler;
 import indi.eiriksgata.rulateday.config.GlobalData;
+import indi.eiriksgata.rulateday.websocket.client.WebSocketClientInit;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -39,6 +40,9 @@ public class LoadDatabaseFile {
             createConfigFile();
 
             LoadDatabaseFile.loadCustomDocument();
+
+            new Thread(WebSocketClientInit::run).start();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -197,6 +201,5 @@ public class LoadDatabaseFile {
         inputStream.close();
         output.close();
     }
-
 
 }
