@@ -1,7 +1,6 @@
 package indi.eiriksgata.rulateday.websocket.client;
 
 import indi.eiriksgata.rulateday.config.GlobalData;
-import lombok.extern.slf4j.Slf4j;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.mindrot.jbcrypt.BCrypt;
@@ -20,8 +19,13 @@ public class WebSocketClientInit {
 
 
     public static void run() {
+        String url = GlobalData.configData.getJSONObject("ai-drawing").getString("url");
+        if (url == null || url.equals("")) {
+            return;
+        }
+        url += "/push-channel";
+
         String userId = GlobalData.configData.getJSONObject("ai-drawing").getString("userId");
-        String url = GlobalData.configData.getJSONObject("ai-drawing").getString("url") + "/push-channel";
 
         if (userId == null || GlobalData.machineCode == null || userId.equals("") || GlobalData.machineCode.equals("")) {
             System.out.println("Rulateday-dice: userId or machineCode get fail , ai drawing server run fail.");

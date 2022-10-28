@@ -36,7 +36,6 @@ public class OsUtils {
         String str1 = sb.toString();
         String str2 = str1.split("ether")[1].trim();
         String result = str2.split("txqueuelen")[0].trim();
-        System.out.println("Linux MacAddress is: " + result);
         br.close();
         return result;
     }
@@ -57,7 +56,6 @@ public class OsUtils {
         String str1 = sb.toString();
         String str2 = str1.split("identifier:")[1].trim();
         String result = str2.split("Device Boot")[0].trim();
-        System.out.println("Linux Identifier is: " + result);
         br.close();
         return result.replaceAll("-", "");
     }
@@ -79,7 +77,6 @@ public class OsUtils {
                 break;
             }
         }
-        System.out.println("Windows MACAddress is: " + result);
         br.close();
         return result;
     }
@@ -100,7 +97,6 @@ public class OsUtils {
         if (result.equals("")) {
             result = Integer.toHexString(Integer.parseInt(getHardDiskSN("C"))).toUpperCase();
         }
-        System.out.println("Windows Identifier is: " + result);
         return result.replaceAll("-", "");
     }
 
@@ -136,8 +132,9 @@ public class OsUtils {
     }
 
     public static void main(String[] a) throws Exception {
-        String result = getIdentifierByWindows();
-        System.out.println(result);
+        //String result = getIdentifierByWindows();
+        System.out.println(getHardDiskSN("C"));
+        //System.out.println(result);
     }
 
 }

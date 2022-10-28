@@ -1,3 +1,4 @@
+import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.rulateday.websocket.client.WebSocketClientInit;
 import org.junit.jupiter.api.Test;
 
@@ -13,5 +14,13 @@ public class WebSocketTest {
         Thread.sleep(1000 * 60 * 60 * 5);
 
 
+    }
+
+    @Test
+    void error(){
+        String attribute = "san60力量50";
+        if (attribute.matches("san\\d{1,3}")) {
+            System.out.println("error");
+        }
     }
 }

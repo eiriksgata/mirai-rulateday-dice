@@ -5,7 +5,7 @@
   "auto.accept.group.request": true,
   "reply.at.user": false,
   "ai-drawing": {
-    "url": "ws://localhost:16467",
+    "url": "",
     "remote": true,
     "userId": ""
   }
