@@ -157,11 +157,14 @@ public class RollController {
                 return CustomText.getText("dice.sc.not-found.error");
             }
 
-            if (!attribute.matches("san\\d{1,3}")) {
+            String sanAttribute = RegularExpressionUtils.getMatcher("san\\d{1,3}", attribute);
+            if (sanAttribute == null) {
                 return CustomText.getText("dice.sc.not-found.error");
             }
 
             String inputData = RegularExpressionUtils.getMatcher("((\\d?[Dd]\\d+|[Dd]|\\d)\\+?)+/((\\d?[Dd]\\d+|[Dd]|\\d)\\+?)+", data.getMessage());
+
+
             //要进行是否有用户属性确认
 
             return rollBasics.sanCheck(inputData, attribute, (resultAttribute, random, sanValue, calculationProcess, surplus) -> {
