@@ -1,5 +1,7 @@
 package indi.eiriksgata.rulateday.instruction;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.kevinsawicki.http.HttpRequest;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -18,6 +20,7 @@ import indi.eiriksgata.rulateday.service.UserConversationService;
 import indi.eiriksgata.rulateday.service.impl.*;
 import indi.eiriksgata.rulateday.utlis.HexConvertUtil;
 import indi.eiriksgata.rulateday.utlis.LoadDatabaseFile;
+import indi.eiriksgata.rulateday.utlis.RestUtil;
 import indi.eiriksgata.rulateday.vo.ResponseBaseVo;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
@@ -242,5 +245,19 @@ public class QueryController {
             }
             return result.get(0).getName() + "\n" + result.get(0).getDescribe();
         }
+    }
+
+    @InstructReflex(value = {".tr-en"}, priority = 3)
+    public String translateToEnglish(MessageData<?> data) {
+        if (data.getMessage() == null || data.getMessage().equals("")) {
+            return "没有需要翻译的内容";
+        }
+        if (data.getMessage().length() > 200) {
+            return "文本长度应该小于200";
+        }
+        String url = "http://fanyi.youdao.com/translate?&doctype=json&type=AUTO&i=";
+        String result = RestUtil.get(url + data.getMessage());
+        JSONObject jsonObject = JSON.parseObject(result);
+        return jsonObject.getJSONArray("translateResult").getJSONArray(0).getJSONObject(0).getString("tgt");
     }
 }
