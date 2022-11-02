@@ -13,10 +13,7 @@ import indi.eiriksgata.rulateday.config.CustomDocumentHandler;
 import indi.eiriksgata.rulateday.event.EventAdapter;
 import indi.eiriksgata.rulateday.event.EventUtils;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
-import indi.eiriksgata.rulateday.service.CrazyLibraryService;
-import indi.eiriksgata.rulateday.service.Dnd5eLibService;
-import indi.eiriksgata.rulateday.service.RuleService;
-import indi.eiriksgata.rulateday.service.UserConversationService;
+import indi.eiriksgata.rulateday.service.*;
 import indi.eiriksgata.rulateday.service.impl.*;
 import indi.eiriksgata.rulateday.utlis.HexConvertUtil;
 import indi.eiriksgata.rulateday.utlis.LoadDatabaseFile;
@@ -255,9 +252,6 @@ public class QueryController {
         if (data.getMessage().length() > 200) {
             return "文本长度应该小于200";
         }
-        String url = "http://fanyi.youdao.com/translate?&doctype=json&type=AUTO&i=";
-        String result = RestUtil.get(url + data.getMessage());
-        JSONObject jsonObject = JSON.parseObject(result);
-        return jsonObject.getJSONArray("translateResult").getJSONArray(0).getJSONObject(0).getString("tgt");
+        return OtherApiService.translateToEnglishByYouDu(data.getMessage());
     }
 }

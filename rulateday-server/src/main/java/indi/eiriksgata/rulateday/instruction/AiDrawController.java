@@ -6,6 +6,7 @@ import indi.eiriksgata.dice.injection.InstructService;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.event.EventAdapter;
 import indi.eiriksgata.rulateday.event.EventUtils;
+import indi.eiriksgata.rulateday.service.OtherApiService;
 import indi.eiriksgata.rulateday.vo.AiTextDrawVo;
 import indi.eiriksgata.rulateday.websocket.client.EventType;
 import indi.eiriksgata.rulateday.websocket.client.WebSocketClientInit;
@@ -35,8 +36,13 @@ public class AiDrawController {
                 AiTextDrawGenVo genVo = new AiTextDrawGenVo();
                 genVo.setGroupId(event.getGroup().getId());
                 genVo.setCreatedById(event.getSender().getId());
-                genVo.setPrompt(aiTextDrawVo.getPrompt());
-                genVo.setNegativePrompt(aiTextDrawVo.getNegativePrompt());
+                if (aiTextDrawVo.getTranslate() == 1) {
+                    genVo.setPrompt(OtherApiService.translateToEnglishByYouDu(aiTextDrawVo.getPrompt()));
+                    genVo.setNegativePrompt(OtherApiService.translateToEnglishByYouDu(aiTextDrawVo.getNegativePrompt()));
+                } else {
+                    genVo.setPrompt(aiTextDrawVo.getPrompt());
+                    genVo.setNegativePrompt(aiTextDrawVo.getNegativePrompt());
+                }
                 genVo.setTranslate(false);
                 genVo.setSamplingSteps(aiTextDrawVo.getSamplingSteps());
                 genVo.setPictureShape(aiTextDrawVo.getPictureShape());
@@ -54,6 +60,5 @@ public class AiDrawController {
 
         return "任务已发布，如有结果将会发送至当前群聊。";
     }
-
 
 }

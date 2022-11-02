@@ -11,4 +11,6 @@ public class AiTextDrawVo {
     private int pictureShape;
     private int samplingSteps;
 
+    private int translate = 0;
+
 }

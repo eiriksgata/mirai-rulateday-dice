@@ -218,7 +218,7 @@
                 <dependency>
                     <groupId>io.github.eiriksgata</groupId>
                     <artifactId>trpg-java-dice</artifactId>
-                    <version>1.3-SNAPSHOT</version>
+                    <version>1.4-SNAPSHOT</version>
                 </dependency>
 
                 <dependency>
@@ -257,7 +257,7 @@
                 <dependency>
                     <groupId>io.github.eiriksgata</groupId>
                     <artifactId>trpg-java-dice</artifactId>
-                    <version>1.3-SNAPSHOT</version>
+                    <version>1.4-SNAPSHOT</version>
                 </dependency>
 
                 <dependency>
@@ -292,7 +292,7 @@
                 <dependency>
                     <groupId>com.github.Eiriksgata</groupId>
                     <artifactId>trpg-java-dice</artifactId>
-                    <version>1.3.7</version>
+                    <version>1.3.8</version>
                 </dependency>
 
                 <dependency>

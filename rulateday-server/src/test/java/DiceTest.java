@@ -59,7 +59,7 @@ public class DiceTest {
         MessageData<?> messageData = new MessageData<>();
         messageData.setQqID(123456789L);
         InstructHandle instruct = new InstructHandle();
-        messageData.setMessage(".rd");
+        messageData.setMessage(".rd+5d+3d2+1d3+d+5d6+d");
         try {
             System.out.println(instruct.instructCheck(messageData));
         } catch (DiceInstructException e) {
