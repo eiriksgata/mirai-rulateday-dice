@@ -25,7 +25,7 @@ public class InitiativeController {
     @Resource
     public static UserInitiativeServerImpl initiativeServer = new UserInitiativeServerImpl();
 
-    @InstructReflex(value = {".atklist", "atkList"}, priority = 2)
+    @InstructReflex(value = {"atklist", "atkList"}, priority = 2)
     public String getAtkList(MessageData<?> data) {
         final String[] resultText = {""};
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
@@ -45,7 +45,7 @@ public class InitiativeController {
     }
 
 
-    @InstructReflex(value = {".atkdel", ".atkDel", ".Atkdel", ".AtlDel"}, priority = 2)
+    @InstructReflex(value = {"atkdel", "atkDel", "Atkdel", "AtlDel"}, priority = 2)
     public String delAtk(MessageData<?> data) {
         String tempName = null;
         String resultText = CustomText.getText("initiative.delete.oneself");
@@ -83,7 +83,7 @@ public class InitiativeController {
     }
 
 
-    @InstructReflex(value = {".atkClear", ".clearAtk", ".atkclear", "AtkClear"}, priority = 2)
+    @InstructReflex(value = {"atkClear", "clearAtk", "atkclear", "AtkClear"}, priority = 2)
     public String clearAtkList(MessageData<?> data) {
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
@@ -99,7 +99,7 @@ public class InitiativeController {
         return CustomText.getText("initiative.clear");
     }
 
-    @InstructReflex(value = {".atk", "。atk"})
+    @InstructReflex(value = {"atk", "atk"})
     public String generateInitiativeDice(MessageData<?> data) {
         String name = null;
         String[] tempList;

@@ -1,5 +1,5 @@
 {
-  "file.version": "1.0.4",
+  "file.version": "1.0.5",
   "master.QQ.number": "",
   "auto.accept.friend.request": true,
   "auto.accept.group.request": true,
@@ -8,5 +8,9 @@
     "url": "",
     "remote": true,
     "userId": ""
-  }
+  },
+  "instructions.prefix.list": [
+    ".",
+    "。"
+  ]
 }

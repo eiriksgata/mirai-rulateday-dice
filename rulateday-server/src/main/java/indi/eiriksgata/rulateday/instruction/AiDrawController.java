@@ -18,7 +18,7 @@ import org.mindrot.jbcrypt.BCrypt;
 @InstructService
 public class AiDrawController {
 
-    @InstructReflex(value = {".ai-text-draw"}, priority = 3)
+    @InstructReflex(value = {"ai-text-draw"}, priority = 3)
     public String textDrawImage(MessageData<?> data) {
         AiTextDrawVo aiTextDrawVo = JSONObject.parseObject(data.getMessage(), AiTextDrawVo.class);
 

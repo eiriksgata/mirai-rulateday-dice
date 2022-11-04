@@ -53,7 +53,7 @@ public class RollController {
     @Resource
     public static final RollRole rollRole = new RollRoleImpl();
 
-    @InstructReflex(value = {".ra", ".rc", "。ra", "。rc"}, priority = 2)
+    @InstructReflex(value = {"ra", "rc"}, priority = 2)
     public String attributeCheck(MessageData<?> data) {
         String attribute = userTempDataService.getUserAttribute(data.getQqID());
         data.setMessage(data.getMessage().replaceAll(" ", ""));
@@ -71,7 +71,7 @@ public class RollController {
         }
     }
 
-    @InstructReflex(value = {".st", "。st"})
+    @InstructReflex(value = {"st"})
     public String setAttribute(MessageData<?> data) {
         if (data.getMessage().equals("")) {
             return CustomText.getText("dice.set.attribute.error");
@@ -85,7 +85,7 @@ public class RollController {
         return CustomText.getText("dice.set.attribute.success");
     }
 
-    @InstructReflex(value = {".r", "。r"})
+    @InstructReflex(value = {"r"})
     public String roll(MessageData<?> data) {
         Integer diceFace = userTempDataService.getUserDiceFace(data.getQqID());
         data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
@@ -108,7 +108,7 @@ public class RollController {
     }
 
 
-    @InstructReflex(value = {".MessageData", ".set", "。set"})
+    @InstructReflex(value = {"MessageData", "set"})
     public String setDiceFace(MessageData<?> data) throws DiceInstructException {
         //移除所有的空格
         int setDiceFace;
@@ -130,7 +130,7 @@ public class RollController {
         return CustomText.getText("dice.set.face.success", setDiceFace);
     }
 
-    @InstructReflex(value = {".sc", "。sc"})
+    @InstructReflex(value = {"sc"})
     public String sanCheck(MessageData<?> data) {
         data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
 
@@ -179,7 +179,7 @@ public class RollController {
         return CustomText.getText("dice.sc.instruct.error");
     }
 
-    @InstructReflex(value = {".rh", "。rh"}, priority = 3)
+    @InstructReflex(value = {"rh"}, priority = 3)
     public String rollHide(MessageData<?> data) {
         if (!DiceConfigService.diceConfigMapper.selectById().getPrivate_chat()) {
             return "骰主尚未允许私聊模式";
@@ -205,7 +205,7 @@ public class RollController {
         return CustomText.getText("coc7.roll.hide");
     }
 
-    @InstructReflex(value = {".rb", "。rb", ",rb"}, priority = 3)
+    @InstructReflex(value = {"rb"}, priority = 3)
     public String rollBonusDice(MessageData<?> data) {
         data.setMessage(data.getMessage().replaceAll(" ", ""));
         data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
@@ -214,7 +214,7 @@ public class RollController {
         return rollBasics.rollBonus(data.getMessage(), attribute, true);
     }
 
-    @InstructReflex(value = {".rp", "。rp", ",rp", ".Rp"}, priority = 3)
+    @InstructReflex(value = {"rp", "Rp"}, priority = 3)
     public String rollPunishment(MessageData<?> data) {
         data.setMessage(data.getMessage().replaceAll(" ", ""));
         data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
@@ -222,7 +222,7 @@ public class RollController {
         return rollBasics.rollBonus(data.getMessage(), attribute, false);
     }
 
-    @InstructReflex(value = {".coc", "。coc", ".Coc"})
+    @InstructReflex(value = {"coc", "Coc"})
     public String randomCocRole(MessageData<?> data) {
         int createNumber;
         createNumber = checkCreateRandomRoleNumber(data.getMessage());
@@ -233,7 +233,7 @@ public class RollController {
         return rollRole.createCocRole(createNumber);
     }
 
-    @InstructReflex(value = {".dnd", "。dnd", ".Dnd", "。DND"}, priority = 3)
+    @InstructReflex(value = {"dnd", "Dnd", "DND"}, priority = 3)
     public String randomDndRole(MessageData<?> data) {
         int createNumber;
         createNumber = checkCreateRandomRoleNumber(data.getMessage());
@@ -244,19 +244,19 @@ public class RollController {
         return rollRole.createDndRole(createNumber);
     }
 
-    @InstructReflex(value = {".dnd5e", "。dnd5e", ".Dnd5e", "。DND5e"}, priority = 4)
+    @InstructReflex(value = {"dnd5e", "Dnd5e", "DND5e"}, priority = 4)
     public String randomDnd5eRole(MessageData<?> data) {
         return "\n" + rollRole.createDnd5eRole();
     }
 
 
-    @InstructReflex(value = {".jrrp", ".JRRP", "。jrrp", ".todayRandom"})
+    @InstructReflex(value = {"jrrp", "JRRP", "todayRandom"})
     public String todayRandom(MessageData<?> data) {
         return rollBasics.todayRandom(data.getQqID(), 8);
     }
 
 
-    @InstructReflex(value = {".name"})
+    @InstructReflex(value = {"name"})
     public String randomName(MessageData<?> data) {
         JSONObject jsonObject = new JSONObject();
         String url = ApiReportImpl.apiUrl + "/openapi/v1/random/human/name";
@@ -280,12 +280,12 @@ public class RollController {
     }
 
 
-    @InstructReflex(value = {".ga", "。ga"}, priority = 2)
+    @InstructReflex(value = {"ga"}, priority = 2)
     public String attributeGetAttribute(MessageData<?> data) {
         return userTempDataService.getUserAttribute(data.getQqID());
     }
 
-    @InstructReflex(value = {".en"})
+    @InstructReflex(value = {"en"})
     public String attributeEn(MessageData<?> data) {
         if (data.getMessage().equals("")) {
             return CustomText.getText("dice.en.parameter.null");
@@ -331,7 +331,7 @@ public class RollController {
         return CustomText.getText("dice.en.fail", randomNumber, checkNumber, checkAttribute);
     }
 
-    @InstructReflex(value = {".sa", "。sa"})
+    @InstructReflex(value = {"sa"})
     public String attributeSetAttribute(MessageData<?> data) {
         String changeValue = RegularExpressionUtils.getMatcher("\\d+", data.getMessage());
         if (changeValue == null) {
@@ -357,7 +357,7 @@ public class RollController {
         return CustomText.getText("dice.sa.update.success", attribute, changeName, changeValue);
     }
 
-    @InstructReflex(value = {".ww", ".dp", "。ww"})
+    @InstructReflex(value = {"ww", "dp"})
     public static String dicePoolGen(MessageData<?> data) {
         data.setMessage(data.getMessage().toLowerCase());
         data.setMessage(data.getMessage().trim());

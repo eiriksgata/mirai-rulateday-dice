@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 @InstructService
 public class ConfigController {
 
-    @InstructReflex(value = {".pcon"}, priority = 3)
+    @InstructReflex(value = {"pcon"}, priority = 3)
     public String privateChatOn(MessageData<?> data) {
         //启动私聊
         String number = GlobalData.configData.getString("master.QQ.number");
@@ -34,7 +34,7 @@ public class ConfigController {
         }
     }
 
-    @InstructReflex(value = {".pcoff"}, priority = 3)
+    @InstructReflex(value = {"pcoff"}, priority = 3)
     public String privateChatOff(MessageData<?> data) {
         String number = GlobalData.configData.getString("master.QQ.number");
         if (number.equals("")) {
@@ -49,7 +49,7 @@ public class ConfigController {
         }
     }
 
-    @InstructReflex(value = {".betaon"}, priority = 3)
+    @InstructReflex(value = {"betaon"}, priority = 3)
     public String betaVersionOn(MessageData<?> data) {
         String number = GlobalData.configData.getString("master.QQ.number");
         if (number.equals("")) {
@@ -64,7 +64,7 @@ public class ConfigController {
         }
     }
 
-    @InstructReflex(value = {".betaoff"}, priority = 3)
+    @InstructReflex(value = {"betaoff"}, priority = 3)
     public String betaVersionOff(MessageData<?> data) {
         String number = GlobalData.configData.getString("master.QQ.number");
         if (number.equals("")) {
@@ -79,13 +79,13 @@ public class ConfigController {
         }
     }
 
-    @InstructReflex(value = {".version"}, priority = 3)
+    @InstructReflex(value = {"version"}, priority = 3)
     public String getProgramVersion(MessageData<?> data) {
         ResourceBundle config = ResourceBundle.getBundle("application");
         return "\n" + config.getString("version");
     }
 
-    @InstructReflex(value = {".dismiss"}, priority = 3)
+    @InstructReflex(value = {"dismiss"}, priority = 3)
     public String dismissCurrentGroup(MessageData<?> data) {
         String number = GlobalData.configData.getString("master.QQ.number");
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
@@ -106,7 +106,7 @@ public class ConfigController {
         return null;
     }
 
-    @InstructReflex(value = {".quitGroup",".quitgroup"}, priority = 4)
+    @InstructReflex(value = {"quitGroup",".quitgroup"}, priority = 4)
     public String quitGroupByMaster(MessageData<?> data) {
         String number = GlobalData.configData.getString("master.QQ.number");
         if (!number.equals("" + data.getQqID())) {

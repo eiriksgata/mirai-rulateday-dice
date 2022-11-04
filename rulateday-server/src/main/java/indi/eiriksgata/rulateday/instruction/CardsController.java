@@ -30,7 +30,7 @@ public class CardsController {
     public static CardsGroupDataMapper cardsGroupDataMapper = MyBatisUtil.getSqlSession().getMapper(CardsGroupDataMapper.class);
     public static CardsTypeListMapper cardsTypeListMapper = MyBatisUtil.getSqlSession().getMapper(CardsTypeListMapper.class);
 
-    @InstructReflex(value = {".cards"})
+    @InstructReflex(value = {"cards"})
     public String cardsList(MessageData<?> data) {
         List<CardsTypeList> lists = cardsTypeListMapper.selectAll();
         if (lists.size() == 0) {
@@ -46,7 +46,7 @@ public class CardsController {
         return result.toString();
     }
 
-    @InstructReflex(value = {".cardsAdd", ".cardsadd"}, priority = 3)
+    @InstructReflex(value = {"cardsAdd", "cardsadd"}, priority = 3)
     public String cardsAdd(MessageData<?> data) {
         String[] parsingData = data.getMessage().split(" ");
         if (parsingData.length < 2) {
@@ -64,7 +64,7 @@ public class CardsController {
         return CustomText.getText("cards.add.success");
     }
 
-    @InstructReflex(value = {".cardsDel", ".cardsdel"}, priority = 3)
+    @InstructReflex(value = {"cardsDel", "cardsdel"}, priority = 3)
     public String cardsDel(MessageData<?> data) {
         cardsTypeListMapper.deleteByName(data.getMessage());
         MyBatisUtil.getSqlSession().commit();
@@ -72,7 +72,7 @@ public class CardsController {
     }
 
 
-    @InstructReflex(value = {".drawAdd", ".drawadd"}, priority = 3)
+    @InstructReflex(value = {"drawAdd", "drawadd"}, priority = 3)
     public String drawAdd(MessageData<?> data) {
         if (data.getMessage().equals("") || data.getMessage() == null) {
             return CustomText.getText("cards.draw.not.parameter");
@@ -110,7 +110,7 @@ public class CardsController {
         return CustomText.getText("cards.draw.add.success", cardsTypeList.getName());
     }
 
-    @InstructReflex(value = {".drawList", ".drawlist"}, priority = 3)
+    @InstructReflex(value = {"drawList", "drawlist"}, priority = 3)
     public String drawList(MessageData<?> data) {
         final Long[] groupId = new Long[1];
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
@@ -143,7 +143,7 @@ public class CardsController {
     }
 
 
-    @InstructReflex(value = {".drawHide", ".drawhide"}, priority = 3)
+    @InstructReflex(value = {"drawHide", "drawhide"}, priority = 3)
     public String drawHideOut(MessageData<?> data) {
         final long[] groupId = new long[1];
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
@@ -187,7 +187,7 @@ public class CardsController {
         return CustomText.getText("cards.draw.hide.success");
     }
 
-    @InstructReflex(value = {".draw"}, priority = 2)
+    @InstructReflex(value = {"draw"}, priority = 2)
     public String drawOut(MessageData<?> data) {
         final long[] groupId = new long[1];
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
@@ -215,7 +215,7 @@ public class CardsController {
         return CustomText.getText("cards.draw.success", result.getValue());
     }
 
-    @InstructReflex(value = {".drawclear", ".drawClear"}, priority = 3)
+    @InstructReflex(value = {"drawclear", "drawClear"}, priority = 3)
     public String drawClear(MessageData<?> data) {
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override

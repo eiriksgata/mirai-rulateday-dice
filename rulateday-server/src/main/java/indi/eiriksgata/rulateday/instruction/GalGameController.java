@@ -14,17 +14,17 @@ import net.mamoe.mirai.event.events.GroupMessageEvent;
 @InstructService
 public class GalGameController {
 
-    @InstructReflex(value = {".trpg-list"}, priority = 3)
+    @InstructReflex(value = {"trpg-list"}, priority = 3)
     public String trpgGameList(MessageData<?> data) {
         return TrpgGameServiceImpl.getAllTrpgModelFiles();
     }
 
-    @InstructReflex(value = {".trpg-role-get"}, priority = 3)
+    @InstructReflex(value = {"trpg-role-get"}, priority = 3)
     public String trpgRoleDataGet(MessageData<?> data) {
         return PlayerRoleAttributeSetUtil.roleDataShow(data.getQqID());
     }
 
-    @InstructReflex(value = {".trpg-role-set"}, priority = 3)
+    @InstructReflex(value = {"trpg-role-set"}, priority = 3)
     public String trpgRoleDataSet(MessageData<?> data) {
         String[] inputText = data.getMessage().split(",");
         return "你的角色卡设置结果:\n1. " + PlayerRoleAttributeSetUtil.nameCheck(data.getQqID(), inputText[0]) +
@@ -34,7 +34,7 @@ public class GalGameController {
                 PlayerRoleAttributeSetUtil.attributeCheck(data.getQqID(), inputText[2]);
     }
 
-    @InstructReflex(value = {".trpg-reload"}, priority = 3)
+    @InstructReflex(value = {"trpg-reload"}, priority = 3)
     public String trpgGameLoad(MessageData<?> data) {
         //TODO: 检测玩家数据是否满足要求
         if (GameData.playerRoleSaveDataMap.get(data.getQqID()) == null ||
@@ -59,14 +59,14 @@ public class GalGameController {
     }
 
 
-    @InstructReflex(value = {".trpg-quit"}, priority = 3)
+    @InstructReflex(value = {"trpg-quit"}, priority = 3)
     public String quitGameModel(MessageData<?> data) {
         TrpgGameServiceImpl.playerQuitGame(data.getQqID());
         return "已退出TRPG游戏模式，并释放空间。";
     }
 
 
-    @InstructReflex(value = {".trpg-option-"}, priority = 3)
+    @InstructReflex(value = {"trpg-option-"}, priority = 3)
     public String trpgOptionSelect(MessageData<?> data) {
         if (GameData.TrpgGamePlayerList.get(data.getQqID()) == null || !GameData.TrpgGamePlayerList.get(data.getQqID())) {
             return "尚未启动任何TRPG游戏模组，请先输入相关指令进行游戏";

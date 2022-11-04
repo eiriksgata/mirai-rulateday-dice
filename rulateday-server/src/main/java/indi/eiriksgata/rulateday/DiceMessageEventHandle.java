@@ -33,6 +33,11 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
 
     @EventHandler()
     public ListeningStatus onBotGroupRequest(BotInvitedJoinGroupRequestEvent event) {
+        //检测是否是黑名单用户
+        if (botControl.isBlacklist(-event.getInvitorId()) || botControl.isBlacklist(event.getGroupId())) {
+            return ListeningStatus.LISTENING;
+        }
+
         //收到邀请自动加入
         if (GlobalData.configData.getBooleanValue("auto.accept.group.request")) {
             event.accept();
@@ -42,7 +47,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
 
     @EventHandler()
     public ListeningStatus onFriendRequest(NewFriendRequestEvent event) {
-        if (GlobalData.configData.getBooleanValue("auto.accept.friend.request")) {
+        if (GlobalData.configData.getBooleanValue("auto.accept.friend.request") && !botControl.isBlacklist(-event.getFromId())) {
             event.accept();
         }
         return ListeningStatus.LISTENING;
@@ -51,15 +56,18 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
 
     @EventHandler()
     public ListeningStatus addFriendRequest(FriendAddEvent event) {
-        //event.getFriend().sendMessage("Hello , Welcome use Rulateday-Dice Boot");
         return ListeningStatus.LISTENING;
     }
 
     @EventHandler()
     public ListeningStatus OnGroupTempMessageEvent(GroupTempMessageEvent event) {
-
         if (!DiceConfigService.diceConfigMapper.selectById().getPrivate_chat()) {
             event.getGroup().sendMessage("私聊功能已被禁止，请拉入群聊使用。或让骰主开启私聊功能。");
+            return ListeningStatus.LISTENING;
+        }
+
+        //判断群是否是黑名单，具体功能尚未实现
+        if (botControl.isBlacklist(-event.getSender().getId())) {
             return ListeningStatus.LISTENING;
         }
 
@@ -67,6 +75,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         messageData.setMessage(event.getMessage().contentToString());
         messageData.setQqID(event.getSender().getId());
         messageData.setEvent(event);
+
         //检测对话模式，具有最高优先级
         String conversationResult = UserConversationImpl.checkInputQuery(messageData);
         if (conversationResult != null) {
@@ -87,6 +96,12 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         if (!DiceConfigService.diceConfigMapper.selectById().getPrivate_chat()) {
             return ListeningStatus.LISTENING;
         }
+
+        //判断群是否是黑名单，具体功能尚未实现
+        if (botControl.isBlacklist(-event.getFriend().getId())) {
+            return ListeningStatus.LISTENING;
+        }
+
 
         MessageData<FriendMessageEvent> messageData = new MessageData<>();
         messageData.setMessage(event.getMessage().contentToString());
@@ -126,7 +141,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
 
     private static void groupMessageHandle(GroupMessageEvent event) {
         //判断群是否是黑名单，具体功能尚未实现
-        if (botControl.isBlacklist(event)) {
+        if (botControl.isBlacklist(event.getGroup().getId())) {
             return;
         }
 
@@ -143,6 +158,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         messageData.setMessage(event.getMessage().contentToString());
         messageData.setQqID(event.getSender().getId());
         messageData.setEvent(event);
+
         //检测对话模式，具有最高优先级
         String conversationResult = UserConversationImpl.checkInputQuery(messageData);
         if (conversationResult != null) {
@@ -150,10 +166,11 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             return;
         }
 
-        //做一些指令前的判断工作，本身应该由trpg-dice负责的，但是trpg-dice还不够完善
-        if (event.getMessage().contentToString().length() < 2) {
+        String prefix = botControl.isPrefixMatch(messageData.getMessage());
+        if (prefix == null) {
             return;
         }
+        messageData.setMessage(messageData.getMessage().substring(prefix.length()));
 
         String result;
         try {
@@ -198,9 +215,13 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
     private List<String> personalMessageEventHandler(MessageData messageData) {
         String sourceMessage = messageData.getMessage();
         List<String> result = new ArrayList<>();
-        if (messageData.getMessage() == null || messageData.getMessage().length() < 2) {
+
+        String prefix = botControl.isPrefixMatch(messageData.getMessage());
+        if (prefix == null) {
             return null;
         }
+        messageData.setMessage(messageData.getMessage().substring(prefix.length()));
+
         try {
             String returnText = instructHandle.instructCheck(messageData);
             if (returnText == null) return null;
