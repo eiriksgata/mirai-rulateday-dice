@@ -3,6 +3,10 @@ package indi.eiriksgata.rulateday.instruction;
 import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.injection.InstructService;
 import indi.eiriksgata.dice.vo.MessageData;
+import indi.eiriksgata.rulateday.config.GlobalData;
+import net.mamoe.mirai.Bot;
+import net.mamoe.mirai.contact.Friend;
+import net.mamoe.mirai.contact.Group;
 
 @InstructService
 public class BotController {
