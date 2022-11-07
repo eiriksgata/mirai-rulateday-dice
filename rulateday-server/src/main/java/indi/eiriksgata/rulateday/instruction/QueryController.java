@@ -23,6 +23,9 @@ import net.mamoe.mirai.utils.ExternalResource;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -146,28 +149,55 @@ public class QueryController {
         if (response.getCode() == -1) {
             return response.getData();
         }
-        byte[] pictureData = HexConvertUtil.hexStringToByteArray(response.getData());
+
+        URL pictureUrl;
+        InputStream inputStream;
+        try {
+            pictureUrl = new URL(response.getData());
+            HttpURLConnection conn = (HttpURLConnection) pictureUrl.openConnection();
+            // 设置超时间为3秒
+            conn.setConnectTimeout(3 * 1000);
+            // 防止屏蔽程序抓取而返回403错误
+            conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+
+            // 得到输入流
+            inputStream = conn.getInputStream();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return CustomText.getText("api.request.error");
+        }
+
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
             public void group(GroupMessageEvent event) {
-                event.getGroup().sendMessage(
-                        event.getGroup().uploadImage(ExternalResource.create(pictureData)));
+                try {
+                    event.getGroup().sendMessage(
+                            event.getGroup().uploadImage(ExternalResource.create(inputStream)));
+                } catch (IOException ignored) {
+                }
             }
 
             @Override
             public void friend(FriendMessageEvent event) {
-                event.getSender().sendMessage(
-                        event.getSender().uploadImage(ExternalResource.create(pictureData))
-                );
+                try {
+                    event.getSender().sendMessage(
+                            event.getSender().uploadImage(ExternalResource.create(inputStream))
+                    );
+                } catch (IOException ignored) {
+                }
             }
 
             @Override
             public void groupTemp(GroupTempMessageEvent event) {
-                event.getSender().sendMessage(
-                        event.getSender().uploadImage(ExternalResource.create(pictureData))
-                );
+                try {
+                    event.getSender().sendMessage(
+                            event.getSender().uploadImage(ExternalResource.create(inputStream))
+                    );
+                } catch (IOException ignored) {
+                }
             }
         });
+
         return null;
     }
 
