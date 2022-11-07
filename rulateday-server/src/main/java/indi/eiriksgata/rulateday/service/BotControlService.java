@@ -14,4 +14,8 @@ public interface BotControlService {
     void groupEnable(long groupId);
 
     void groupDisable(long groupId);
+
+    void groupBlacklistEnable(long groupId);
+
+    void groupBlacklistDisable(long groupId);
 }

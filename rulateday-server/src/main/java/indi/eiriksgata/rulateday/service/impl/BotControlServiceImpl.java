@@ -42,7 +42,7 @@ public class BotControlServiceImpl implements BotControlService {
     public void groupEnable(long groupId) {
         try {
             if (speakersGroupListMapper.selectByGroupId(groupId) == null) {
-                speakersGroupListMapper.insert(groupId, true);
+                speakersGroupListMapper.insert(groupId, true, false);
             } else {
                 speakersGroupListMapper.updateIsEnableById(groupId, true);
             }
@@ -56,9 +56,39 @@ public class BotControlServiceImpl implements BotControlService {
     public void groupDisable(long groupId) {
         try {
             if (speakersGroupListMapper.selectByGroupId(groupId) == null) {
-                speakersGroupListMapper.insert(groupId, false);
+                speakersGroupListMapper.insert(groupId, false, false);
             } else {
                 speakersGroupListMapper.updateIsEnableById(groupId, false);
+            }
+            MyBatisUtil.getSqlSession().commit();
+        } catch (PersistenceException e) {
+            speakersGroupListMapper.createTable();
+        }
+    }
+
+
+    @Override
+    public void groupBlacklistEnable(long groupId) {
+        try {
+            if (speakersGroupListMapper.selectByGroupId(groupId) == null) {
+                speakersGroupListMapper.insert(groupId, false, false);
+            } else {
+                speakersGroupListMapper.updateIsBlacklistById(groupId, true);
+            }
+            MyBatisUtil.getSqlSession().commit();
+        } catch (PersistenceException e) {
+            speakersGroupListMapper.createTable();
+        }
+    }
+
+
+    @Override
+    public void groupBlacklistDisable(long groupId) {
+        try {
+            if (speakersGroupListMapper.selectByGroupId(groupId) == null) {
+                speakersGroupListMapper.insert(groupId, true, false);
+            } else {
+                speakersGroupListMapper.updateIsBlacklistById(groupId, false);
             }
             MyBatisUtil.getSqlSession().commit();
         } catch (PersistenceException e) {
