@@ -182,7 +182,7 @@ public class RollController {
     @InstructReflex(value = {"rh"}, priority = 3)
     public String rollHide(MessageData<?> data) {
         if (!DiceConfigService.diceConfigMapper.selectById().getPrivate_chat()) {
-            return "骰主尚未允许私聊模式";
+            return CustomText.getText("dice.roll.hide.private.chat.disable");
         }
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
@@ -270,12 +270,12 @@ public class RollController {
 
             if (number > 0 && number <= 20) {
                 jsonObject.put("number", number);
-                return "随机名字：" + JSONObject.parseObject(RestUtil.postForJson(url, jsonObject.toJSONString())).getString("data");
+                return CustomText.getText("names.result.title", JSONObject.parseObject(RestUtil.postForJson(url, jsonObject.toJSONString())).getString("data"));
             }
             return CustomText.getText("names.create.size.max");
         } else {
             jsonObject.put("number", 1);
-            return "随机名字：" + JSONObject.parseObject(RestUtil.postForJson(url, jsonObject.toJSONString())).getString("data");
+            return CustomText.getText("names.result.title", JSONObject.parseObject(RestUtil.postForJson(url, jsonObject.toJSONString())).getString("data"));
         }
     }
 

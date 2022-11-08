@@ -41,8 +41,7 @@ public class BotServiceControl {
                 event.getGroup().sendMessage(CustomText.getText("dice.bot.off"));
                 return true;
             } else {
-                event.getGroup().sendMessage("需要群主或者管理员或者骰主才能关闭服务。");
-
+                event.getGroup().sendMessage(CustomText.getText("bot.group.no.permission"));
             }
         }
         return false;
@@ -66,7 +65,7 @@ public class BotServiceControl {
                 event.getGroup().sendMessage(CustomText.getText("dice.bot.on"));
                 return true;
             } else {
-                event.getGroup().sendMessage("需要群主或者管理员或者骰主才能打开服务。");
+                event.getGroup().sendMessage(CustomText.getText("bot.group.no.permission"));
             }
         }
         return false;

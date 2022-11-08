@@ -29,7 +29,7 @@ public class InfiniteLibController {
     @InstructReflex(value = {"ir2"})
     public String infiniteLibOnlineQuery(MessageData<?> data) {
         if (!DiceConfigService.diceConfigMapper.selectById().getBeta_version()) {
-            return "该功能骰主尚未开启。";
+            return CustomText.getText("infinite.lib.ir2.no.enable");
         }
 
         //如果输入的数据是无关键字的
@@ -76,7 +76,7 @@ public class InfiniteLibController {
                 return "\n" + result.getData().get(0).getName() + "\n" + result.getData().get(0).getDescribe();
             }
         }
-        return "在线数据查询出错";
+        return CustomText.getText("infinite.lib.online.query.error");
     }
 
 }

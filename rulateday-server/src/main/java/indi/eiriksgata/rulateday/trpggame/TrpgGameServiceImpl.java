@@ -3,6 +3,7 @@ package indi.eiriksgata.rulateday.trpggame;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.dice.utlis.RegularExpressionUtils;
 import indi.eiriksgata.rulateday.trpggame.utils.DetectionUtil;
 import indi.eiriksgata.rulateday.utlis.FileUtil;
@@ -17,9 +18,9 @@ public class TrpgGameServiceImpl {
         File file = new File("data/indi.eiriksgata.rulateday-dice/trpg-game");
         File[] files = file.listFiles();
         if (files == null) {
-            return "找不到模组文件：请让骰主将相关的模组文件放置在 运行程序目录下的 ’data/indi.eiriksgata.rulateday-dice/trpg-game' 下";
+            return CustomText.getText("trpg.service.get.model.files.not.found");
         }
-        StringBuilder result = new StringBuilder("模组文件如下: \n");
+        StringBuilder result = new StringBuilder(CustomText.getText("trpg.service.get.model.result.title"));
         int i = 0;
         for (File modelFile : files) {
             result.append(++i).append(". ").append(modelFile.getName()).append("\n");
@@ -40,7 +41,7 @@ public class TrpgGameServiceImpl {
     public static String loadScriptData(Long id, String fileName) {
         String jsonText = FileUtil.readJsonFile("data/indi.eiriksgata.rulateday-dice/trpg-game/" + fileName);
         if (jsonText == null) {
-            return "找不到文件：" + fileName;
+            return CustomText.getText("trpg.service.load.script.data.not.found.file", fileName);
         }
         JSONObject modelJSON = JSONObject.parseObject(jsonText);
 
@@ -65,7 +66,7 @@ public class TrpgGameServiceImpl {
 
         GameData.TrpgGamePlayerList.put(id, true);
 
-        return "模组名称:" + modelJSON.getString("name") + "\n简介:" + modelJSON.getString("introduction");
+        return CustomText.getText("trpg.service.load.script.data.model.name", modelJSON.getString("name"), modelJSON.getString("introduction"));
     }
 
     public static String loadEventText(Long id) {
@@ -86,14 +87,14 @@ public class TrpgGameServiceImpl {
             }
         }
         GameData.optionMappingMap.put(id, optionMap);
-        result += "\n\n选项:\n" + optionOutText;
+        result += CustomText.getText("trpg.service.load.event.text.option.title") + optionOutText;
         return result;
     }
 
     public static String optionSelect(Long id, String inputValue) {
         String optionId = GameData.optionMappingMap.get(id).get(inputValue);
         if (optionId == null) {
-            return "没有这个选项，请重新选择，如果需要退出游戏请输入[.trpg-quit]";
+            return CustomText.getText("trpg.service.option.not.found");
         }
         boolean passOption = false;
         boolean showDice;
@@ -106,7 +107,7 @@ public class TrpgGameServiceImpl {
         showDice = GameData.optionJSONObjectMap.get(id).get(optionId).getJSONObject("detection").getBooleanValue("showDice");
 
         if (detectionAttributeName == null && detectionConsumablesName == null) {
-            return "错误的detection设置，attribute 和 consumables 必须要有一项";
+            return CustomText.getText("trpg.service.option.error");
         }
 
         DetectionEntity attributeResult = DetectionUtil.attribute(attributeSource, detectionAttributeName);

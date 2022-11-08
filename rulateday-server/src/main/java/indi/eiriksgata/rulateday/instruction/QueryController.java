@@ -13,7 +13,6 @@ import indi.eiriksgata.rulateday.event.EventUtils;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 import indi.eiriksgata.rulateday.service.*;
 import indi.eiriksgata.rulateday.service.impl.*;
-import indi.eiriksgata.rulateday.utlis.HexConvertUtil;
 import indi.eiriksgata.rulateday.utlis.LoadDatabaseFile;
 import indi.eiriksgata.rulateday.vo.ResponseBaseVo;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
@@ -238,9 +237,9 @@ public class QueryController {
             LoadDatabaseFile.loadCustomDocument();
         } catch (IOException e) {
             e.printStackTrace();
-            return "重新载入系统配置失败，请检查控制台报错信息";
+            return CustomText.getText("system.config.reload.fail");
         }
-        return "重新载入系统配置";
+        return CustomText.getText("system.config.reload.success");
     }
 
     @InstructReflex(value = {"q", "Q"}, priority = 3)
@@ -277,10 +276,10 @@ public class QueryController {
     @InstructReflex(value = {"tr-en"}, priority = 3)
     public String translateToEnglish(MessageData<?> data) {
         if (data.getMessage() == null || data.getMessage().equals("")) {
-            return "没有需要翻译的内容";
+            return CustomText.getText("translate.cn-to-en.not.found.content");
         }
         if (data.getMessage().length() > 200) {
-            return "文本长度应该小于200";
+            return CustomText.getText("translate.cn-to-en.text.length.error");
         }
         return OtherApiService.translateToEnglishByYouDu(data.getMessage());
     }

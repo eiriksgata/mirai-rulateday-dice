@@ -101,7 +101,7 @@ public class InitiativeController {
 
     @InstructReflex(value = {"atk", "atk"})
     public String generateInitiativeDice(MessageData<?> data) {
-        String name = null;
+        final String[] name = {null};
         String[] tempList;
         String diceFace = "d";
         AtomicBoolean isLimit = new AtomicBoolean(false);
@@ -110,12 +110,14 @@ public class InitiativeController {
             public void group(GroupMessageEvent event) {
                 String groupId = "" + event.getGroup().getId();
                 isLimit.set(initiativeServer.diceLimit(groupId));
+                name[0] = event.getSenderName();
             }
 
             @Override
             public void friend(FriendMessageEvent event) {
                 String groupId = "-" + event.getFriend().getId();
                 isLimit.set(initiativeServer.diceLimit(groupId));
+                name[0] = event.getSenderName();
             }
         });
 
@@ -123,16 +125,16 @@ public class InitiativeController {
             return CustomText.getText("initiative.list.size.max");
         }
 
-        final String[] resultText = {CustomText.getText("initiative.result.title", "你")};
+        final String[] resultText = {CustomText.getText("initiative.result.title", name[0])};
         if (!data.getMessage().equals("") && data.getMessage() != null) {
             tempList = data.getMessage().split(" ");
             if (tempList.length > 1) {
-                name = tempList[1];
-                resultText[0] = CustomText.getText("initiative.result.title", name);
+                name[0] = tempList[1];
+                resultText[0] = CustomText.getText("initiative.result.title", name[0]);
             }
             diceFace = tempList[0];
         }
-        String finalName = name;
+        String finalName = name[0];
         RollController.rollBasics.rollRandom(diceFace, data.getQqID(), (i, s) -> {
             //处理可能会出现小数等其他情况
             int numberValue;

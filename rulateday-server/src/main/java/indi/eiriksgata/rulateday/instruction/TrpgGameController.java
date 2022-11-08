@@ -2,6 +2,7 @@ package indi.eiriksgata.rulateday.instruction;
 
 import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.injection.InstructService;
+import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.event.EventAdapter;
 import indi.eiriksgata.rulateday.event.EventUtils;
@@ -12,7 +13,7 @@ import net.mamoe.mirai.event.events.GroupMessageEvent;
 
 
 @InstructService
-public class GalGameController {
+public class TrpgGameController {
 
     @InstructReflex(value = {"trpg-list"}, priority = 3)
     public String trpgGameList(MessageData<?> data) {
@@ -27,31 +28,20 @@ public class GalGameController {
     @InstructReflex(value = {"trpg-role-set"}, priority = 3)
     public String trpgRoleDataSet(MessageData<?> data) {
         String[] inputText = data.getMessage().split(",");
-        return "你的角色卡设置结果:\n1. " + PlayerRoleAttributeSetUtil.nameCheck(data.getQqID(), inputText[0]) +
-                "\n2. " +
-                PlayerRoleAttributeSetUtil.skillCheck(data.getQqID(), inputText[1]) +
-                "\n3. " +
-                PlayerRoleAttributeSetUtil.attributeCheck(data.getQqID(), inputText[2]);
+        return CustomText.getText("trpg.role.card.set.title") + "\n1. " + PlayerRoleAttributeSetUtil.nameCheck(data.getQqID(), inputText[0]) + "\n2. " + PlayerRoleAttributeSetUtil.skillCheck(data.getQqID(), inputText[1]) + "\n3. " + PlayerRoleAttributeSetUtil.attributeCheck(data.getQqID(), inputText[2]);
     }
 
     @InstructReflex(value = {"trpg-reload"}, priority = 3)
     public String trpgGameLoad(MessageData<?> data) {
         //TODO: 检测玩家数据是否满足要求
-        if (GameData.playerRoleSaveDataMap.get(data.getQqID()) == null ||
-                GameData.playerRoleSaveDataMap.get(data.getQqID()).getName() == null ||
-                GameData.playerRoleSaveDataMap.get(data.getQqID()).getAttribute() == null ||
-                GameData.playerRoleSaveDataMap.get(data.getQqID()).getSkill() == null ||
-                GameData.playerRoleSaveDataMap.get(data.getQqID()).getName().equals("") ||
-                GameData.playerRoleSaveDataMap.get(data.getQqID()).getAttribute().equals("") ||
-                GameData.playerRoleSaveDataMap.get(data.getQqID()).getSkill().equals("")
-        ) {
-            return "请先通过指令完善你的人物属性再进行游戏";
+        if (GameData.playerRoleSaveDataMap.get(data.getQqID()) == null || GameData.playerRoleSaveDataMap.get(data.getQqID()).getName() == null || GameData.playerRoleSaveDataMap.get(data.getQqID()).getAttribute() == null || GameData.playerRoleSaveDataMap.get(data.getQqID()).getSkill() == null || GameData.playerRoleSaveDataMap.get(data.getQqID()).getName().equals("") || GameData.playerRoleSaveDataMap.get(data.getQqID()).getAttribute().equals("") || GameData.playerRoleSaveDataMap.get(data.getQqID()).getSkill().equals("")) {
+            return CustomText.getText("trpg.reload.not.found.role.attribute");
         }
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
             public void group(GroupMessageEvent event) {
-                event.getGroup().sendMessage("在游戏游玩之前，请先确认你已经设置好自己的角色属性，以免出现错误。如果你尚未清楚如何进行游戏，请先阅读相关的文档，了解完毕后再进行游戏。需要注意的是trpg指令是单独用你个人作为单位区分开，而不是以群作为分开。因此相关指令甚至可以跨群使用。");
-                event.getGroup().sendMessage("由于数据都是存储在内存之中，如果系统离线后，之前的数据将会丢失。此外如果不需要游玩的本模组，请使用指令[.trpg-quit]释放空间。");
+                event.getGroup().sendMessage(CustomText.getText("trpg.reload.start.help"));
+                event.getGroup().sendMessage(CustomText.getText("trpg.reload.start.waring"));
                 event.getGroup().sendMessage(TrpgGameServiceImpl.loadScriptData(data.getQqID(), data.getMessage()));
             }
         });
@@ -62,14 +52,14 @@ public class GalGameController {
     @InstructReflex(value = {"trpg-quit"}, priority = 3)
     public String quitGameModel(MessageData<?> data) {
         TrpgGameServiceImpl.playerQuitGame(data.getQqID());
-        return "已退出TRPG游戏模式，并释放空间。";
+        return CustomText.getText("trpg.game.quit");
     }
 
 
     @InstructReflex(value = {"trpg-option-"}, priority = 3)
     public String trpgOptionSelect(MessageData<?> data) {
         if (GameData.TrpgGamePlayerList.get(data.getQqID()) == null || !GameData.TrpgGamePlayerList.get(data.getQqID())) {
-            return "尚未启动任何TRPG游戏模组，请先输入相关指令进行游戏";
+            return CustomText.getText("trpg.option.no.found.staring.model");
         } else {
             //TODO: 进行选项的动作
             EventUtils.eventCallback(data.getEvent(), new EventAdapter() {

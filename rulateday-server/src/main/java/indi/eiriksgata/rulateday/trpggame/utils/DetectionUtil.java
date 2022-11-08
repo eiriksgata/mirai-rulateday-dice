@@ -1,5 +1,6 @@
 package indi.eiriksgata.rulateday.trpggame.utils;
 
+import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.dice.utlis.RegularExpressionUtils;
 import indi.eiriksgata.rulateday.trpggame.DetectionEntity;
 import org.apache.commons.lang3.RandomUtils;
@@ -15,7 +16,9 @@ public class DetectionUtil {
         int randomValue = RandomUtils.nextInt(1, 101);
         detectionEntity.setResult(false);
         if (result == null) {
-            detectionEntity.setDiceText("[" + checkName + "0]检定！D100=" + randomValue + " 失败！");
+            detectionEntity.setDiceText(CustomText.getText("trpg.detection.attribute.error", checkName, randomValue));
+
+
             return detectionEntity;
         }
         int checkValue = Integer.parseInt(result.substring(checkName.length()));
@@ -23,9 +26,10 @@ public class DetectionUtil {
         detectionEntity.setRandomValue(randomValue);
         if (randomValue <= checkValue) {
             detectionEntity.setResult(true);
-            detectionEntity.setDiceText("[" + result + "]检定！D100=" + randomValue + " 成功！");
+            detectionEntity.setDiceText(CustomText.getText("trpg.detection.attribute.success", result, randomValue));
         } else {
-            detectionEntity.setDiceText("[" + result + "]检定！D100=" + randomValue + " 失败！");
+            detectionEntity.setDiceText(CustomText.getText("trpg.detection.attribute.fail", result, randomValue));
+
         }
         return detectionEntity;
     }

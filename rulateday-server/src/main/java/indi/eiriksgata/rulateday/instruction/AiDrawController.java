@@ -3,6 +3,7 @@ package indi.eiriksgata.rulateday.instruction;
 import com.alibaba.fastjson.JSONObject;
 import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.injection.InstructService;
+import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.event.EventAdapter;
 import indi.eiriksgata.rulateday.event.EventUtils;
@@ -23,11 +24,11 @@ public class AiDrawController {
         AiTextDrawVo aiTextDrawVo = JSONObject.parseObject(data.getMessage(), AiTextDrawVo.class);
 
         if (aiTextDrawVo.getPrompt() == null || aiTextDrawVo.getPrompt().equals("")) {
-            return "没有生成参数，请重新输入";
+            return CustomText.getText("ai.text.draw.prompt.null");
         }
 
         if (!WebSocketClientInit.webSocketClient.isOpen()) {
-            return "尚未连接到远程服务器，不能使用该指令";
+            return CustomText.getText("net.ws.link.fail");
         }
 
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
@@ -58,7 +59,7 @@ public class AiDrawController {
             }
         });
 
-        return "任务已发布，如有结果将会发送至当前群聊。";
+        return CustomText.getText("ai.text.draw.task.success");
     }
 
 }

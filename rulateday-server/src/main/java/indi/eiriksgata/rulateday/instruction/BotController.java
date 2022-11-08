@@ -2,6 +2,7 @@ package indi.eiriksgata.rulateday.instruction;
 
 import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.injection.InstructService;
+import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.config.GlobalData;
 import net.mamoe.mirai.Bot;
@@ -17,7 +18,7 @@ public class BotController {
         //验证骰主
         String number = GlobalData.configData.getString("master.QQ.number");
         if (number.equals("")) {
-            return "本插件还未设置骰主QQ号，请在本程序目录下的 config/indi.eiriksgata.rulateday-dice/config.json 文件中的 'master.QQ.number' 中进行设置，设置后才可以使用本功能";
+            return CustomText.getText("dice.master.number.no.set");
         }
         if (data.getQqID() == Long.parseLong(number)) {
             long groupId;
@@ -25,11 +26,11 @@ public class BotController {
                 groupId = Long.parseLong(data.getMessage().trim());
                 BotServiceControl.botControl.groupBlacklistEnable(groupId);
             } catch (Exception e) {
-                return "输入的群号不对。";
+                return CustomText.getText("blacklist.group.id.error");
             }
-            return "群组[" + groupId + "]已添加至黑名单。";
+            return CustomText.getText("blacklist.group.add.success", groupId);
         } else {
-            return "你不是骰主，无法使用黑名单功能";
+            return CustomText.getText("blacklist.no.permission");
         }
     }
 
@@ -39,7 +40,7 @@ public class BotController {
         //验证骰主
         String number = GlobalData.configData.getString("master.QQ.number");
         if (number.equals("")) {
-            return "本插件还未设置骰主QQ号，请在本程序目录下的 config/indi.eiriksgata.rulateday-dice/config.json 文件中的 'master.QQ.number' 中进行设置，设置后才可以使用本功能";
+            return CustomText.getText("dice.master.number.no.set");
         }
         if (data.getQqID() == Long.parseLong(number)) {
             long groupId;
@@ -47,11 +48,11 @@ public class BotController {
                 groupId = Long.parseLong(data.getMessage().trim());
                 BotServiceControl.botControl.groupBlacklistDisable(groupId);
             } catch (Exception e) {
-                return "输入的群号不对。";
+                return CustomText.getText("blacklist.group.id.error");
             }
-            return "群组[" + groupId + "]已从黑名单中移除。";
+            return CustomText.getText("blacklist.group.delete.success");
         } else {
-            return "你不是骰主，无法使用黑名单功能";
+            return CustomText.getText("blacklist.no.permission");
         }
     }
 
@@ -60,22 +61,22 @@ public class BotController {
         //验证骰主
         String number = GlobalData.configData.getString("master.QQ.number");
         if (number.equals("")) {
-            return "本插件还未设置骰主QQ号，请在本程序目录下的 config/indi.eiriksgata.rulateday-dice/config.json 文件中的 'master.QQ.number' 中进行设置，设置后才可以使用本功能";
+            return CustomText.getText("dice.master.number.no.set");
         }
         if (data.getQqID() == Long.parseLong(number)) {
             if (number.equals(data.getMessage().trim())) {
-                return "不可以将骰主拉入黑名单";
+                return CustomText.getText("blacklist.friend.cannot.master");
             }
             long friendId;
             try {
                 friendId = Long.parseLong(data.getMessage().trim());
                 BotServiceControl.botControl.groupBlacklistEnable(-friendId);
             } catch (Exception e) {
-                return "输入的号码不对。";
+                return CustomText.getText("blacklist.friend.id.error");
             }
-            return "用户[" + friendId + "]已添加至黑名单。";
+            return CustomText.getText("blacklist.friend.add.success", friendId);
         } else {
-            return "你不是骰主，无法使用黑名单功能";
+            return CustomText.getText("blacklist.no.permission");
         }
     }
 
@@ -84,7 +85,7 @@ public class BotController {
         //验证骰主
         String number = GlobalData.configData.getString("master.QQ.number");
         if (number.equals("")) {
-            return "本插件还未设置骰主QQ号，请在本程序目录下的 config/indi.eiriksgata.rulateday-dice/config.json 文件中的 'master.QQ.number' 中进行设置，设置后才可以使用本功能";
+            return CustomText.getText("dice.master.number.no.set");
         }
         if (data.getQqID() == Long.parseLong(number)) {
             if (number.equals(data.getMessage().trim())) {
@@ -95,11 +96,11 @@ public class BotController {
                 friendId = Long.parseLong(data.getMessage().trim());
                 BotServiceControl.botControl.groupBlacklistDisable(-friendId);
             } catch (Exception e) {
-                return "输入的号码不对。";
+                return CustomText.getText("blacklist.friend.id.error");
             }
-            return "用户[" + friendId + "]已从黑名单中移除。";
+            return CustomText.getText("blacklist.friend.add.success", friendId);
         } else {
-            return "你不是骰主，无法使用黑名单功能";
+            return CustomText.getText("blacklist.no.permission");
         }
     }
 
@@ -108,17 +109,17 @@ public class BotController {
     public String getGroupList(MessageData<?> data) {
         String number = GlobalData.configData.getString("master.QQ.number");
         if (number.equals("")) {
-            return "本插件还未设置骰主QQ号，请在本程序目录下的 config/indi.eiriksgata.rulateday-dice/config.json 文件中的 'master.QQ.number' 中进行设置，设置后才可以使用本功能";
+            return CustomText.getText("dice.master.number.no.set");
         }
         if (data.getQqID() == Long.parseLong(number)) {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("当前加入的群聊:\n");
+            stringBuilder.append(CustomText.getText("bot.group.list.title")).append("\n");
             for (Group group : Bot.getInstances().get(0).getGroups()) {
                 stringBuilder.append("[").append(group.getName()).append("]").append(" ").append(group.getId()).append("\n");
             }
             return stringBuilder.toString();
         } else {
-            return "你不是骰主，无法使用该功能";
+            return CustomText.getText("blacklist.no.permission");
         }
     }
 
@@ -126,17 +127,17 @@ public class BotController {
     public String getFriendList(MessageData<?> data) {
         String number = GlobalData.configData.getString("master.QQ.number");
         if (number.equals("")) {
-            return "本插件还未设置骰主QQ号，请在本程序目录下的 config/indi.eiriksgata.rulateday-dice/config.json 文件中的 'master.QQ.number' 中进行设置，设置后才可以使用本功能";
+            return CustomText.getText("dice.master.number.no.set");
         }
         if (data.getQqID() == Long.parseLong(number)) {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("当前拥有的好友:\n");
+            stringBuilder.append(CustomText.getText("bot.friend.list.title")).append("\n");
             for (Friend friend : Bot.getInstances().get(0).getFriends()) {
                 stringBuilder.append("[").append(friend.getNick()).append("]").append(" ").append(friend.getId()).append("\n");
             }
             return stringBuilder.toString();
         } else {
-            return "你不是骰主，无法使用该功能";
+            return CustomText.getText("blacklist.no.permission");
         }
     }
 
@@ -144,22 +145,22 @@ public class BotController {
     public String deleteFriend(MessageData<?> data) {
         String number = GlobalData.configData.getString("master.QQ.number");
         if (number.equals("")) {
-            return "本插件还未设置骰主QQ号，请在本程序目录下的 config/indi.eiriksgata.rulateday-dice/config.json 文件中的 'master.QQ.number' 中进行设置，设置后才可以使用本功能";
+            return CustomText.getText("dice.master.number.no.set");
         }
         if (data.getQqID() == Long.parseLong(number)) {
             try {
                 long deleteFriendId = Long.parseLong(data.getMessage());
                 Friend friend = Bot.getInstances().get(0).getFriend(deleteFriendId);
                 if (friend == null) {
-                    return "尚未添加该QQ为好友";
+                    return CustomText.getText("friend.delete.no.found");
                 }
                 friend.delete();
-                return "已删除该好友";
+                return CustomText.getText("friend.delete.success");
             } catch (Exception e) {
-                return "删除好友失败。";
+                return CustomText.getText("friend.delete.fail");
             }
         } else {
-            return "你不是骰主，无法使用该功能";
+            return CustomText.getText("blacklist.no.permission");
         }
     }
 

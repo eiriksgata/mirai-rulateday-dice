@@ -14,6 +14,8 @@ public class GlobalData {
 
     public static String machineCode;
 
+    public static Map<String, Boolean> messageRecordMap;
+
     static {
         try {
             String result = "";
