@@ -1,9 +1,11 @@
 package indi.eiriksgata.rulateday.config;
 
 import com.alibaba.fastjson.JSONObject;
+import indi.eiriksgata.rulateday.dto.GroupRecordDTO;
 import indi.eiriksgata.rulateday.utlis.HmacSHA256Util;
 import indi.eiriksgata.rulateday.utlis.OsUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class GlobalData {
@@ -14,7 +16,8 @@ public class GlobalData {
 
     public static String machineCode;
 
-    public static Map<String, Boolean> messageRecordMap;
+    public static Map<String, Long> groupChatRecordEnableMap = new HashMap<>();
+    public static Map<String, GroupRecordDTO> groupChatRecordDataMap = new HashMap<>();
 
     static {
         try {

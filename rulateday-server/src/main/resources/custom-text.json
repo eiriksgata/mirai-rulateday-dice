@@ -154,5 +154,10 @@
   "system.config.reload.success": "重新载入系统配置",
   "translate.cn-to-en.not.found.content": "没有需要翻译的内容",
   "translate.cn-to.en.text.length.error": "文本长度应该小于200",
-  "dice.roll.hide.private.chat.disable": "骰主尚未允许私聊模式"
+  "dice.roll.hide.private.chat.disable": "骰主尚未允许私聊模式",
+  "chat.record.open": "开启记录，输入.logoff 可结束记录。日志将会上传至当前群聊，如果没有上传权限，则上传失败。",
+  "chat.record.opened": "当前群聊已开启记录，请不要重复打开。",
+  "chat.record.close": "已关闭记录，稍后将上传格式化聊天记录文件。",
+  "chat.record.closed": "尚未打开记录功能。",
+  "chat.record.cache.timeout": "聊天记录已超过5小时，已自动结束。"
 }

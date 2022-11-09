@@ -1,5 +1,6 @@
 package indi.eiriksgata.rulateday;
 
+import com.alibaba.fastjson.JSONObject;
 import indi.eiriksgata.dice.exception.DiceInstructException;
 import indi.eiriksgata.dice.exception.ExceptionEnum;
 import indi.eiriksgata.dice.message.handle.InstructHandle;
@@ -7,8 +8,10 @@ import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.config.GlobalData;
 import indi.eiriksgata.rulateday.instruction.BotServiceControl;
 import indi.eiriksgata.rulateday.service.ApiReport;
+import indi.eiriksgata.rulateday.service.ChatRecordService;
 import indi.eiriksgata.rulateday.service.DiceConfigService;
 import indi.eiriksgata.rulateday.service.impl.ApiReportImpl;
+import indi.eiriksgata.rulateday.service.impl.ChatRecordServiceImpl;
 import indi.eiriksgata.rulateday.service.impl.UserConversationImpl;
 import indi.eiriksgata.rulateday.utlis.ExceptionUtils;
 import kotlin.coroutines.CoroutineContext;
@@ -22,7 +25,9 @@ import org.apache.ibatis.reflection.ExceptionUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DiceMessageEventHandle extends SimpleListenerHost {
@@ -30,6 +35,8 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
     private static final InstructHandle instructHandle = new InstructHandle();
     private static final BotServiceControl botControl = new BotServiceControl();
     public static final ApiReport apiReport = new ApiReportImpl();
+
+    public static final ChatRecordService chatRecordService = new ChatRecordServiceImpl();
 
     @EventHandler()
     public ListeningStatus onBotGroupRequest(BotInvitedJoinGroupRequestEvent event) {
@@ -132,6 +139,13 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         return ListeningStatus.LISTENING;
     }
 
+    @EventHandler()
+    public ListeningStatus onGroupMessagePreSend(GroupMessagePostSendEvent groupMessagePostSendEvent) {
+        //群记录处理
+        chatRecordService.botSelfMessageRecord(groupMessagePostSendEvent);
+        return ListeningStatus.LISTENING;
+    }
+
     //处理在处理事件中发生的未捕获异常
     @Override
     public void handleException(@NotNull CoroutineContext context, @NotNull Throwable exception) {
@@ -150,6 +164,10 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         if (botControl.groupBotOff(event) || botControl.groupBotOn(event)) {
             return;
         }
+
+        //群记录处理
+        chatRecordService.groupRecordHandler(event);
+
         if (!botControl.isSpeakers(event)) {
             return;
         }
