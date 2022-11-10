@@ -157,6 +157,7 @@ public class BotController {
                 friend.delete();
                 return CustomText.getText("friend.delete.success");
             } catch (Exception e) {
+                e.printStackTrace();
                 return CustomText.getText("friend.delete.fail");
             }
         } else {
