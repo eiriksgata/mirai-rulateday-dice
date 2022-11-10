@@ -71,7 +71,7 @@ public class BotControlServiceImpl implements BotControlService {
     public void groupBlacklistEnable(long groupId) {
         try {
             if (speakersGroupListMapper.selectByGroupId(groupId) == null) {
-                speakersGroupListMapper.insert(groupId, false, false);
+                speakersGroupListMapper.insert(groupId, false, true);
             } else {
                 speakersGroupListMapper.updateIsBlacklistById(groupId, true);
             }
