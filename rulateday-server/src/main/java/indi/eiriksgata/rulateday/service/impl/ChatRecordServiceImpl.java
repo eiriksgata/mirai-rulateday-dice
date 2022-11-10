@@ -85,7 +85,10 @@ public class ChatRecordServiceImpl implements ChatRecordService {
                             GlobalData.groupChatRecordDataMap.get(groupMessageEvent.getGroup().getId() + "")
                     )
             );
-            groupMessageEvent.getGroup().getFiles().uploadNewFile("/" + file.getName(), ExternalResource.create(file));
+
+            ExternalResource resource = ExternalResource.create(file);
+            groupMessageEvent.getGroup().getFiles().uploadNewFile("/" + file.getName(), resource);
+            resource.close();
             file.delete();
         } catch (IOException e) {
             groupMessageEvent.getGroup().sendMessage("本地文件生成失败，无法输出聊天记录文件");
