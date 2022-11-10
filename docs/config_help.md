@@ -6,13 +6,15 @@
 
 ## 详细配置项说明
 
-| 配置项                        | 类型      | 说明              | 默认值   |
-|----------------------------|---------|-----------------|-------|
-| file.version               | string  | 当前配置文件版本        | 1.0.3 |
-| master.QQ.number           | string  | 骰主QQ            |       |
-| reply.at.user              | boolean | 回复消息时是否使用@用户的形式 | false |
-| auto.accept.friend.request | boolean | 自动接受好友申请        | true  |
-| auto.accept.group.request  | boolean | 自动接受群邀请         | true  |      
+| 配置项                        | 类型            | 说明              | 默认值                                     |
+|----------------------------|---------------|-----------------|-----------------------------------------|
+| file.version               | string        | 当前配置文件版本        | 1.0.3                                   |
+| master.QQ.number           | string        | 骰主QQ            |                                         |
+| reply.at.user              | boolean       | 回复消息时是否使用@用户的形式 | false                                   |
+| auto.accept.friend.request | boolean       | 自动接受好友申请        | true                                    |
+| auto.accept.group.request  | boolean       | 自动接受群邀请         | true                                    |   
+| ai-drawing                 | {}            | ai绘图配置项         | {"url": "","remote": true,"userId": ""} |
+| instructions.prefix.list   | List\<String> | 指令前缀配置          | [".","。"]                               |
 
 
 后续有待添加....
