@@ -1,4 +1,4 @@
-package indi.eiriksgata.rulateday.utlis;
+package indi.eiriksgata.rulateday.init;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -6,6 +6,7 @@ import indi.eiriksgata.dice.utlis.VersionUtils;
 import indi.eiriksgata.rulateday.RulatedayCore;
 import indi.eiriksgata.rulateday.config.CustomDocumentHandler;
 import indi.eiriksgata.rulateday.config.GlobalData;
+import indi.eiriksgata.rulateday.utlis.JSONFileUtils;
 import indi.eiriksgata.rulateday.websocket.client.WebSocketClientInit;
 
 import java.io.*;
@@ -27,21 +28,41 @@ public class LoadDatabaseFile {
 
     public static void init() {
         try {
+            //检查是否在mirai-console执行。如果是则采用控制台路径。
             path = RulatedayCore.INSTANCE.getDataFolderPath().toString();
         } catch (ExceptionInInitializerError ignored) {
+            //如果不是则采用当前项目路径。
             path = "";
         }
         try {
-            createProjectFile();
-            createCustomTextConfigFile();
-            createImageFile();
-            createCustomDoc();
-            createDatabaseFile();
-            createConfigFile();
+            //初始化载入数据顺序，考虑到一些方法或者数据需要重复构建，因此应当优化一下结构。
 
+            //检查创建项目文件夹
+            createProjectFile();
+
+            //检查并创建自定义文本文件
+            createCustomTextConfigFile();
+
+            //创建图片文件夹
+            createImageFile();
+
+            //创建自定义文档文件夹
+            createCustomDoc();
+
+            //创建数据库文件
+            createDatabaseFile();
+
+            //创建并载入配置文件
+            createAndLoadConfigFile();
+
+            //载入自定义文档数据
             LoadDatabaseFile.loadCustomDocument();
 
+            //建立ws通讯
             new Thread(WebSocketClientInit::run).start();
+
+            //通用缓存数据
+            CacheReuseData.init();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,7 +87,7 @@ public class LoadDatabaseFile {
         }
     }
 
-    public static void createConfigFile() throws IOException {
+    public static void createAndLoadConfigFile() throws IOException {
         String configFileName = "config.json";
         String path = "config/indi.eiriksgata.rulateday-dice/" + configFileName;
         File file = new File(path);
@@ -162,14 +183,6 @@ public class LoadDatabaseFile {
             document.mkdir();
         }
     }
-
-    public static void createGalGame() throws IOException {
-        File file = new File(path + "/galgame");
-        if (!file.exists()) {
-            file.mkdir();
-        }
-    }
-
 
     public static void createDatabaseFile() throws IOException {
         //读取db配置文件
