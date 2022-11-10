@@ -1,8 +1,6 @@
 package indi.eiriksgata.rulateday.instruction;
 
-import com.github.kevinsawicki.http.HttpRequest;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.alibaba.fastjson.JSONObject;
 import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.injection.InstructService;
 import indi.eiriksgata.dice.reply.CustomText;
@@ -13,8 +11,8 @@ import indi.eiriksgata.rulateday.event.EventUtils;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 import indi.eiriksgata.rulateday.service.*;
 import indi.eiriksgata.rulateday.service.impl.*;
-import indi.eiriksgata.rulateday.utlis.LoadDatabaseFile;
-import indi.eiriksgata.rulateday.vo.ResponseBaseVo;
+import indi.eiriksgata.rulateday.init.LoadDatabaseFile;
+import indi.eiriksgata.rulateday.utlis.RestUtil;
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.GroupTempMessageEvent;
@@ -27,6 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -135,24 +134,23 @@ public class QueryController {
 
     @InstructReflex(value = {"kkp"})
     public String randomPicture(MessageData<?> data) {
-        String url = ApiReportImpl.apiUrl + "/picture/random";
-        String resultJson;
+        String pictureAddress;
         try {
-            resultJson = HttpRequest.get(url).body();
+            String result = RestUtil.get("https://www.dmoe.cc/random.php?return=json");
+            JSONObject jsonObject = JSONObject.parseObject(result);
+            if (Objects.equals(jsonObject.getString("code"), "200")) {
+                pictureAddress = jsonObject.getString("imgurl");
+            } else {
+                return CustomText.getText("api.request.error");
+            }
         } catch (Exception e) {
             return CustomText.getText("api.request.error");
-        }
-        ResponseBaseVo<String> response = new Gson().fromJson(
-                resultJson, new TypeToken<ResponseBaseVo<String>>() {
-                }.getType());
-        if (response.getCode() == -1) {
-            return response.getData();
         }
 
         URL pictureUrl;
         InputStream inputStream;
         try {
-            pictureUrl = new URL(response.getData());
+            pictureUrl = new URL(pictureAddress);
             HttpURLConnection conn = (HttpURLConnection) pictureUrl.openConnection();
             // 设置超时间为3秒
             conn.setConnectTimeout(3 * 1000);
