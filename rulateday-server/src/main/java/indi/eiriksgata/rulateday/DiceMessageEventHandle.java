@@ -25,9 +25,7 @@ import org.apache.ibatis.reflection.ExceptionUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class DiceMessageEventHandle extends SimpleListenerHost {
@@ -73,7 +71,6 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             return ListeningStatus.LISTENING;
         }
 
-        //判断群是否是黑名单，具体功能尚未实现
         if (botControl.isBlacklist(-event.getSender().getId())) {
             return ListeningStatus.LISTENING;
         }
