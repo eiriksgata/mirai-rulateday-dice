@@ -1,4 +1,4 @@
-package galgame;
+package trpg.game;
 
 import indi.eiriksgata.rulateday.trpggame.RoleDataHandler;
 import org.junit.jupiter.api.Test;

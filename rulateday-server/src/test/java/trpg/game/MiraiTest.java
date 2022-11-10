@@ -1,4 +1,4 @@
-package galgame;
+package trpg.game;
 
 import com.alibaba.fastjson.JSONObject;
 import indi.eiriksgata.rulateday.trpggame.RoleDataHandler;

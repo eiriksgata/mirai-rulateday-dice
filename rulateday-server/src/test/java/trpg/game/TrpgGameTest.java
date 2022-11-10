@@ -1,4 +1,4 @@
-package galgame;
+package trpg.game;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 
-public class GalGameTest {
+public class TrpgGameTest {
 
 
     @Test

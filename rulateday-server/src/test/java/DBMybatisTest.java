@@ -1,12 +1,10 @@
 
-import indi.eiriksgata.rulateday.RulatedayCore;
 import indi.eiriksgata.rulateday.mapper.CrazyOverDescribeMapper;
 import indi.eiriksgata.rulateday.mapper.SpeakersGroupListMapper;
 import indi.eiriksgata.rulateday.pojo.CrazyOverDescribe;
 import indi.eiriksgata.rulateday.service.impl.UserInitiativeServerImpl;
-import indi.eiriksgata.rulateday.utlis.LoadDatabaseFile;
+import indi.eiriksgata.rulateday.init.LoadDatabaseFile;
 import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
-import net.mamoe.mirai.console.plugin.PluginManager;
 import org.apache.ibatis.io.Resources;
 import org.junit.jupiter.api.Test;
 

@@ -5,7 +5,7 @@ import indi.eiriksgata.dice.operation.impl.RollRoleImpl;
 import indi.eiriksgata.dice.operation.impl.SanCheckImpl;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.instruction.RollController;
-import indi.eiriksgata.rulateday.utlis.LoadDatabaseFile;
+import indi.eiriksgata.rulateday.init.LoadDatabaseFile;
 import indi.eiriksgata.rulateday.utlis.WeightRandom;
 import org.junit.jupiter.api.Test;
 

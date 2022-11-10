@@ -1,6 +1,6 @@
 package indi.eiriksgata.rulateday;
 
-import indi.eiriksgata.rulateday.utlis.LoadDatabaseFile;
+import indi.eiriksgata.rulateday.init.LoadDatabaseFile;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import net.mamoe.mirai.event.GlobalEventChannel;
