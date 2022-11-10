@@ -5,9 +5,14 @@ import indi.eiriksgata.dice.injection.InstructService;
 import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.config.GlobalData;
+import indi.eiriksgata.rulateday.event.EventAdapter;
+import indi.eiriksgata.rulateday.event.EventUtils;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Friend;
 import net.mamoe.mirai.contact.Group;
+import net.mamoe.mirai.contact.MemberPermission;
+import net.mamoe.mirai.event.events.FriendMessageEvent;
+import net.mamoe.mirai.event.events.GroupMessageEvent;
 
 @InstructService
 public class BotController {
@@ -166,4 +171,70 @@ public class BotController {
     }
 
 
+    @InstructReflex(value = {"dismiss"}, priority = 3)
+    public String dismissCurrentGroup(MessageData<?> data) {
+        String number = GlobalData.configData.getString("master.QQ.number");
+        EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
+            @Override
+            public void group(GroupMessageEvent event) {
+                event.getGroup().sendMessage(CustomText.getText("bot.group.dismiss"));
+
+                if (event.getSender().getPermission().getLevel() == MemberPermission.ADMINISTRATOR.getLevel() ||
+                        event.getSender().getPermission().getLevel() == MemberPermission.OWNER.getLevel() ||
+                        data.getQqID() == Long.parseLong(number)
+                ) {
+                    event.getGroup().quit();
+                } else {
+                    event.getGroup().sendMessage(CustomText.getText("bot.group.dismiss.no.permission"));
+                }
+            }
+        });
+        return null;
+    }
+
+    @InstructReflex(value = {"quitGroup", ".quitgroup"}, priority = 4)
+    public String quitGroupByMaster(MessageData<?> data) {
+        String number = GlobalData.configData.getString("master.QQ.number");
+        if (!number.equals("" + data.getQqID())) {
+            return CustomText.getText("bot.group.quit.no.permission");
+        }
+        int groupId;
+        if (data.getMessage().matches("^\\d{1,20}$")) {
+            groupId = Integer.parseInt(data.getMessage());
+        } else {
+            return CustomText.getText("bot.group.quit.id.error");
+        }
+
+        EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
+            @Override
+            public void group(GroupMessageEvent event) {
+                Group group = event.getBot().getGroup(groupId);
+                if (group == null) {
+                    event.getGroup().sendMessage(CustomText.getText("bot.group.quit.not.found", groupId));
+                } else {
+                    if (group.quit()) {
+                        event.getGroup().sendMessage(CustomText.getText("bot.group.quit.success", groupId));
+                    } else {
+                        event.getGroup().sendMessage(CustomText.getText("bot.group.quit.fail", groupId));
+                    }
+                }
+            }
+
+            @Override
+            public void friend(FriendMessageEvent event) {
+                Group group = event.getBot().getGroup(groupId);
+                if (group == null) {
+                    event.getSender().sendMessage(CustomText.getText("bot.group.quit.not.found", groupId));
+                } else {
+                    if (group.quit()) {
+                        event.getSender().sendMessage(CustomText.getText("bot.group.quit.success", groupId));
+                    } else {
+                        event.getSender().sendMessage(CustomText.getText("bot.group.quit.fail", groupId));
+                    }
+                }
+            }
+        });
+
+        return null;
+    }
 }
