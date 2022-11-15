@@ -187,7 +187,6 @@
   "chat.record.closed": "尚未打开记录功能。",
   "chat.record.cache.timeout": "聊天记录已超过5小时，已自动结束。"
 }
-}
 
 ```
 
