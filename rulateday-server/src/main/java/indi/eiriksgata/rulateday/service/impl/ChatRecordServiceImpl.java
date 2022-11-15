@@ -25,6 +25,7 @@ public class ChatRecordServiceImpl implements ChatRecordService {
         Long startTime = GlobalData.groupChatRecordEnableMap.get(groupMessageEvent.getGroup().getId() + "");
         if (startTime != null) {
             if (System.currentTimeMillis() - startTime > 1000 * 60 * 60 * 5) {
+                groupMessageEvent.getGroup().sendMessage(CustomText.getText("chat.record.cache.timeout"));
                 GlobalData.groupChatRecordEnableMap.remove(groupMessageEvent.getGroup().getId() + "");
                 recordFileUpload(groupMessageEvent);
             } else {
@@ -52,9 +53,7 @@ public class ChatRecordServiceImpl implements ChatRecordService {
             long botId = Bot.getInstances().get(0).getId();
             chatRecordDTO.setSenderId(botId);
 
-            NormalMember normalMember = Objects.requireNonNull(Objects.requireNonNull(
-                    Bot.getInstances().get(0).getGroup(groupId
-                    )).get(botId));
+            NormalMember normalMember = Objects.requireNonNull(Objects.requireNonNull(Bot.getInstances().get(0).getGroup(groupId)).get(botId));
 
             String senderName = normalMember.getNameCard();
             if (senderName.equals("")) {
@@ -80,11 +79,7 @@ public class ChatRecordServiceImpl implements ChatRecordService {
     @Override
     public void recordFileUpload(GroupMessageEvent groupMessageEvent) {
         try {
-            File file = recordsFileCreate(
-                    JSONObject.toJSONString(
-                            GlobalData.groupChatRecordDataMap.get(groupMessageEvent.getGroup().getId() + "")
-                    )
-            );
+            File file = recordsFileCreate(JSONObject.toJSONString(GlobalData.groupChatRecordDataMap.get(groupMessageEvent.getGroup().getId() + "")));
 
             ExternalResource resource = ExternalResource.create(file);
             groupMessageEvent.getGroup().getFiles().uploadNewFile("/" + file.getName(), resource);
