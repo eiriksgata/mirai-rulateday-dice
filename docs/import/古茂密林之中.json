@@ -17,9 +17,10 @@
         "attribute": "动机概率50必然发生100"
       },
       "艾莉莎": {
+        "name": "艾莉莎",
         "describe": "同行调查员之一",
         "attribute": "力量50体质50体型65敏捷70外貌75智力55意志60教育55幸运75会计60侦查80聆听70",
-        "consumables": "生命11魔法6理智60"
+        "consumables": "生命11魔法6理智70"
       },
       "莫比乌斯": {
         "describe": "同行调查员之一",
@@ -35,6 +36,8 @@
       "detection": {
         "role": "system",
         "attribute": "动机概率",
+        "consumables": "",
+        "showDice": false,
         "success": {
           "text": "来自银行、抵押公司等等的债务使你的财务状况陷入了危机。在绝望之中你选择向高利贷者求助。你必须在这周结束时拿到现金，不然高利贷者就要让你吃点苦头。你只需要1000美金就能脱离苦海……",
           "nextNode": "2",
@@ -61,17 +64,25 @@
       "detection": {
         "role": "system",
         "attribute": "动机概率",
+        "consumables": "",
+        "showDice": false,
         "success": {
           "text": "虽然你不清楚这样做有什么意义，但是你的行为引起了警长的注意，他瞪了你一眼。并且警告你这里是警局，不要在此捣乱，注意你的言行。",
           "nextNode": "3",
           "update": {
             "role": "player",
+            "attribute": "",
             "consumables": "警长好感度-1"
           }
         },
         "fail": {
           "text": "当你刚想当众吵嚷的时候，旁边有一名热心市民阻止了你的行为，显然他留意到你想捣乱。她小声的跟你说到:[这里是警局，你注意点，小心被警长给抓起来]，你听到她如此说到后停止了自己这般迷惑的行为。",
-          "nextNode": "3"
+          "nextNode": "3",
+          "update": {
+            "role": "",
+            "attribute": "",
+            "consumables": ""
+          }
         }
       }
     },
@@ -82,17 +93,24 @@
         "role": "player",
         "showDice": true,
         "attribute": "身负债务",
+        "consumables": "",
         "success": {
           "text": "尽管你仅需要1000美金就可以偿还债务，但是你觉得可能拿不到5000美元奖金，而且每天25美元的酬劳显然不足以在一周内凑齐1000美元，你还需要更多的钱。在斯壮发话完毕后，你立马就开始起哄说到：[才25美元，就要我们冒着生命危险来做这种事情，太不值得了，我们需要更多的钱。]，周围的人听到这番话后，也跟着起哄：[就是！就是！]。",
           "nextNode": "5",
           "update": {
             "role": "player",
+            "attribute": "",
             "consumables": "警长好感度-1"
           }
         },
         "fail": {
           "text": "身为正义使者的你，良心不允许做出这样的事情。因为你知道在这个时期里面、25美元一天，算是一笔不错的收入了，而且你此次的目的并不是为了钱，所以你并没有逼迫斯壮加价。不过旁边倒是有人似乎想要起哄。不过及时被警长制止了，显然警长并不想让人在警察局闹事。",
-          "nextNode": "3"
+          "nextNode": "3",
+          "update": {
+            "role": "",
+            "attribute": "",
+            "consumables": ""
+          }
         }
       }
     },
@@ -101,119 +119,26 @@
       "count": 1,
       "detection": {
         "role": "system",
+        "showDice": false,
         "attribute": "必然发生",
+        "consumables": "",
         "success": {
           "text": "显然聪明的你知道，现在发话都是不明智的行为，也许有一些事情，私下解决会更好，没必要摆在明面上来博取大家的注意。",
-          "nextNode": "3"
-        }
-      }
-    },
-    "B1005": {
-      "text": "继续",
-      "count": 1,
-      "detection": {
-        "role": "system",
-        "attribute": "必然发生",
-        "success": {
-          "text": "",
-          "nextNode": "3"
-        },
-        "update": {
-          "role": "player",
-          "consumables": "警长好感度-2"
-        }
-      }
-    },
-    "B1006": {
-      "text": "继续",
-      "count": 1,
-      "detection": {
-        "role": "system",
-        "attribute": "必然发生",
-        "showDice": true,
-        "success": {
-          "text": "此时已经有不少的其他组搜查队离开了警局。你们组三人还停留在警局门口。",
-          "nextNode": "7"
-        }
-      }
-    },
-    "B1007": {
-      "text": "询问艾莉莎参与此次行动的目的",
-      "count": 1,
-      "detection": {
-        "role": "system",
-        "attribute": "必然发生",
-        "success": {
-          "text": "艾莉莎叹了口气说到：[我们报社最近销量不是很好，上头派我来收集更多的一手资料]",
-          "nextNode": "7"
-        }
-      }
-    },
-    "B1008": {
-      "text": "询问莫比乌斯参与此次行动的目的",
-      "count": 1,
-      "detection": {
-        "role": "player",
-        "attribute": "心理学",
-        "showDice": true,
-        "success": {
-          "text": "莫比乌斯干脆的回答：[只是单纯为了拿点钱而已]，不过学过心理学的你可以从他的表情中看出，他似乎不单纯是为了钱，还可能有其他的原因。",
-          "nextNode": "7"
-        },
-        "fail": {
-          "text": "莫比乌斯干脆的回答：[只是单纯为了拿点钱而已]",
-          "nextNode": "7"
-        }
-      }
-    },
-    "B1009": {
-      "text": "听一下周围的人在聊什么",
-      "count": 1,
-      "detection": {
-        "role": "player",
-        "attribute": "聆听",
-        "showDice": true,
-        "success": {
-          "text": "从众多的嘈杂声音中，你听到了一条稍微有用的信息，如果想购买装备和武器可以去在贝宁顿大街(Main Street)的阿瑟·J·斯彭斯五金枪械店买，那里的价格比较实惠，种类繁多。",
-          "nextNode": "7"
-        },
-        "fail": {
-          "text": "周围的环境非常嘈杂以至于你根本没法听清楚别人在说什么",
-          "nextNode": "7"
-        }
-      }
-    },
-    "B1010": {
-      "text": "结束游戏",
-      "count": 1,
-      "detection": {
-        "role": "system",
-        "attribute": "必然发生",
-        "showDice": true,
-        "success": {
-          "text": "",
-          "nextNode": "8"
-        }
-      }
-    },
-    "B1011": {
-      "text": "使用绷带包扎",
-      "count": 1,
-      "detection": {
-        "role": "player",
-        "consumables": "绷带>0",
-        "showDice": true,
-        "success": {
-          "text": "你简单的进行了包扎",
-          "nextNode": "7",
+          "nextNode": "3",
           "update": {
-            "role": "player",
-            "consumables": "生命+1,绷带-1"
+            "role": "",
+            "attribute": "",
+            "consumables": ""
           }
         },
         "fail": {
-          "text": "你没持有绷带，无法进行包扎",
-          "nextNode": "7"
+          "text": "",
+          "nextNode": "",
+          "update": {
+            "role": "",
+            "attribute": "",
+            "consumables": ""
+          }
         }
       }
     }
@@ -236,33 +161,8 @@
       },
       "3": {
         "text": "接下来便是大家分组的时间、你被分到和一个女性调查员一起。她戴着一顶米奇色的帽子，以及同色的风衣，拥有一头金色的披肩波浪头发。除此之外还有一个年长的男性，拥有一头花白的头发，戴着圆形镜片的眼镜，身穿一件黑色大衣。经过一番简单的介绍，女性名叫艾莉莎，是一名新闻记者。男性是一名当地的学校老师，叫做莫比乌斯。同时你还了解到，2小时候后你们小组将会被带到昨晚发生枪战的地方。你可以在这短暂的时间里做一些准备。",
-        "option": [
-          "B1006"
-        ]
-      },
-      "5": {
-        "text": "警局因为你的这番起哄逐渐变得热闹了起来，显然此时警长已经憋不住了。只见警长一声大吼：[够了！这里是警局，给我注意点，有什么事你们私下解决，不要在这给我起哄]，然后瞪了你一眼，显然他已经记住你这个起哄份子。周围的警察也连忙维持秩序，不一会的功夫周围也都变得安静起来。",
-        "option": [
-          "B1005"
-        ]
-      },
-      "7": {
-        "text": "你要做点什么？",
-        "describe": "这里可以作为一个循环节点使用。通过配置上面的config-option 指定的按键ID，可以给选项配置点击次数",
-        "option": [
-          "B1007",
-          "B1008",
-          "B1009",
-          "B1010",
-          "B1011"
-        ]
-      },
-      "8": {
-        "text": "本模组只是简单的展示了一下模组的编写例子。该模组不是一个完整的故事剧情。",
-        "end": true
+        "option": []
       }
     }
   }
 }
-
-
