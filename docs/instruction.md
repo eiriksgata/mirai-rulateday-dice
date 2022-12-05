@@ -659,6 +659,18 @@ json文件格式参考:
 .tr-en你好
 ```
 
+## .kkp
+随机获取一张图片
+
+## .logon
+启动群消息记录功能。
+
+## .logoff
+关闭群消息记录功能。
+
+生成的消息记录文件可以通过该网站进行查看：https://tool.rulatedaydice.ga/#/tools/record
+
+
 ## More
 
 有待添加,欢迎各位补充.**点击右上角编辑当前页**
