@@ -47,7 +47,7 @@
   "dr5e.rule.lib.result.list.not.found": "查询不到结果，欢迎联系QQ:2353686862提供更多的数据",
   "dr5e.role.create.size.max": "参数范围需要在1-20内",
   "instructions.help.result1": "插件名称:Rulateda v0.4.x by Eiriksgata\n反馈联系Github：https://github.com/Eiriksgata/mirai-rulateday-dice\n所有指令：.help指令\nDND5eWiki:https://keith404.gitee.io/rulateday-dnd5e-wiki/#/\n",
-  "instructions.all.result1": "骰子常用指令列表:\n.st 属性设置\n.ra|.rc 属性检测\n.rb 奖励骰|.rp惩罚骰\n.cr coc7规则书查询\n.dr dnd5e信息查询\n.ti 随机获取发疯情况\n.li 发疯后总结\n.sc 理智检测\n.rh 暗骰\n.set 设置默认骰\n.coc 随机coc7角色属性\n.dnd 随机dnd5e角色属性\n.r 随机数生成\n.rd 默认骰数值生成\n.ww 骰池功能\n.kkp 随机图片速览(测试)\n.atk 先攻指令系列，详情请看文档\n.botoff | .boton 启用骰子开关\n更多的指令详情请查看:https://eiriksgata.github.io/mirai-rulateday-dice/#/instruction\n备用文档:https://note.youdao.com/s/PZ3tqThT",
+  "instructions.all.result1": "骰子常用指令列表:\n.st 属性设置\n.ra|.rc 属性检测\n.rb 奖励骰|.rp惩罚骰\n.cr coc7规则书查询\n.dr dnd5e信息查询\n.ti 随机获取发疯情况\n.li 发疯后总结\n.sc 理智检测\n.rh 暗骰\n.set 设置默认骰\n.coc 随机coc7角色属性\n.dnd 随机dnd5e角色属性\n.r 随机数生成\n.rd 默认骰数值生成\n.ww 骰池功能\n.kkp 随机图片速览(测试)\n.atk 先攻指令系列，详情请看文档\n.botoff | .boton 启用骰子开关\n更多的指令详情请查看:https://eiriksgata.github.io/mirai-rulateday-dice/#/instruction\n备用文档:https://note.youdao.com/s/PZ3tqThT\n个人域文档：https://docs.rulatedaydice.ga",
   "api.request.error": "请求云端服务器接口失败。请联系相关开发人员QQ2353686862。",
   "cards.type.not.found": "当前存储库没有卡组类型,可以通过指令.cardsAdd进行添加。",
   "cards.type.list.title": "当前存储库下有以下卡组类型:",
