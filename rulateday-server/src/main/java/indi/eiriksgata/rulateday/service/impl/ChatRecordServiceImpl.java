@@ -80,13 +80,13 @@ public class ChatRecordServiceImpl implements ChatRecordService {
     public void recordFileUpload(GroupMessageEvent groupMessageEvent) {
         try {
             File file = recordsFileCreate(JSONObject.toJSONString(GlobalData.groupChatRecordDataMap.get(groupMessageEvent.getGroup().getId() + "")));
-
             ExternalResource resource = ExternalResource.create(file);
             groupMessageEvent.getGroup().getFiles().uploadNewFile("/" + file.getName(), resource);
             resource.close();
             file.delete();
+            groupMessageEvent.getGroup().sendMessage("聊天记录文件可通过该网址进行解析操作：https://tool.rulatedaydice.ga/#/tools/record");
         } catch (IOException e) {
-            groupMessageEvent.getGroup().sendMessage("本地文件生成失败，无法输出聊天记录文件");
+            groupMessageEvent.getGroup().sendMessage("本地文件生成失败，无法输出聊天记录文件。");
         }
     }
 
