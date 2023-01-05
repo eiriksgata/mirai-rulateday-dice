@@ -88,11 +88,11 @@ public class RandomPictureApiImpl implements RandomPictureApiService {
 
 
     @Override
-    public String xiaoWaiAPI(MessageData<?> data) {
+    public String urlEncodeAPI(MessageData<?> data, String url) {
         URL pictureUrl;
         InputStream inputStream;
         try {
-            pictureUrl = new URL("https://api.ixiaowai.cn/api/api.php");
+            pictureUrl = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) pictureUrl.openConnection();
             // 设置超时间为3秒
             conn.setConnectTimeout(3 * 1000);
@@ -138,4 +138,6 @@ public class RandomPictureApiImpl implements RandomPictureApiService {
         });
         return null;
     }
+
+
 }

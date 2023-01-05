@@ -1,32 +1,20 @@
 package indi.eiriksgata.rulateday.instruction;
 
-import com.alibaba.fastjson.JSONObject;
 import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.injection.InstructService;
 import indi.eiriksgata.dice.reply.CustomText;
 import indi.eiriksgata.dice.vo.MessageData;
 import indi.eiriksgata.rulateday.config.CustomDocumentHandler;
 import indi.eiriksgata.rulateday.config.GlobalData;
-import indi.eiriksgata.rulateday.event.EventAdapter;
-import indi.eiriksgata.rulateday.event.EventUtils;
 import indi.eiriksgata.rulateday.pojo.QueryDataBase;
 import indi.eiriksgata.rulateday.service.*;
 import indi.eiriksgata.rulateday.service.impl.*;
 import indi.eiriksgata.rulateday.init.LoadDatabaseFile;
-import indi.eiriksgata.rulateday.utlis.RestUtil;
-import net.mamoe.mirai.event.events.FriendMessageEvent;
-import net.mamoe.mirai.event.events.GroupMessageEvent;
-import net.mamoe.mirai.event.events.GroupTempMessageEvent;
-import net.mamoe.mirai.utils.ExternalResource;
 
 import javax.annotation.Resource;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -140,9 +128,17 @@ public class QueryController {
     public String randomPicture(MessageData<?> data) {
         switch (GlobalData.randomPictureApiType) {
             case 1:
-                return randomPictureApiService.xiaoWaiAPI(data);
+                return randomPictureApiService.urlEncodeAPI(data, "https://api.ixiaowai.cn/api/api.php");
             case 2:
                 return randomPictureApiService.yinhuaAPI(data);
+            case 3:
+                return randomPictureApiService.urlEncodeAPI(data, "https://api.ixiaowai.cn/mcapi/mcapi.php");
+            case 4:
+                return randomPictureApiService.urlEncodeAPI(data, "https://api.paugram.com/wallpaper");
+            case 5:
+                return randomPictureApiService.urlEncodeAPI(data, "https://api.yimian.xyz/img");
+            case 6:
+                return randomPictureApiService.urlEncodeAPI(data, "https://img.xjh.me/random_img.php");
         }
         return null;
     }
