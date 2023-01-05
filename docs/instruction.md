@@ -670,6 +670,13 @@ json文件格式参考:
 
 生成的消息记录文件可以通过该网站进行查看：https://tool.rulatedaydice.ga/#/tools/record
 
+## .kkpset1
+默认图片解析处理方法
+切换至图片解析线路1
+
+## .kkpset2
+切换至图片解析线路2
+
 
 ## More
 
