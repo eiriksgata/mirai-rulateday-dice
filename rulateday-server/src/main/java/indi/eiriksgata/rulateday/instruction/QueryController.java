@@ -138,7 +138,7 @@ public class QueryController {
             case 5:
                 return randomPictureApiService.urlEncodeAPI(data, "https://api.yimian.xyz/img");
             case 6:
-                return randomPictureApiService.urlEncodeAPI(data, "https://img.xjh.me/random_img.php");
+                return randomPictureApiService.urlEncodeAPI(data, "https://img.paulzzh.tech/touhou/random");
         }
         return null;
     }

@@ -29,4 +29,9 @@ public class ApiTest {
         String result = RestUtil.get("https://api.ixiaowai.cn/api/api.php");
         System.out.println(result);
     }
+
+    @Test
+    void suiyuexiaozhu(){
+        String result = RestUtil.get("https://api.ixiaowai.cn/api/api.php");
+    }
 }
