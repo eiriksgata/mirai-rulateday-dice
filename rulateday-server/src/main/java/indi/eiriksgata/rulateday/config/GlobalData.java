@@ -19,6 +19,8 @@ public class GlobalData {
     public static Map<String, Long> groupChatRecordEnableMap = new HashMap<>();
     public static Map<String, GroupRecordDTO> groupChatRecordDataMap = new HashMap<>();
 
+    public static int randomPictureApiType = 1;
+
     static {
         try {
             String result = "";

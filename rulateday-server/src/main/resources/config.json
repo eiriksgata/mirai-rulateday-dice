@@ -1,5 +1,5 @@
 {
-  "file.version": "1.0.5",
+  "file.version": "1.0.6",
   "master.QQ.number": "",
   "auto.accept.friend.request": true,
   "auto.accept.group.request": true,
@@ -12,5 +12,8 @@
   "instructions.prefix.list": [
     ".",
     "。"
-  ]
+  ],
+  "open-ai": {
+    "api-key": ""
+  }
 }

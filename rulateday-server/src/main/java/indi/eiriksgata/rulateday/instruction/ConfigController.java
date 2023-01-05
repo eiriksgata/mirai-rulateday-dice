@@ -81,4 +81,18 @@ public class ConfigController {
     }
 
 
+    @InstructReflex(value = {"kkpset1"}, priority = 4)
+    public String pictureRandomSourceSet1(MessageData<?> data) {
+        GlobalData.randomPictureApiType = 1;
+        return "切换图片解析线路1(默认)";
+    }
+
+
+    @InstructReflex(value = {"kkpset2"}, priority = 4)
+    public String pictureRandomSourceSet2(MessageData<?> data) {
+        GlobalData.randomPictureApiType = 2;
+        return "切换图片解析线路2";
+    }
+
+
 }
