@@ -74,7 +74,7 @@ public class PlayerRoleAttributeSetUtil {
         int mp = 0;
         int san = 0;
         StringBuilder result = new StringBuilder();
-        int luck = 5 * RandomUtils.nextInt(1, 20);
+        int luck = 5 * RandomUtils.nextInt(1, 21);
         List<String> list = RegularExpressionUtils.getMatchers(attributeName, inputString);
         if (list.size() == 8) {
             for (String temp : list) {
