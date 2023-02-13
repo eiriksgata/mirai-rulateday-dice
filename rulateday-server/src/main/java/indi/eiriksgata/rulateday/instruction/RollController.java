@@ -14,6 +14,7 @@ import indi.eiriksgata.dice.injection.InstructReflex;
 import indi.eiriksgata.dice.operation.DiceSet;
 import indi.eiriksgata.dice.operation.impl.RollBasicsImpl;
 import indi.eiriksgata.dice.reply.CustomText;
+import indi.eiriksgata.dice.vo.RegularExpressionResult;
 import indi.eiriksgata.rulateday.event.EventAdapter;
 import indi.eiriksgata.rulateday.event.EventUtils;
 import indi.eiriksgata.rulateday.service.DiceConfigService;
@@ -308,9 +309,9 @@ public class RollController {
             }
             int checkNumber = Integer.parseInt(tempData.substring(checkAttribute.length()));
 
-            int randomNumber = new SecureRandom().nextInt(100);
+            int randomNumber = new SecureRandom().nextInt(101);
             if (randomNumber > checkNumber) {
-                int addValue = new SecureRandom().nextInt(10);
+                int addValue = new SecureRandom().nextInt(11);
                 int count = checkNumber + addValue;
                 String updateAttribute = userAttribute.replaceAll(tempData, checkAttribute + count);
                 userTempDataService.updateUserAttribute(data.getQqID(), updateAttribute);
@@ -320,10 +321,10 @@ public class RollController {
             return CustomText.getText("dice.en.fail", randomNumber, checkNumber, checkAttribute);
         }
 
-        int randomNumber = new SecureRandom().nextInt(100);
+        int randomNumber = new SecureRandom().nextInt(101);
         int checkNumber = Integer.parseInt(RegularExpressionUtils.getMatcher("\\d+", checkAttribute));
         if (randomNumber > checkNumber) {
-            int addValue = new SecureRandom().nextInt(10);
+            int addValue = new SecureRandom().nextInt(11);
             int count = addValue + checkNumber;
             return CustomText.getText("dice.en.success",
                     randomNumber, checkNumber, checkAttribute, checkAttribute, addValue, checkNumber, count);
@@ -450,6 +451,114 @@ public class RollController {
         return CustomText.getText("dice.pool.result", returnText, resultText);
     }
 
+    @InstructReflex(value = {"rl"}, priority = 7)
+    public static String LCDSV1Check1(MessageData<?> data) {
+        List<String> result = RegularExpressionUtils.getMatchers("\\d+", data.getMessage());
+        int dice1 = new SecureRandom().nextInt(10) + 1;
+        int dice2 = new SecureRandom().nextInt(10) + 1;
+        int skillNumber = Integer.parseInt(result.get(0));
+        if (skillNumber > 200) {
+            skillNumber = 200;
+        }
+        double formulaResult = 0;
+        String formulaText = "";
+        StringBuilder outText = new StringBuilder();
+        if (result.size() > 0) {
+            if (skillNumber >= 0 && skillNumber <= 30) {
+                formulaText = "0.3x" + skillNumber + "+0.6x" + dice1 + "x" + dice2;
+                formulaResult = (0.3 * skillNumber) + (0.6 * dice1 * dice2);
+            }
+            if (skillNumber >= 31 && skillNumber <= 50) {
+                formulaText = "0.3x" + skillNumber + "+0.8x" + dice1 + "x" + dice2;
+                formulaResult = (0.3 * skillNumber) + (0.8 * dice1 * dice2);
+            }
+            if (skillNumber >= 51 && skillNumber <= 100) {
+                formulaText = "0.5x" + skillNumber + "+1.2x" + dice1 + "x" + dice2;
+                formulaResult = (0.5 * skillNumber) + (1.2 * dice1 * dice2);
+            }
+            if (skillNumber >= 101 && skillNumber <= 150) {
+                formulaText = "0.7x" + skillNumber + "+" + dice1 + "x" + dice2;
+                formulaResult = (0.7 * skillNumber) + (dice1 * dice2);
+            }
+
+            if (skillNumber >= 151) {
+                formulaText = "140+(" + skillNumber + "-150)x0.4+0.5x" + dice1 + "x" + dice2;
+                formulaResult = 140 + ((skillNumber - 150) * 0.4) + (0.5 * dice1 * dice2);
+            }
+
+        } else {
+            return "无计算参数,指令格式:.rl <技能数值> <DC难度> ，即:.rl 40 50";
+        }
+        if (formulaResult > 200) {
+            outText.append(formulaText).append("=").append(String.format("%.2f", formulaResult)).append("=>").append("200");
+            formulaResult = 200;
+        } else {
+            outText.append(formulaText).append("=").append(String.format("%.2f", formulaResult));
+        }
+        if (result.size() > 1) {
+            int DCValue = Integer.parseInt(result.get(1));
+            if (DCValue > formulaResult) {
+                outText.append("<").append(DCValue).append("\n").append("检定失败!");
+            } else {
+                outText.append(">=").append(DCValue).append("\n").append("检定成功!");
+            }
+        }
+        return outText.toString();
+    }
+
+    @InstructReflex(value = {"rlo", "RL"}, priority = 8)
+    public static String LCDSV1Check2(MessageData<?> data) {
+        List<String> result = RegularExpressionUtils.getMatchers("\\d+", data.getMessage());
+        int dice = new SecureRandom().nextInt(101) + 1;
+        int skillNumber = Integer.parseInt(result.get(0));
+        if (skillNumber > 200) {
+            skillNumber = 200;
+        }
+        double formulaResult = 0;
+        String formulaText = "";
+        StringBuilder outText = new StringBuilder();
+        if (result.size() > 0) {
+            if (skillNumber >= 0 && skillNumber <= 30) {
+                formulaText = "0.3x" + skillNumber + "+0.6x" + dice;
+                formulaResult = (0.3 * skillNumber) + (0.6 * dice);
+            }
+            if (skillNumber >= 31 && skillNumber <= 50) {
+                formulaText = "0.3x" + skillNumber + "+0.8x" + dice;
+                formulaResult = (0.3 * skillNumber) + (0.8 * dice);
+            }
+            if (skillNumber >= 51 && skillNumber <= 100) {
+                formulaText = "0.5x" + skillNumber + "+1.2x" + dice;
+                formulaResult = (0.5 * skillNumber) + (1.2 * dice);
+            }
+            if (skillNumber >= 101 && skillNumber <= 150) {
+                formulaText = "0.7x" + skillNumber + "+" + dice;
+                formulaResult = (0.7 * skillNumber) + (dice);
+            }
+
+            if (skillNumber >= 151) {
+                formulaText = "140+(" + skillNumber + "-150)x0.4+0.5x" + dice;
+                formulaResult = 140 + ((skillNumber - 150) * 0.4) + (0.5 * dice);
+            }
+
+        } else {
+            return "无计算参数,指令格式:.rl <技能数值> <DC难度> ，即:.rl 40 50";
+        }
+        if (formulaResult > 200) {
+            outText.append(formulaText).append("=").append(String.format("%.2f", formulaResult)).append("=>").append("200");
+            formulaResult = 200;
+        } else {
+            outText.append(formulaText).append("=").append(String.format("%.2f", formulaResult));
+        }
+        if (result.size() > 1) {
+            int DCValue = Integer.parseInt(result.get(1));
+            if (DCValue > formulaResult) {
+                outText.append("<").append(DCValue).append("\n").append("检定失败!");
+            } else {
+                outText.append(">=").append(DCValue).append("\n").append("检定成功!");
+            }
+        }
+        return outText.toString();
+    }
 
     private int checkCreateRandomRoleNumber(String message) {
         if (message.equals("")) {
