@@ -47,10 +47,11 @@ public class DiceTest {
     void instructTest() {
         MessageData<?> messageData = new MessageData<>();
         messageData.setQqID(123456789L);
-        messageData.setMessage(".ww10");
-        String result = RollController.dicePoolGen(messageData);
+        messageData.setMessage(".rlo201 80");
+        String result = RollController.LCDSV1Check2(messageData);
         System.out.println(result);
     }
+
 
 
     @Test
@@ -59,7 +60,7 @@ public class DiceTest {
         MessageData<?> messageData = new MessageData<>();
         messageData.setQqID(123456789L);
         InstructHandle instruct = new InstructHandle();
-        messageData.setMessage(".rd30+5");
+        messageData.setMessage(".rl80");
         try {
             System.out.println(instruct.instructCheck(messageData));
         } catch (DiceInstructException e) {
