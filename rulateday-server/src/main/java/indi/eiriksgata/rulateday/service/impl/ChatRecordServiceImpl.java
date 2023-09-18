@@ -84,9 +84,13 @@ public class ChatRecordServiceImpl implements ChatRecordService {
             groupMessageEvent.getGroup().getFiles().uploadNewFile("/" + file.getName(), resource);
             resource.close();
             file.delete();
-            groupMessageEvent.getGroup().sendMessage("聊天记录文件可通过该网址进行解析操作：https://tool.rulatedaydice.ga/#/tools/record");
+            groupMessageEvent.getGroup().sendMessage(
+                    CustomText.getText("record.file.upload.success.result")
+            );
         } catch (IOException e) {
-            groupMessageEvent.getGroup().sendMessage("本地文件生成失败，无法输出聊天记录文件。");
+            groupMessageEvent.getGroup().sendMessage(
+                    CustomText.getText("record.file.upload.fail.result")
+            );
         }
     }
 

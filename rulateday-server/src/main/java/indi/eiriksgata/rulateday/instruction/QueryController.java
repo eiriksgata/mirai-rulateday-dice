@@ -114,7 +114,7 @@ public class QueryController {
 
     @InstructReflex(value = {"help指令"}, priority = 3)
     public String helpInstruct(MessageData<?> data) {
-        return CustomText.getText("instructions.all.result1");
+        return CustomText.getText("instructions.all.result2");
     }
 
     @InstructReflex(value = {"rmm"})

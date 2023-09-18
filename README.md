@@ -25,7 +25,7 @@
 * 如果你是一名纯粹的 Java+Maven 开发者 该项目是一个很好的学习模板。
 * 本项目中的一些查询数据文档: **[Rulateday-Dnd5e Wiki](https://keith404.gitee.io/rulateday-dnd5e-wiki/#/)**
 * 如果你有什么疑问或者讨论方案，可以选择在在[Discussions](https://github.com/Eiriksgata/mirai-rulateday-dice/discussions) 进行
-* 本项目文档地址:[Mirai-rulateday-dice Document](https://eiriksgata.github.io/mirai-rulateday-dice/#/) | 个人域文档地址:[Mirai-rulateday-dice Document（个人域）](https://docs.rulatedaydice.ga/)
+* 本项目文档地址:[Mirai-rulateday-dice Document](https://eiriksgata.github.io/mirai-rulateday-dice/#/) | 个人域文档地址:[Mirai-rulateday-dice Document（个人域）](https://docs.rulatedaydice.top/)
 * 如果想直接使用QQ机器人请添加QQ:`209135855`
 
 ## 快速使用
@@ -67,7 +67,7 @@
 * [查询功能类型](https://github.com/Eiriksgata/mirai-rulateday-dice/blob/master/rulateday-server/src/main/java/indi/eiriksgata/rulateday/instruction/QueryController.java)
 * 开关骰子指令：.boton | .botoff （可以@机器人.bot on 指定该机器人启动或者关闭）
 * [More](https://github.com/Eiriksgata/mirai-rulateday-dice/tree/master/rulateday-server/src/main/java/indi/eiriksgata/rulateday/instruction)
-* [详细指令集介绍](https://docs.rulatedaydice.ga/#/instruction)
+* [详细指令集介绍](https://docs.rulatedaydice.top/#/instruction)
 
 ## 代码结构简易说明
 * 项目 `trpg-java-dice` 提供了指令注解反射处理。因此在当前项目中只需要实现指令的类方法使用即可。

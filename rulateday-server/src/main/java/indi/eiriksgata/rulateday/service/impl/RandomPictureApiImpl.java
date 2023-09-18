@@ -49,7 +49,7 @@ public class RandomPictureApiImpl implements RandomPictureApiService {
             inputStream = conn.getInputStream();
         } catch (Exception e) {
             e.printStackTrace();
-            return CustomText.getText("api.request.error");
+            return CustomText.getText("kkp.error");
         }
 
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
@@ -103,7 +103,7 @@ public class RandomPictureApiImpl implements RandomPictureApiService {
             inputStream = conn.getInputStream();
         } catch (Exception e) {
             e.printStackTrace();
-            return CustomText.getText("api.request.error");
+            return CustomText.getText("kkp.error");
         }
 
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {

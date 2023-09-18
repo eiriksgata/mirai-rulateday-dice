@@ -674,7 +674,7 @@ json文件格式参考:
 
 关闭群消息记录功能。
 
-生成的消息记录文件可以通过该网站进行查看：https://tool.rulatedaydice.ga/#/tools/record
+生成的消息记录文件可以通过该网站进行查看：https://tool.rulatedaydice.top/#/tools/record
 
 ## .kkpset1
 

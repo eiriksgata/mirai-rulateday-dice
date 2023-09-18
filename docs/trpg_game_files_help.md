@@ -3,7 +3,7 @@
 如有不懂的地方建议加群咨询。群号:783679747
 
 ## 模组编辑器
-可通过网站进行编辑：[TRPG模组编辑器](https://tool.rulatedaydice.ga/#/tools/trpg/model)
+可通过网站进行编辑：[TRPG模组编辑器](https://tool.rulatedaydice.top/#/tools/trpg/model)
 
 ## 模组案例速览
 推荐如果对json文件有一定理解的可以先看一下模组案例，会比较快速的了解其编写结构。
