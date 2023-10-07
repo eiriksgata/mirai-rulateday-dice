@@ -102,7 +102,6 @@ public class LoadDatabaseFile {
 
     public static void checkMasterNumber() {
         String number = GlobalData.configData.getString("master.QQ.number");
-        RulatedayCore.INSTANCE.getLogger().info(GlobalData.configData.toJSONString());
         if (number.equals("")) {
             RulatedayCore.INSTANCE.getLogger().warning("-----------Rulateday-dice Waring--------------");
             RulatedayCore.INSTANCE.getLogger().warning("检测到当前还没有配置主人QQ，请在当前程序运行目录下的: /config/com.github.eiriksgata.rulateday-dice/config.json 文件中的 'master.QQ.number' 进行设置");

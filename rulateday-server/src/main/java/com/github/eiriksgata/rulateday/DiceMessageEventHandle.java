@@ -94,7 +94,6 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
 
     @EventHandler()
     public ListeningStatus onFriendMessage(FriendMessageEvent event) {
-        RulatedayCore.INSTANCE.getLogger().info(DiceConfigService.diceConfigMapper.selectById().toString());
 
         if (!DiceConfigService.diceConfigMapper.selectById().getPrivate_chat()) {
             return ListeningStatus.LISTENING;

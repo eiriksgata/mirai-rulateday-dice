@@ -1,5 +1,5 @@
 {
-  "custom-text.version": "1.0.5",
+  "custom-text.version": "1.0.6",
   "dice.base.parameter.error": "指令中的参数不正确。",
   "dice.pool.parameter.format.error": "参数格式不正确",
   "dice.pool.parameter.range.error": "参数必须要 大于0 & 小于300",

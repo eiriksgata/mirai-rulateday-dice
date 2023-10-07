@@ -90,22 +90,43 @@ public class RollController {
     public String roll(MessageData<?> data) {
         Integer diceFace = userTempDataService.getUserDiceFace(data.getQqID());
         data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
+        int repeatedlyValue = 1;
+        StringBuilder resultText = new StringBuilder();
         if (diceFace != null) {
             diceSet.setDiceFace(data.getQqID(), diceFace);
         }
-        if (data.getMessage().equals("") || data.getMessage().equals(" ") || data.getMessage().equals("d") || data.getMessage().equals("D")) {
-            return rollBasics.rollRandom("d", data.getQqID());
-        } else {
-            //正则筛选
-            String result = RegularExpressionUtils.getMatcher("(([0-9]{0,2}[dD]?[0-9]{0,5}[\\+\\-\\*\\/][0-9]{0,2}[dD]?[0-9]{0,5})+|[0-9]{0,2}[dD]?[0-9]{1,5})", data.getMessage());
-            if (result != null) {
-                if (result.endsWith("+") || result.endsWith("-") || result.endsWith("*") || result.endsWith("/")) {
-                    result = result.substring(0, result.length() - 1);
+        String repeatedlyText = RegularExpressionUtils.getMatcher("^[1-9]?[0-9]+#", data.getMessage());
+        if (repeatedlyText != null) {
+            try {
+                repeatedlyValue = Integer.parseInt(repeatedlyText.substring(0, repeatedlyText.length() - 1));
+                if (repeatedlyValue < 1 || repeatedlyValue > 20) {
+                    return CustomText.getText("dice.base.parameter.error");
                 }
-                return rollBasics.rollRandom(result, data.getQqID());
+                data.setMessage(data.getMessage().substring(repeatedlyText.length()));
+            } catch (Exception e) {
+                return CustomText.getText("dice.base.parameter.error");
             }
-            return CustomText.getText("dice.base.parameter.error");
         }
+
+        for (int i = 0; i < repeatedlyValue; i++) {
+            if (data.getMessage().equals("") || data.getMessage().equals(" ") ||
+                    data.getMessage().equals("d") || data.getMessage().equals("D")) {
+                resultText.append("\n").append(rollBasics.rollRandom("d", data.getQqID()));
+            } else {
+                //正则筛选
+                String result = RegularExpressionUtils.getMatcher("(([0-9]{0,2}[dD]?[0-9]{0,5}[\\+\\-\\*\\/][0-9]{0,2}[dD]?[0-9]{0,5})+|[0-9]{0,2}[dD]?[0-9]{1,5})", data.getMessage());
+                if (result != null) {
+                    if (result.endsWith("+") || result.endsWith("-") || result.endsWith("*") || result.endsWith("/")) {
+                        result = result.substring(0, result.length() - 1);
+                    }
+                    resultText.append("\n").append(rollBasics.rollRandom(result, data.getQqID()));
+                } else {
+                    return CustomText.getText("dice.base.parameter.error");
+                }
+            }
+        }
+
+        return resultText.toString();
     }
 
 
