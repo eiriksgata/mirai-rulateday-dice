@@ -17,18 +17,18 @@
     </environments>
 
     <mappers>
-        <mapper class="indi.eiriksgata.rulateday.mapper.UserTempDataMapper"/>
-        <mapper class="indi.eiriksgata.rulateday.mapper.CrazyDescribeMapper"/>
-        <mapper class="indi.eiriksgata.rulateday.mapper.CrazyOverDescribeMapper"/>
-        <mapper class="indi.eiriksgata.rulateday.mapper.RuleBookMapper"/>
-        <mapper class="indi.eiriksgata.rulateday.mapper.SpeakersGroupListMapper"/>
-        <mapper class="indi.eiriksgata.rulateday.mapper.Dnd5ePhbTestBaseMapper"/>
-        <mapper class="indi.eiriksgata.rulateday.mapper.Dnd5ePhbDataMapper"/>
-        <mapper class="indi.eiriksgata.rulateday.mapper.UserConversationMapper"/>
-        <mapper class="indi.eiriksgata.rulateday.mapper.UserInitiativeDataMapper"/>
-        <mapper class="indi.eiriksgata.rulateday.mapper.CardsGroupDataMapper"/>
-        <mapper class="indi.eiriksgata.rulateday.mapper.CardsTypeListMapper"/>
-        <mapper class="indi.eiriksgata.rulateday.mapper.DiceConfigMapper"/>
+        <mapper class="com.github.eiriksgata.rulateday.mapper.UserTempDataMapper"/>
+        <mapper class="com.github.eiriksgata.rulateday.mapper.CrazyDescribeMapper"/>
+        <mapper class="com.github.eiriksgata.rulateday.mapper.CrazyOverDescribeMapper"/>
+        <mapper class="com.github.eiriksgata.rulateday.mapper.RuleBookMapper"/>
+        <mapper class="com.github.eiriksgata.rulateday.mapper.SpeakersGroupListMapper"/>
+        <mapper class="com.github.eiriksgata.rulateday.mapper.Dnd5ePhbTestBaseMapper"/>
+        <mapper class="com.github.eiriksgata.rulateday.mapper.Dnd5ePhbDataMapper"/>
+        <mapper class="com.github.eiriksgata.rulateday.mapper.UserConversationMapper"/>
+        <mapper class="com.github.eiriksgata.rulateday.mapper.UserInitiativeDataMapper"/>
+        <mapper class="com.github.eiriksgata.rulateday.mapper.CardsGroupDataMapper"/>
+        <mapper class="com.github.eiriksgata.rulateday.mapper.CardsTypeListMapper"/>
+        <mapper class="com.github.eiriksgata.rulateday.mapper.DiceConfigMapper"/>
     </mappers>
 
 </configuration>

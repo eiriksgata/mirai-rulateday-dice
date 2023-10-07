@@ -43,8 +43,8 @@ rulateday-server/src/main/resources/query/
 rulateday-server/src/main/resources/coctext/
 rulateday-dao/src/main/resources/mapper/
 
-/rulateday-server/data/indi.eiriksgata.rulateday-dice/rulateday.db
-/rulateday-server/data/indi.eiriksgata.rulateday-dice/rulateday0.3.6.db
+/rulateday-server/data/com.github.eiriksgata.rulateday-dice/rulateday.db
+/rulateday-server/data/com.github.eiriksgata.rulateday-dice/rulateday0.3.6.db
 /rulateday-server/config/Console/
-/rulateday-server/config/indi.eiriksgata.rulateday-dice/custom-text.json
+/rulateday-server/config/com.github.eiriksgata.rulateday-dice/custom-text.json
 /rulateday-server/data/

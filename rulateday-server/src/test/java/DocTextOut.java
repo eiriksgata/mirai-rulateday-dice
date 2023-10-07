@@ -1,12 +1,10 @@
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import indi.eiriksgata.dice.utlis.RegularExpressionUtils;
-import indi.eiriksgata.rulateday.RulatedayCore;
-import indi.eiriksgata.rulateday.config.CustomDocumentHandler;
-import indi.eiriksgata.rulateday.config.GlobalData;
-import indi.eiriksgata.rulateday.mapper.Dnd5ePhbDataMapper;
-import indi.eiriksgata.rulateday.pojo.QueryDataBase;
-import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
+import com.github.eiriksgata.trpg.dice.utlis.RegularExpressionUtils;
+import com.github.eiriksgata.rulateday.config.CustomDocumentHandler;
+import com.github.eiriksgata.rulateday.mapper.Dnd5ePhbDataMapper;
+import com.github.eiriksgata.rulateday.pojo.QueryDataBase;
+import com.github.eiriksgata.rulateday.utlis.MyBatisUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -16,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static indi.eiriksgata.dice.reply.CustomText.fileRead;
+import static com.github.eiriksgata.trpg.dice.reply.CustomText.fileRead;
 
 /**
  * author: create by Keith
@@ -130,7 +128,7 @@ public class DocTextOut {
 
     @Test
     public void fileListShow() {
-        String path = "data/indi.eiriksgata.rulateday-dice/custom-doc";
+        String path = "data/com.github.eiriksgata.rulateday-dice/custom-doc";
         File directory = new File(path);
         File[] importFiles = directory.listFiles();
         assert importFiles != null;
@@ -151,7 +149,7 @@ public class DocTextOut {
 
     @Test
     public void loadAndFindCustomDocument() throws Exception {
-        String path = "data/indi.eiriksgata.rulateday-dice/custom-doc";
+        String path = "data/com.github.eiriksgata.rulateday-dice/custom-doc";
         System.out.println("-----------Rulateday-dice doc mod loading-----------");
         //TODO: 扫描目录的json文档文件
         File folder = new File(path);

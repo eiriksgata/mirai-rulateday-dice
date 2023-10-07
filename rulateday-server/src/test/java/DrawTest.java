@@ -1,5 +1,5 @@
-import indi.eiriksgata.dice.message.handle.InstructHandle;
-import indi.eiriksgata.dice.vo.MessageData;
+import com.github.eiriksgata.trpg.dice.message.handle.InstructHandle;
+import com.github.eiriksgata.trpg.dice.vo.MessageData;
 import org.junit.jupiter.api.Test;
 
 /**

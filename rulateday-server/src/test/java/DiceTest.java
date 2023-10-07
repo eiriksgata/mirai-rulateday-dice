@@ -1,12 +1,12 @@
-import indi.eiriksgata.dice.callback.SanCheckCallback;
-import indi.eiriksgata.dice.exception.DiceInstructException;
-import indi.eiriksgata.dice.message.handle.InstructHandle;
-import indi.eiriksgata.dice.operation.impl.RollRoleImpl;
-import indi.eiriksgata.dice.operation.impl.SanCheckImpl;
-import indi.eiriksgata.dice.vo.MessageData;
-import indi.eiriksgata.rulateday.instruction.RollController;
-import indi.eiriksgata.rulateday.init.LoadDatabaseFile;
-import indi.eiriksgata.rulateday.utlis.WeightRandom;
+import com.github.eiriksgata.trpg.dice.callback.SanCheckCallback;
+import com.github.eiriksgata.trpg.dice.exception.DiceInstructException;
+import com.github.eiriksgata.trpg.dice.message.handle.InstructHandle;
+import com.github.eiriksgata.trpg.dice.operation.impl.RollRoleImpl;
+import com.github.eiriksgata.trpg.dice.operation.impl.SanCheckImpl;
+import com.github.eiriksgata.trpg.dice.vo.MessageData;
+import com.github.eiriksgata.rulateday.instruction.RollController;
+import com.github.eiriksgata.rulateday.init.LoadDatabaseFile;
+import com.github.eiriksgata.rulateday.utlis.WeightRandom;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

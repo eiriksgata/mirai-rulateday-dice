@@ -1,9 +1,9 @@
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import indi.eiriksgata.rulateday.mapper.Dnd5ePhbTestBaseMapper;
-import indi.eiriksgata.rulateday.pojo.QueryDataBase;
-import indi.eiriksgata.rulateday.utlis.FileUtil;
-import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
+import com.github.eiriksgata.rulateday.mapper.Dnd5ePhbTestBaseMapper;
+import com.github.eiriksgata.rulateday.pojo.QueryDataBase;
+import com.github.eiriksgata.rulateday.utlis.FileUtil;
+import com.github.eiriksgata.rulateday.utlis.MyBatisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.junit.jupiter.api.Test;

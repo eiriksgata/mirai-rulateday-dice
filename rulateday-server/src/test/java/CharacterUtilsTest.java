@@ -1,4 +1,4 @@
-import indi.eiriksgata.rulateday.utlis.CharacterUtils;
+import com.github.eiriksgata.rulateday.utlis.CharacterUtils;
 import org.junit.jupiter.api.Test;
 
 /**

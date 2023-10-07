@@ -1,7 +1,7 @@
 package trpg.game;
 
 import com.alibaba.fastjson2.TypeReference;
-import indi.eiriksgata.rulateday.trpggame.RoleDataHandler;
+import com.github.eiriksgata.rulateday.trpggame.RoleDataHandler;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.ParameterizedType;

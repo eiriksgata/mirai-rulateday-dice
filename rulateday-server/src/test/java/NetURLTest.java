@@ -1,5 +1,5 @@
-import indi.eiriksgata.rulateday.RulatedayCore;
-import indi.eiriksgata.rulateday.utlis.FileUtil;
+import com.github.eiriksgata.rulateday.RulatedayCore;
+import com.github.eiriksgata.rulateday.utlis.FileUtil;
 import net.mamoe.mirai.console.plugin.PluginManager;
 import org.junit.jupiter.api.Test;
 

@@ -1,8 +1,8 @@
+import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.TypeReference;
 import com.github.kevinsawicki.http.HttpRequest;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import indi.eiriksgata.rulateday.utlis.HexConvertUtil;
-import indi.eiriksgata.rulateday.vo.ResponseBaseVo;
+import com.github.eiriksgata.rulateday.utlis.HexConvertUtil;
+import com.github.eiriksgata.rulateday.vo.ResponseBaseVo;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -10,12 +10,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 
-import static indi.eiriksgata.rulateday.utlis.FileUtil.readInputStream;
+import static com.github.eiriksgata.rulateday.utlis.FileUtil.readInputStream;
 
 /**
  * author: create by Keith
@@ -54,8 +51,8 @@ public class Netimage2File {
         String url = "http://localhost:8089/picture/random";
         String resultJson = HttpRequest.get(url).body();
         System.out.println(resultJson);
-        ResponseBaseVo<String> response = new Gson().fromJson(
-                resultJson, new TypeToken<ResponseBaseVo<String>>() {
+        ResponseBaseVo<String> response = JSONObject.parseObject(
+                resultJson, new TypeReference<ResponseBaseVo<String>>() {
                 }.getType());
 
         byte[] pictureData = HexConvertUtil.hexStringToByteArray(response.getData());

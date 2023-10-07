@@ -1,9 +1,9 @@
 package trpg.game;
 
 import com.alibaba.fastjson.JSONObject;
-import indi.eiriksgata.rulateday.trpggame.RoleDataHandler;
-import indi.eiriksgata.rulateday.trpggame.TrpgGameServiceImpl;
-import indi.eiriksgata.rulateday.trpggame.utils.PlayerRoleAttributeSetUtil;
+import com.github.eiriksgata.rulateday.trpggame.RoleDataHandler;
+import com.github.eiriksgata.rulateday.trpggame.TrpgGameServiceImpl;
+import com.github.eiriksgata.rulateday.trpggame.utils.PlayerRoleAttributeSetUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

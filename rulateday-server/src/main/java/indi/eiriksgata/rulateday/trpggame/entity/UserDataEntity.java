@@ -1,9 +1,0 @@
-package indi.eiriksgata.rulateday.trpggame.entity;
-
-import lombok.Data;
-
-@Data
-public class UserDataEntity {
-
-
-}

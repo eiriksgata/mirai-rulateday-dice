@@ -1,5 +1,5 @@
-import indi.eiriksgata.rulateday.utlis.HmacSHA256Util;
-import indi.eiriksgata.rulateday.utlis.OsUtils;
+import com.github.eiriksgata.rulateday.utlis.HmacSHA256Util;
+import com.github.eiriksgata.rulateday.utlis.OsUtils;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

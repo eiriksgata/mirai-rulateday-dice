@@ -1,5 +1,4 @@
-import indi.eiriksgata.dice.reply.CustomText;
-import indi.eiriksgata.rulateday.websocket.client.WebSocketClientInit;
+import com.github.eiriksgata.rulateday.websocket.client.WebSocketClientInit;
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;

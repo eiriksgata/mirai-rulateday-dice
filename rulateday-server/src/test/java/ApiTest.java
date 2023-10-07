@@ -1,6 +1,6 @@
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import indi.eiriksgata.rulateday.utlis.RestUtil;
+import com.github.eiriksgata.rulateday.utlis.RestUtil;
 import org.junit.jupiter.api.Test;
 
 public class ApiTest {

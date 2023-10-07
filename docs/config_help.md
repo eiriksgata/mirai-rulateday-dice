@@ -2,7 +2,7 @@
 
 ## 文件位置
 
-文件所在路径为当前程序运行目录下的 `config/indi.eiriksgata.rulateday-dice/config.json`
+文件所在路径为当前程序运行目录下的 `config/com.github.eiriksgata.rulateday-dice/config.json`
 
 ## 详细配置项说明
 

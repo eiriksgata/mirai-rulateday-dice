@@ -1,7 +1,7 @@
 # 指令集
 
 `将QQ机器人拉入群聊后就可以直接输入指令文本`
-> 系统默认 d|D 都是属于100面骰子，所有的指令前缀 例如`.` 都可在本地配置文件 config/indi.eiriksgata.rulateday-dice/config.json 中进行配置更改。
+> 系统默认 d|D 都是属于100面骰子，所有的指令前缀 例如`.` 都可在本地配置文件 config/com.github.eiriksgata.rulateday-dice/config.json 中进行配置更改。
 > 默认支持 `.` 和 `。` （从0.4.8版本起）
 
 ## .help
@@ -429,7 +429,7 @@ a为重骰值、k为检测值、m为面数、b为附加成功数
 ## .q
 
 具体说明可以看: [#92](https://github.com/Eiriksgata/mirai-rulateday-dice/issues/92)
-通过指令.q 相应的关键字，然后查询`/data/indi.eiriksgata.rulateday-dice/custom-doc/`目录下的 json 文件 来返回 文本内容。
+通过指令.q 相应的关键字，然后查询`/data/com.github.eiriksgata.rulateday-dice/custom-doc/`目录下的 json 文件 来返回 文本内容。
 方便骰主用户自定义设置速查数据，避免了使用原生的 数据库数据。
 json文件格式参考:
 

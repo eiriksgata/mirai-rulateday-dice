@@ -14,7 +14,7 @@
 
 ***当系统载入后，载入的第一个事件节点名称必定为1，详细看 event(事件)***
 
-该文件格式为json文件，模组文件需要放置在MCL程序目录下的 `data/indi.eiriksgata.rulateday-dice/trpg-game` 文件夹里面
+该文件格式为json文件，模组文件需要放置在MCL程序目录下的 `data/com.github.eiriksgata.rulateday-dice/trpg-game` 文件夹里面
 
 第一层结构为：
 

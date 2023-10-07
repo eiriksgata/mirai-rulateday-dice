@@ -1,8 +1,6 @@
-import indi.eiriksgata.rulateday.utlis.MyBatisUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
-import java.security.SecureRandom;
 
 /**
  * author: create by Keith
