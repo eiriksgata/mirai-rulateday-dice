@@ -116,8 +116,8 @@ public class OsUtils {
             fw.write(vbs);
             fw.close();
             String path = file.getPath().replace("%20", " ");
-            Process p = Runtime.getRuntime().exec(
-                    "cscript //NoLogo " + path);
+            String[] cmd = {"cscript", "/nologo", path};
+            Process p = Runtime.getRuntime().exec(cmd);
             BufferedReader input = new BufferedReader(new InputStreamReader(
                     p.getInputStream()));
             String line;
