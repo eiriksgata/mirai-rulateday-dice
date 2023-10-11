@@ -3,6 +3,7 @@ import com.github.eiriksgata.trpg.dice.exception.DiceInstructException;
 import com.github.eiriksgata.trpg.dice.message.handle.InstructHandle;
 import com.github.eiriksgata.trpg.dice.operation.impl.RollRoleImpl;
 import com.github.eiriksgata.trpg.dice.operation.impl.SanCheckImpl;
+import com.github.eiriksgata.trpg.dice.reply.CustomText;
 import com.github.eiriksgata.trpg.dice.vo.MessageData;
 import com.github.eiriksgata.rulateday.instruction.RollController;
 import com.github.eiriksgata.rulateday.init.LoadDatabaseFile;
@@ -14,12 +15,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
-/**
- * author: create by Keith
- * version: v1.0
- * description: PACKAGE_NAME
- * date:2020/10/12
- **/
 public class DiceTest {
 
 
@@ -55,12 +50,14 @@ public class DiceTest {
 
 
     @Test
-    void rollTest() {
+    void rollTest() throws Exception {
+        LoadDatabaseFile.initConfigCustomTextTool();
+        LoadDatabaseFile.createAndLoadConfigFile();
 
         MessageData<?> messageData = new MessageData<>();
         messageData.setQqID(123456789L);
         InstructHandle instruct = new InstructHandle();
-        messageData.setMessage("r4d6");
+        messageData.setMessage("betaon");
         try {
             System.out.println(instruct.instructCheck(messageData));
         } catch (DiceInstructException e) {
