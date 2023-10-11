@@ -47,13 +47,13 @@ public class ConfigController {
     @InstructReflex(value = {"betaon"}, priority = 3)
     public String betaVersionOn(MessageData<?> data) {
         String number = GlobalData.configData.getString("master.QQ.number");
-        if (number.equals("")) {
+        if (number == null || number.equals("")) {
             return CustomText.getText("dice.master.number.no.set");
         }
         if (data.getQqID() == Long.parseLong(number)) {
             DiceConfigService.diceConfigMapper.updateByBetaVersion(true);
             MyBatisUtil.getSqlSession().commit();
-            return CustomText.getText("dice.bate.enable");
+            return CustomText.getText("dice.beta.enable");
         } else {
             return CustomText.getText("dice.beta.no.permission");
         }
@@ -68,9 +68,9 @@ public class ConfigController {
         if (data.getQqID() == Long.parseLong(number)) {
             DiceConfigService.diceConfigMapper.updateByBetaVersion(false);
             MyBatisUtil.getSqlSession().commit();
-            return CustomText.getText("dice.bate.disable");
+            return CustomText.getText("dice.beta.disable");
         } else {
-            return CustomText.getText("dice.bate.no.permission");
+            return CustomText.getText("dice.beta.no.permission");
         }
     }
 

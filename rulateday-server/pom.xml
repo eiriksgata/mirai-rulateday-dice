@@ -224,7 +224,7 @@
                 <dependency>
                     <groupId>com.github.eiriksgata</groupId>
                     <artifactId>trpg-java-dice</artifactId>
-                    <version>1.4.1</version>
+                    <version>1.4.2</version>
                 </dependency>
 
                 <dependency>
@@ -298,7 +298,7 @@
                 <dependency>
                     <groupId>com.github.eiriksgata</groupId>
                     <artifactId>trpg-java-dice</artifactId>
-                    <version>1.4.1</version>
+                    <version>1.4.2</version>
                 </dependency>
 
                 <dependency>
@@ -312,6 +312,8 @@
                     <groupId>net.mamoe</groupId>
                     <artifactId>mirai-core-jvm</artifactId>
                     <version>2.15.0</version>
+                    <scope>provided</scope>
+
                 </dependency>
 
             </dependencies>
