@@ -57,16 +57,22 @@ public class RollController {
     @InstructReflex(value = {"ra", "rc"}, priority = 2)
     public String attributeCheck(MessageData<?> data) {
         String attribute = userTempDataService.getUserAttribute(data.getQqID());
-        data.setMessage(data.getMessage().replaceAll(" ", ""));
+        data.setMessage(data.getMessage().trim());
         data.setMessage(CharacterUtils.operationSymbolProcessing(
                 data.getMessage()
         ));
         if (attribute == null) {
             attribute = "";
         }
+        String matcherResult = RegularExpressionUtils.getMatcher("^[0-9]+$", data.getMessage());
+        if (matcherResult != null) {
+            data.setMessage("未指定" + matcherResult);
+        }
         try {
             return rollBasics.attributeCheck(data.getMessage(), attribute);
         } catch (DiceInstructException e) {
+
+            //一般异常都是没有给定属性。 如果没有给定属性那就是按 100 计算。 相当于 1d100
             e.printStackTrace();
             return CustomText.getText("dice.attribute.error");
         }
