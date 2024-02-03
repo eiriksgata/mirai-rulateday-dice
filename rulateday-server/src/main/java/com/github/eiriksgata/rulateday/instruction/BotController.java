@@ -1,11 +1,12 @@
 package com.github.eiriksgata.rulateday.instruction;
 
 import com.github.eiriksgata.rulateday.config.GlobalData;
+import com.github.eiriksgata.rulateday.dto.DiceMessageDTO;
 import com.github.eiriksgata.rulateday.event.EventUtils;
 import com.github.eiriksgata.trpg.dice.injection.InstructReflex;
 import com.github.eiriksgata.trpg.dice.injection.InstructService;
 import com.github.eiriksgata.trpg.dice.reply.CustomText;
-import com.github.eiriksgata.trpg.dice.vo.MessageData;
+
 import com.github.eiriksgata.rulateday.event.EventAdapter;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Friend;
@@ -17,18 +18,17 @@ import net.mamoe.mirai.event.events.GroupMessageEvent;
 @InstructService
 public class BotController {
 
-
     @InstructReflex(value = {"blacklist-group-add"}, priority = 3)
-    public String addBlacklistByGroup(MessageData<?> data) {
+    public String addBlacklistByGroup(DiceMessageDTO data) {
         //验证骰主
         String number = GlobalData.configData.getString("master.QQ.number");
         if (number.equals("")) {
             return CustomText.getText("dice.master.number.no.set");
         }
-        if (data.getQqID() == Long.parseLong(number)) {
+        if (data.getId() == Long.parseLong(number)) {
             long groupId;
             try {
-                groupId = Long.parseLong(data.getMessage().trim());
+                groupId = Long.parseLong(data.getBody().trim());
                 BotServiceControl.botControl.groupBlacklistEnable(groupId);
             } catch (Exception e) {
                 return CustomText.getText("blacklist.group.id.error");
@@ -41,16 +41,16 @@ public class BotController {
 
 
     @InstructReflex(value = {"blacklist-group-del"}, priority = 3)
-    public String deleteBlacklistByGroup(MessageData<?> data) {
+    public String deleteBlacklistByGroup(DiceMessageDTO data) {
         //验证骰主
         String number = GlobalData.configData.getString("master.QQ.number");
         if (number.equals("")) {
             return CustomText.getText("dice.master.number.no.set");
         }
-        if (data.getQqID() == Long.parseLong(number)) {
+        if (data.getId() == Long.parseLong(number)) {
             long groupId;
             try {
-                groupId = Long.parseLong(data.getMessage().trim());
+                groupId = Long.parseLong(data.getBody().trim());
                 BotServiceControl.botControl.groupBlacklistDisable(groupId);
             } catch (Exception e) {
                 return CustomText.getText("blacklist.group.id.error");
@@ -62,19 +62,19 @@ public class BotController {
     }
 
     @InstructReflex(value = {"blacklist-friend-add"}, priority = 3)
-    public String addBlacklistByFriend(MessageData<?> data) {
+    public String addBlacklistByFriend(DiceMessageDTO data) {
         //验证骰主
         String number = GlobalData.configData.getString("master.QQ.number");
         if (number.equals("")) {
             return CustomText.getText("dice.master.number.no.set");
         }
-        if (data.getQqID() == Long.parseLong(number)) {
-            if (number.equals(data.getMessage().trim())) {
+        if (data.getId() == Long.parseLong(number)) {
+            if (number.equals(data.getBody().trim())) {
                 return CustomText.getText("blacklist.friend.cannot.master");
             }
             long friendId;
             try {
-                friendId = Long.parseLong(data.getMessage().trim());
+                friendId = Long.parseLong(data.getBody().trim());
                 BotServiceControl.botControl.groupBlacklistEnable(-friendId);
             } catch (Exception e) {
                 return CustomText.getText("blacklist.friend.id.error");
@@ -86,19 +86,19 @@ public class BotController {
     }
 
     @InstructReflex(value = {"blacklist-friend-del"}, priority = 3)
-    public String deleteBlacklistByFriend(MessageData<?> data) {
+    public String deleteBlacklistByFriend(DiceMessageDTO data) {
         //验证骰主
         String number = GlobalData.configData.getString("master.QQ.number");
         if (number.equals("")) {
             return CustomText.getText("dice.master.number.no.set");
         }
-        if (data.getQqID() == Long.parseLong(number)) {
-            if (number.equals(data.getMessage().trim())) {
+        if (data.getId() == Long.parseLong(number)) {
+            if (number.equals(data.getBody().trim())) {
                 return null;
             }
             long friendId;
             try {
-                friendId = Long.parseLong(data.getMessage().trim());
+                friendId = Long.parseLong(data.getBody().trim());
                 BotServiceControl.botControl.groupBlacklistDisable(-friendId);
             } catch (Exception e) {
                 return CustomText.getText("blacklist.friend.id.error");
@@ -111,12 +111,12 @@ public class BotController {
 
 
     @InstructReflex(value = {"group-list-get"}, priority = 3)
-    public String getGroupList(MessageData<?> data) {
+    public String getGroupList(DiceMessageDTO data) {
         String number = GlobalData.configData.getString("master.QQ.number");
         if (number.equals("")) {
             return CustomText.getText("dice.master.number.no.set");
         }
-        if (data.getQqID() == Long.parseLong(number)) {
+        if (data.getId() == Long.parseLong(number)) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(CustomText.getText("bot.group.list.title")).append("\n");
             for (Group group : Bot.getInstances().get(0).getGroups()) {
@@ -129,12 +129,12 @@ public class BotController {
     }
 
     @InstructReflex(value = {"friend-list-get"}, priority = 3)
-    public String getFriendList(MessageData<?> data) {
+    public String getFriendList(DiceMessageDTO data) {
         String number = GlobalData.configData.getString("master.QQ.number");
         if (number.equals("")) {
             return CustomText.getText("dice.master.number.no.set");
         }
-        if (data.getQqID() == Long.parseLong(number)) {
+        if (data.getId() == Long.parseLong(number)) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(CustomText.getText("bot.friend.list.title")).append("\n");
             for (Friend friend : Bot.getInstances().get(0).getFriends()) {
@@ -147,14 +147,14 @@ public class BotController {
     }
 
     @InstructReflex(value = {"friend-list-del"}, priority = 3)
-    public String deleteFriend(MessageData<?> data) {
+    public String deleteFriend(DiceMessageDTO data) {
         String number = GlobalData.configData.getString("master.QQ.number");
         if (number.equals("")) {
             return CustomText.getText("dice.master.number.no.set");
         }
-        if (data.getQqID() == Long.parseLong(number)) {
+        if (data.getId() == Long.parseLong(number)) {
             try {
-                long deleteFriendId = Long.parseLong(data.getMessage());
+                long deleteFriendId = Long.parseLong(data.getBody());
                 Friend friend = Bot.getInstances().get(0).getFriend(deleteFriendId);
                 if (friend == null) {
                     return CustomText.getText("friend.delete.no.found");
@@ -172,7 +172,7 @@ public class BotController {
 
 
     @InstructReflex(value = {"dismiss"}, priority = 3)
-    public String dismissCurrentGroup(MessageData<?> data) {
+    public String dismissCurrentGroup(DiceMessageDTO data) {
         String number = GlobalData.configData.getString("master.QQ.number");
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
@@ -181,7 +181,7 @@ public class BotController {
 
                 if (event.getSender().getPermission().getLevel() == MemberPermission.ADMINISTRATOR.getLevel() ||
                         event.getSender().getPermission().getLevel() == MemberPermission.OWNER.getLevel() ||
-                        data.getQqID() == Long.parseLong(number)
+                        data.getId() == Long.parseLong(number)
                 ) {
                     event.getGroup().quit();
                 } else {
@@ -193,14 +193,14 @@ public class BotController {
     }
 
     @InstructReflex(value = {"quitGroup", ".quitgroup"}, priority = 4)
-    public String quitGroupByMaster(MessageData<?> data) {
+    public String quitGroupByMaster(DiceMessageDTO data) {
         String number = GlobalData.configData.getString("master.QQ.number");
-        if (!number.equals("" + data.getQqID())) {
+        if (!number.equals("" + data.getId())) {
             return CustomText.getText("bot.group.quit.no.permission");
         }
         int groupId;
-        if (data.getMessage().matches("^\\d{1,20}$")) {
-            groupId = Integer.parseInt(data.getMessage());
+        if (data.getBody().matches("^\\d{1,20}$")) {
+            groupId = Integer.parseInt(data.getBody());
         } else {
             return CustomText.getText("bot.group.quit.id.error");
         }

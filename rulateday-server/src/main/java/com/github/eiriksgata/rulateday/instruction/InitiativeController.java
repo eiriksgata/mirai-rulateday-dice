@@ -1,10 +1,11 @@
 package com.github.eiriksgata.rulateday.instruction;
 
+import com.github.eiriksgata.rulateday.dto.DiceMessageDTO;
 import com.github.eiriksgata.rulateday.event.EventUtils;
 import com.github.eiriksgata.trpg.dice.injection.InstructReflex;
 import com.github.eiriksgata.trpg.dice.injection.InstructService;
 import com.github.eiriksgata.trpg.dice.reply.CustomText;
-import com.github.eiriksgata.trpg.dice.vo.MessageData;
+
 import com.github.eiriksgata.rulateday.event.EventAdapter;
 import com.github.eiriksgata.rulateday.service.impl.UserInitiativeServerImpl;
 import net.mamoe.mirai.event.events.*;
@@ -26,7 +27,7 @@ public class InitiativeController {
     public static UserInitiativeServerImpl initiativeServer = new UserInitiativeServerImpl();
 
     @InstructReflex(value = {"atklist", "atkList"}, priority = 2)
-    public String getAtkList(MessageData<?> data) {
+    public String getAtkList(DiceMessageDTO data) {
         final String[] resultText = {""};
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
@@ -45,12 +46,12 @@ public class InitiativeController {
     }
 
 
-    @InstructReflex(value = {"atkdel", "atkDel", "Atkdel", "AtlDel"}, priority = 2)
-    public String delAtk(MessageData<?> data) {
+    @InstructReflex(value = {"atkdel", "atkDel", "Atkdel", "AtlDel", "atkdelete"}, priority = 2)
+    public String delAtk(DiceMessageDTO data) {
         String tempName = null;
         String resultText = CustomText.getText("initiative.delete.oneself");
-        if (!data.getMessage().equals("") && data.getMessage() != null) {
-            tempName = data.getMessage();
+        if (!data.getBody().equals("") && data.getBody() != null) {
+            tempName = data.getBody().trim();
             resultText = CustomText.getText("initiative.delete.other", tempName);
         }
         String finalTempName = tempName;
@@ -84,7 +85,7 @@ public class InitiativeController {
 
 
     @InstructReflex(value = {"atkClear", "clearAtk", "atkclear", "AtkClear"}, priority = 2)
-    public String clearAtkList(MessageData<?> data) {
+    public String clearAtkList(DiceMessageDTO data) {
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
             public void group(GroupMessageEvent event) {
@@ -100,7 +101,7 @@ public class InitiativeController {
     }
 
     @InstructReflex(value = {"atk", "atk"})
-    public String generateInitiativeDice(MessageData<?> data) {
+    public String generateInitiativeDice(DiceMessageDTO data) {
         final String[] name = {null};
         String[] tempList;
         String diceFace = "d";
@@ -126,8 +127,8 @@ public class InitiativeController {
         }
 
         final String[] resultText = {CustomText.getText("initiative.result.title", name[0])};
-        if (!data.getMessage().equals("") && data.getMessage() != null) {
-            tempList = data.getMessage().split(" ");
+        if (!data.getBody().equals("") && data.getBody() != null) {
+            tempList = data.getBody().split(" ");
             if (tempList.length > 1) {
                 name[0] = tempList[1];
                 resultText[0] = CustomText.getText("initiative.result.title", name[0]);
@@ -135,7 +136,7 @@ public class InitiativeController {
             diceFace = tempList[0];
         }
         String finalName = name[0];
-        RollController.rollBasics.rollRandom(diceFace, data.getQqID(), (i, s) -> {
+        RollController.rollBasics.rollRandom(diceFace, data.getId(), (i, s) -> {
             //处理可能会出现小数等其他情况
             int numberValue;
             try {

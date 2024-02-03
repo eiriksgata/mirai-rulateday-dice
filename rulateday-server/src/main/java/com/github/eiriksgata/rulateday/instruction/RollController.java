@@ -1,6 +1,7 @@
 package com.github.eiriksgata.rulateday.instruction;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.eiriksgata.rulateday.dto.DiceMessageDTO;
 import com.github.eiriksgata.rulateday.event.EventUtils;
 import com.github.eiriksgata.rulateday.service.impl.ApiReportImpl;
 
@@ -22,7 +23,7 @@ import com.github.eiriksgata.trpg.dice.operation.impl.RollBasicsImpl;
 import com.github.eiriksgata.trpg.dice.operation.impl.RollRoleImpl;
 import com.github.eiriksgata.trpg.dice.reply.CustomText;
 import com.github.eiriksgata.trpg.dice.utlis.RegularExpressionUtils;
-import com.github.eiriksgata.trpg.dice.vo.MessageData;
+
 import net.mamoe.mirai.event.events.FriendMessageEvent;
 import net.mamoe.mirai.event.events.GroupMessageEvent;
 import net.mamoe.mirai.event.events.GroupTempMessageEvent;
@@ -55,21 +56,21 @@ public class RollController {
     public static final RollRole rollRole = new RollRoleImpl();
 
     @InstructReflex(value = {"ra", "rc"}, priority = 2)
-    public String attributeCheck(MessageData<?> data) {
-        String attribute = userTempDataService.getUserAttribute(data.getQqID());
-        data.setMessage(data.getMessage().trim());
-        data.setMessage(CharacterUtils.operationSymbolProcessing(
-                data.getMessage()
+    public String attributeCheck(DiceMessageDTO data) {
+        String attribute = userTempDataService.getUserAttribute(data.getId());
+        data.setBody(data.getBody().trim());
+        data.setBody(CharacterUtils.operationSymbolProcessing(
+                data.getBody()
         ));
         if (attribute == null) {
             attribute = "";
         }
-        String matcherResult = RegularExpressionUtils.getMatcher("^[0-9]+$", data.getMessage());
+        String matcherResult = RegularExpressionUtils.getMatcher("^[0-9]+$", data.getBody());
         if (matcherResult != null) {
-            data.setMessage("未指定" + matcherResult);
+            data.setBody("未指定" + matcherResult);
         }
         try {
-            return rollBasics.attributeCheck(data.getMessage(), attribute);
+            return rollBasics.attributeCheck(data.getBody(), attribute);
         } catch (DiceInstructException e) {
 
             //一般异常都是没有给定属性。 如果没有给定属性那就是按 100 计算。 相当于 1d100
@@ -79,12 +80,12 @@ public class RollController {
     }
 
     @InstructReflex(value = {"st"})
-    public String setAttribute(MessageData<?> data) {
-        if (data.getMessage().equals("")) {
+    public String setAttribute(DiceMessageDTO data) {
+        if (data.getBody().equals("")) {
             return CustomText.getText("dice.set.attribute.error");
         }
         try {
-            userTempDataService.updateUserAttribute(data.getQqID(), data.getMessage());
+            userTempDataService.updateUserAttribute(data.getId(), data.getBody());
         } catch (Exception e) {
             e.printStackTrace();
             return CustomText.getText("dice.set.attribute.error");
@@ -93,39 +94,39 @@ public class RollController {
     }
 
     @InstructReflex(value = {"r"})
-    public String roll(MessageData<?> data) {
-        Integer diceFace = userTempDataService.getUserDiceFace(data.getQqID());
-        data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
+    public String roll(DiceMessageDTO data) {
+        Integer diceFace = userTempDataService.getUserDiceFace(data.getId());
+        data.setBody(CharacterUtils.operationSymbolProcessing(data.getBody()));
         int repeatedlyValue = 1;
         StringBuilder resultText = new StringBuilder();
         if (diceFace != null) {
-            diceSet.setDiceFace(data.getQqID(), diceFace);
+            diceSet.setDiceFace(data.getId(), diceFace);
         }
-        String repeatedlyText = RegularExpressionUtils.getMatcher("^[1-9]?[0-9]+#", data.getMessage());
+        String repeatedlyText = RegularExpressionUtils.getMatcher("^[1-9]?[0-9]+#", data.getBody());
         if (repeatedlyText != null) {
             try {
                 repeatedlyValue = Integer.parseInt(repeatedlyText.substring(0, repeatedlyText.length() - 1));
                 if (repeatedlyValue < 1 || repeatedlyValue > 20) {
                     return CustomText.getText("dice.base.parameter.error");
                 }
-                data.setMessage(data.getMessage().substring(repeatedlyText.length()));
+                data.setBody(data.getBody().substring(repeatedlyText.length()));
             } catch (Exception e) {
                 return CustomText.getText("dice.base.parameter.error");
             }
         }
 
         for (int i = 0; i < repeatedlyValue; i++) {
-            if (data.getMessage().equals("") || data.getMessage().equals(" ") ||
-                    data.getMessage().equals("d") || data.getMessage().equals("D")) {
-                resultText.append("\n").append(rollBasics.rollRandom("d", data.getQqID()));
+            if (data.getBody().equals("") || data.getBody().equals(" ") ||
+                    data.getBody().equals("d") || data.getBody().equals("D")) {
+                resultText.append("\n").append(rollBasics.rollRandom("d", data.getId()));
             } else {
                 //正则筛选
-                String result = RegularExpressionUtils.getMatcher("(([0-9]{0,2}[dD]?[0-9]{0,5}[\\+\\-\\*\\/][0-9]{0,2}[dD]?[0-9]{0,5})+|[0-9]{0,2}[dD]?[0-9]{1,5})", data.getMessage());
+                String result = RegularExpressionUtils.getMatcher("(([0-9]{0,2}[dD]?[0-9]{0,5}[\\+\\-\\*\\/][0-9]{0,2}[dD]?[0-9]{0,5})+|[0-9]{0,2}[dD]?[0-9]{1,5})", data.getBody());
                 if (result != null) {
                     if (result.endsWith("+") || result.endsWith("-") || result.endsWith("*") || result.endsWith("/")) {
                         result = result.substring(0, result.length() - 1);
                     }
-                    resultText.append("\n").append(rollBasics.rollRandom(result, data.getQqID()));
+                    resultText.append("\n").append(rollBasics.rollRandom(result, data.getId()));
                 } else {
                     return CustomText.getText("dice.base.parameter.error");
                 }
@@ -137,12 +138,12 @@ public class RollController {
 
 
     @InstructReflex(value = {"MessageData", "set"})
-    public String setDiceFace(MessageData<?> data) throws DiceInstructException {
+    public String setDiceFace(DiceMessageDTO data) throws DiceInstructException {
         //移除所有的空格
         int setDiceFace;
-        data.setMessage(data.getMessage().replaceAll(" ", ""));
+        data.setBody(data.getBody().replaceAll(" ", ""));
         try {
-            setDiceFace = Integer.parseInt(data.getMessage());
+            setDiceFace = Integer.parseInt(data.getBody());
         } catch (Exception e) {
             return CustomText.getText("dice.set.face.error");
         }
@@ -153,35 +154,35 @@ public class RollController {
         if (setDiceFace <= Integer.parseInt(DiceConfig.diceSet.getString("dice.face.min"))) {
             throw new DiceInstructException(ExceptionEnum.DICE_SET_FACE_MIN_ERR);
         }
-        diceSet.setDiceFace(data.getQqID(), setDiceFace);
-        userTempDataService.updateUserDiceFace(data.getQqID(), setDiceFace);
+        diceSet.setDiceFace(data.getId(), setDiceFace);
+        userTempDataService.updateUserDiceFace(data.getId(), setDiceFace);
         return CustomText.getText("dice.set.face.success", setDiceFace);
     }
 
     @InstructReflex(value = {"sc"})
-    public String sanCheck(MessageData<?> data) {
-        data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
+    public String sanCheck(DiceMessageDTO data) {
+        data.setBody(CharacterUtils.operationSymbolProcessing(data.getBody()));
 
         //检查指令前缀空格符
-        for (int i = 0; i < data.getMessage().length(); i++) {
-            if (data.getMessage().charAt(i) != ' ') {
-                data.setMessage(data.getMessage().substring(i));
+        for (int i = 0; i < data.getBody().length(); i++) {
+            if (data.getBody().charAt(i) != ' ') {
+                data.setBody(data.getBody().substring(i));
                 break;
             }
         }
 
         //优先检测指令是否包含有数值
-        if (data.getMessage().matches("^((([1-9]\\d|[1-9])?[dD]?([1-9]\\d\\d|[1-9]\\d|[1-9])\\+?){1,10}|0)/((([1-9]\\d|[1-9])?[dD]?([1-9]\\d\\d|[1-9]\\d|[1-9])\\+?){1,10}|0)\\s([1-9]\\d\\d|[1-9]\\d|\\d)$")) {
+        if (data.getBody().matches("^((([1-9]\\d|[1-9])?[dD]?([1-9]\\d\\d|[1-9]\\d|[1-9])\\+?){1,10}|0)/((([1-9]\\d|[1-9])?[dD]?([1-9]\\d\\d|[1-9]\\d|[1-9])\\+?){1,10}|0)\\s([1-9]\\d\\d|[1-9]\\d|\\d)$")) {
             //检测到包含数值 进行 空格符 分割 0为计算公式，1为给定的数值
-            String[] tempArr = data.getMessage().split(" ");
+            String[] tempArr = data.getBody().split(" ");
             return rollBasics.sanCheck(tempArr[0], "san" + tempArr[1], (attribute, random, sanValue, calculationProcess, surplus) -> {
             });
         }
 
         //检测用户输入的指令格式是否正确
-        if (data.getMessage().matches("^((([1-9]\\d|[1-9])?[dD]?([1-9]\\d\\d|[1-9]\\d|[1-9])\\+?){1,10}|0)/((([1-9]\\d|[1-9])?[dD]?([1-9]\\d\\d|[1-9]\\d|[1-9])\\+?){1,10}|0)$")) {
+        if (data.getBody().matches("^((([1-9]\\d|[1-9])?[dD]?([1-9]\\d\\d|[1-9]\\d|[1-9])\\+?){1,10}|0)/((([1-9]\\d|[1-9])?[dD]?([1-9]\\d\\d|[1-9]\\d|[1-9])\\+?){1,10}|0)$")) {
             //查询用户数据
-            String attribute = userTempDataService.getUserAttribute(data.getQqID());
+            String attribute = userTempDataService.getUserAttribute(data.getId());
 
             //对于没有属性的用户 返回错误
             if (attribute == null) {
@@ -193,14 +194,14 @@ public class RollController {
                 return CustomText.getText("dice.sc.not-found.error");
             }
 
-            String inputData = RegularExpressionUtils.getMatcher("((\\d?[Dd]\\d+|[Dd]|\\d)\\+?)+/((\\d?[Dd]\\d+|[Dd]|\\d)\\+?)+", data.getMessage());
+            String inputData = RegularExpressionUtils.getMatcher("((\\d?[Dd]\\d+|[Dd]|\\d)\\+?)+/((\\d?[Dd]\\d+|[Dd]|\\d)\\+?)+", data.getBody());
 
 
             //要进行是否有用户属性确认
 
             return rollBasics.sanCheck(inputData, attribute, (resultAttribute, random, sanValue, calculationProcess, surplus) -> {
                 //修改属性
-                userTempDataService.updateUserAttribute(data.getQqID(), resultAttribute);
+                userTempDataService.updateUserAttribute(data.getId(), resultAttribute);
             });
 
         }
@@ -208,7 +209,7 @@ public class RollController {
     }
 
     @InstructReflex(value = {"rh"}, priority = 3)
-    public String rollHide(MessageData<?> data) {
+    public String rollHide(DiceMessageDTO data) {
         if (!DiceConfigService.diceConfigMapper.selectById().getPrivate_chat()) {
             return CustomText.getText("dice.roll.hide.private.chat.disable");
         }
@@ -234,26 +235,26 @@ public class RollController {
     }
 
     @InstructReflex(value = {"rb"}, priority = 3)
-    public String rollBonusDice(MessageData<?> data) {
-        data.setMessage(data.getMessage().replaceAll(" ", ""));
-        data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
+    public String rollBonusDice(DiceMessageDTO data) {
+        data.setBody(data.getBody().replaceAll(" ", ""));
+        data.setBody(CharacterUtils.operationSymbolProcessing(data.getBody()));
 
-        String attribute = userTempDataService.getUserAttribute(data.getQqID());
-        return rollBasics.rollBonus(data.getMessage(), attribute, true);
+        String attribute = userTempDataService.getUserAttribute(data.getId());
+        return rollBasics.rollBonus(data.getBody(), attribute, true);
     }
 
     @InstructReflex(value = {"rp", "Rp"}, priority = 3)
-    public String rollPunishment(MessageData<?> data) {
-        data.setMessage(data.getMessage().replaceAll(" ", ""));
-        data.setMessage(CharacterUtils.operationSymbolProcessing(data.getMessage()));
-        String attribute = userTempDataService.getUserAttribute(data.getQqID());
-        return rollBasics.rollBonus(data.getMessage(), attribute, false);
+    public String rollPunishment(DiceMessageDTO data) {
+        data.setBody(data.getBody().replaceAll(" ", ""));
+        data.setBody(CharacterUtils.operationSymbolProcessing(data.getBody()));
+        String attribute = userTempDataService.getUserAttribute(data.getId());
+        return rollBasics.rollBonus(data.getBody(), attribute, false);
     }
 
     @InstructReflex(value = {"coc", "Coc"})
-    public String randomCocRole(MessageData<?> data) {
+    public String randomCocRole(DiceMessageDTO data) {
         int createNumber;
-        createNumber = checkCreateRandomRoleNumber(data.getMessage());
+        createNumber = checkCreateRandomRoleNumber(data.getBody());
         if (createNumber == -1) return CustomText.getText("dice.base.parameter.error");
         if (createNumber > 20 | createNumber < 1) {
             return CustomText.getText("coc7.role.create.size.max");
@@ -262,9 +263,9 @@ public class RollController {
     }
 
     @InstructReflex(value = {"dnd", "Dnd", "DND"}, priority = 3)
-    public String randomDndRole(MessageData<?> data) {
+    public String randomDndRole(DiceMessageDTO data) {
         int createNumber;
-        createNumber = checkCreateRandomRoleNumber(data.getMessage());
+        createNumber = checkCreateRandomRoleNumber(data.getBody());
         if (createNumber == -1) return CustomText.getText("dice.base.parameter.error");
         if (createNumber > 20 | createNumber < 1) {
             return CustomText.getText("dr5e.role.create.size.max");
@@ -273,25 +274,25 @@ public class RollController {
     }
 
     @InstructReflex(value = {"dnd5e", "Dnd5e", "DND5e"}, priority = 4)
-    public String randomDnd5eRole(MessageData<?> data) {
+    public String randomDnd5eRole(DiceMessageDTO data) {
         return "\n" + rollRole.createDnd5eRole();
     }
 
 
     @InstructReflex(value = {"jrrp", "JRRP", "todayRandom"})
-    public String todayRandom(MessageData<?> data) {
-        return rollBasics.todayRandom(data.getQqID(), 8);
+    public String todayRandom(DiceMessageDTO data) {
+        return rollBasics.todayRandom(data.getId(), 8);
     }
 
 
     @InstructReflex(value = {"name"})
-    public String randomName(MessageData<?> data) {
+    public String randomName(DiceMessageDTO data) {
         JSONObject jsonObject = new JSONObject();
         String url = ApiReportImpl.apiUrl + "/openapi/v1/random/human/name";
-        if (StringUtils.isNumeric(data.getMessage())) {
+        if (StringUtils.isNumeric(data.getBody())) {
             int number;
             try {
-                number = Integer.parseInt(data.getMessage());
+                number = Integer.parseInt(data.getBody());
             } catch (Exception e) {
                 return CustomText.getText("dice.base.parameter.error");
             }
@@ -309,23 +310,23 @@ public class RollController {
 
 
     @InstructReflex(value = {"ga"}, priority = 2)
-    public String attributeGetAttribute(MessageData<?> data) {
-        return userTempDataService.getUserAttribute(data.getQqID());
+    public String attributeGetAttribute(DiceMessageDTO data) {
+        return userTempDataService.getUserAttribute(data.getId());
     }
 
     @InstructReflex(value = {"en"})
-    public String attributeEn(MessageData<?> data) {
-        if (data.getMessage().equals("")) {
+    public String attributeEn(DiceMessageDTO data) {
+        if (data.getBody().equals("")) {
             return CustomText.getText("dice.en.parameter.null");
         }
-        String checkAttribute = RegularExpressionUtils.getMatcher("[\\u4E00-\\u9FA5A-z]+\\d+", data.getMessage());
+        String checkAttribute = RegularExpressionUtils.getMatcher("[\\u4E00-\\u9FA5A-z]+\\d+", data.getBody());
         if (checkAttribute == null) {
-            checkAttribute = RegularExpressionUtils.getMatcher("[\\u4E00-\\u9FA5A-z]+", data.getMessage());
+            checkAttribute = RegularExpressionUtils.getMatcher("[\\u4E00-\\u9FA5A-z]+", data.getBody());
             if (checkAttribute == null) {
                 return CustomText.getText("dice.en.parameter.format.error");
             }
 
-            String userAttribute = userTempDataService.getUserAttribute(data.getQqID());
+            String userAttribute = userTempDataService.getUserAttribute(data.getId());
             if (userAttribute == null || userAttribute.equals("")) {
                 return CustomText.getText("dice.en.not.set.attribute");
             }
@@ -341,7 +342,7 @@ public class RollController {
                 int addValue = new SecureRandom().nextInt(11);
                 int count = checkNumber + addValue;
                 String updateAttribute = userAttribute.replaceAll(tempData, checkAttribute + count);
-                userTempDataService.updateUserAttribute(data.getQqID(), updateAttribute);
+                userTempDataService.updateUserAttribute(data.getId(), updateAttribute);
                 return CustomText.getText("dice.en.success",
                         randomNumber, checkNumber, checkAttribute, checkAttribute, addValue, checkNumber, count);
             }
@@ -360,18 +361,18 @@ public class RollController {
     }
 
     @InstructReflex(value = {"sa"})
-    public String attributeSetAttribute(MessageData<?> data) {
-        String changeValue = RegularExpressionUtils.getMatcher("\\d+", data.getMessage());
+    public String attributeSetAttribute(DiceMessageDTO data) {
+        String changeValue = RegularExpressionUtils.getMatcher("\\d+", data.getBody());
         if (changeValue == null) {
             return CustomText.getText("dice.sa.parameter.null");
         }
-        String changeName = data.getMessage().substring(0, data.getMessage().length() - changeValue.length());
+        String changeName = data.getBody().substring(0, data.getBody().length() - changeValue.length());
         if (changeName.equals("")) {
             return CustomText.getText("dice.sa.parameter.error");
         }
 
         //查询属性
-        String findAttribute = userTempDataService.getUserAttribute(data.getQqID());
+        String findAttribute = userTempDataService.getUserAttribute(data.getId());
         if (findAttribute == null || findAttribute.equals("")) {
             return CustomText.getText("dice.sa.not.set.attribute");
         }
@@ -381,14 +382,14 @@ public class RollController {
             return CustomText.getText("dice.sa.not.found.attribute");
         }
         String updateData = findAttribute.replaceAll(attribute, changeName + changeValue);
-        userTempDataService.updateUserAttribute(data.getQqID(), updateData);
+        userTempDataService.updateUserAttribute(data.getId(), updateData);
         return CustomText.getText("dice.sa.update.success", attribute, changeName, changeValue);
     }
 
     @InstructReflex(value = {"ww", "dp"})
-    public static String dicePoolGen(MessageData<?> data) {
-        data.setMessage(data.getMessage().toLowerCase());
-        data.setMessage(data.getMessage().trim());
+    public static String dicePoolGen(DiceMessageDTO data) {
+        data.setBody(data.getBody().toLowerCase());
+        data.setBody(data.getBody().trim());
         int diceNumber = 1;
         int addDiceCheck = 10;
         StringBuilder resultText = new StringBuilder();
@@ -396,21 +397,21 @@ public class RollController {
         int count = 0;
         int successDiceCheck = 8;
         int diceFace = 10;
-        if (data.getMessage().equals("") || data.getMessage() == null) {
+        if (data.getBody().equals("") || data.getBody() == null) {
             return CustomText.getText("dice.pool.parameter.format.error");
         }
         int repeat = 1;
-        int index = data.getMessage().indexOf("#");
+        int index = data.getBody().indexOf("#");
         if (index != -1) {
             try {
-                repeat = Integer.parseInt(data.getMessage().substring(0, index));
+                repeat = Integer.parseInt(data.getBody().substring(0, index));
             } catch (Exception e) {
                 return CustomText.getText("dice.pool.parameter.format.error");
             }
         }
 
 
-        List<String> parametersList = RegularExpressionUtils.getMatchers("[0-9]+|a[0-9]+|k[0-9]+|m[0-9]+|\\+[0-9]+|b[0-9]+", data.getMessage());
+        List<String> parametersList = RegularExpressionUtils.getMatchers("[0-9]+|a[0-9]+|k[0-9]+|m[0-9]+|\\+[0-9]+|b[0-9]+", data.getBody());
         if (parametersList.size() <= 0) {
             return CustomText.getText("dice.pool.parameter.format.error");
         }
@@ -479,8 +480,8 @@ public class RollController {
     }
 
     @InstructReflex(value = {"rl"}, priority = 7)
-    public static String LCDSV1Check1(MessageData<?> data) {
-        List<String> result = RegularExpressionUtils.getMatchers("\\d+", data.getMessage());
+    public static String LCDSV1Check1(DiceMessageDTO data) {
+        List<String> result = RegularExpressionUtils.getMatchers("\\d+", data.getBody());
         int dice1 = new SecureRandom().nextInt(10) + 1;
         int dice2 = new SecureRandom().nextInt(10) + 1;
         int skillNumber = Integer.parseInt(result.get(0));
@@ -534,8 +535,8 @@ public class RollController {
     }
 
     @InstructReflex(value = {"rlo", "RL"}, priority = 8)
-    public static String LCDSV1Check2(MessageData<?> data) {
-        List<String> result = RegularExpressionUtils.getMatchers("\\d+", data.getMessage());
+    public static String LCDSV1Check2(DiceMessageDTO data) {
+        List<String> result = RegularExpressionUtils.getMatchers("\\d+", data.getBody());
         int dice = new SecureRandom().nextInt(101) + 1;
         int skillNumber = Integer.parseInt(result.get(0));
         if (skillNumber > 200) {

@@ -1,10 +1,10 @@
+import com.github.eiriksgata.rulateday.dto.DiceMessageDTO;
 import com.github.eiriksgata.trpg.dice.callback.SanCheckCallback;
 import com.github.eiriksgata.trpg.dice.exception.DiceInstructException;
 import com.github.eiriksgata.trpg.dice.message.handle.InstructHandle;
 import com.github.eiriksgata.trpg.dice.operation.impl.RollRoleImpl;
 import com.github.eiriksgata.trpg.dice.operation.impl.SanCheckImpl;
-import com.github.eiriksgata.trpg.dice.reply.CustomText;
-import com.github.eiriksgata.trpg.dice.vo.MessageData;
+
 import com.github.eiriksgata.rulateday.instruction.RollController;
 import com.github.eiriksgata.rulateday.init.LoadDatabaseFile;
 import com.github.eiriksgata.rulateday.utlis.WeightRandom;
@@ -40,13 +40,12 @@ public class DiceTest {
 
     @Test
     void instructTest() {
-        MessageData<?> messageData = new MessageData<>();
-        messageData.setQqID(123456789L);
-        messageData.setMessage(".rlo201 80");
+        DiceMessageDTO messageData = new DiceMessageDTO();
+        messageData.setId(123456789L);
+        messageData.setBody(".rlo201 80");
         String result = RollController.LCDSV1Check2(messageData);
         System.out.println(result);
     }
-
 
 
     @Test
@@ -54,10 +53,11 @@ public class DiceTest {
         LoadDatabaseFile.initConfigCustomTextTool();
         LoadDatabaseFile.createAndLoadConfigFile();
 
-        MessageData<?> messageData = new MessageData<>();
-        messageData.setQqID(123456789L);
+        DiceMessageDTO messageData = new DiceMessageDTO();
+        messageData.setId(123456789L);
+        messageData.setBody("ra");
+
         InstructHandle instruct = new InstructHandle();
-        messageData.setMessage("betaon");
         try {
             System.out.println(instruct.instructCheck(messageData));
         } catch (DiceInstructException e) {
@@ -73,10 +73,10 @@ public class DiceTest {
 
     @Test
     public void setDiceFace() {
-        MessageData<?> messageData = new MessageData<>();
-        messageData.setQqID(123456789L);
+        DiceMessageDTO messageData = new DiceMessageDTO();
+        messageData.setId(123456789L);
         InstructHandle instruct = new InstructHandle();
-        messageData.setMessage(".ww10a8+3");
+        messageData.setBody(".ww10a8+3");
         try {
             System.out.println(instruct.instructCheck(messageData));
         } catch (DiceInstructException e) {
@@ -87,8 +87,6 @@ public class DiceTest {
             System.out.println("call function exception");
             ex.printStackTrace();
         }
-
-
     }
 
 
@@ -107,30 +105,30 @@ public class DiceTest {
 
     @Test
     void rb() throws Exception {
-        MessageData messageData = new MessageData();
-        messageData.setQqID(123456789L);
+        DiceMessageDTO messageData = new DiceMessageDTO();
+        messageData.setId(123456789L);
         InstructHandle instruct = new InstructHandle();
-        messageData.setMessage(".rp3 san 30");
+        messageData.setBody(".rp3 san 30");
         System.out.println(instruct.instructCheck(messageData));
 
     }
 
     @Test
     void d5r() throws Exception {
-        MessageData messageData = new MessageData();
-        messageData.setQqID(123456789L);
+        DiceMessageDTO messageData = new DiceMessageDTO();
+        messageData.setId(123456789L);
         InstructHandle instruct = new InstructHandle();
-        messageData.setMessage(".dr牧师:神圣领域");
+        messageData.setBody(".dr牧师:神圣领域");
         System.out.println(instruct.instructCheck(messageData));
     }
 
 
     @Test
     void rd() throws Exception {
-        MessageData messageData = new MessageData();
-        messageData.setQqID(123456789L);
+        DiceMessageDTO messageData = new DiceMessageDTO();
+        messageData.setId(123456789L);
         InstructHandle instruct = new InstructHandle();
-        messageData.setMessage(".raSan");
+        messageData.setBody(".raSan");
         System.out.println(instruct.instructCheck(messageData));
     }
 

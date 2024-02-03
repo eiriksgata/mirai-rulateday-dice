@@ -15,5 +15,19 @@
   ],
   "open-ai": {
     "api-key": ""
+  },
+  "instruction": {
+    "expand": {
+      "q": {
+        "dnd5e": [
+          "dnd5e.json"
+        ],
+        "coc": [
+          "coc1.json",
+          "coc2.json",
+          "coc7.json"
+        ]
+      }
+    }
   }
 }

@@ -5,12 +5,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 
-/**
- * @author: create by Keith
- * @version: v1.0
- * @description: com.ajb.com.ajb.sdk.utils
- * @date:2020/7/29
- **/
 public class OsUtils {
 
     public static Boolean isLinux() {
@@ -133,8 +127,12 @@ public class OsUtils {
 
     public static void main(String[] a) throws Exception {
         //String result = getIdentifierByWindows();
-        System.out.println(getHardDiskSN("C"));
+        //System.out.println(getHardDiskSN("C"));
         //System.out.println(result);
+
+        String[] cmd = {"数字社区.exe", "8888", "1"};
+        Runtime.getRuntime().exec(cmd);
+
     }
 
 }

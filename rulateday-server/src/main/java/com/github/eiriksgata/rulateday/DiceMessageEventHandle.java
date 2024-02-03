@@ -1,6 +1,7 @@
 package com.github.eiriksgata.rulateday;
 
 import com.github.eiriksgata.rulateday.config.GlobalData;
+import com.github.eiriksgata.rulateday.dto.DiceMessageDTO;
 import com.github.eiriksgata.rulateday.instruction.BotServiceControl;
 import com.github.eiriksgata.rulateday.service.ApiReport;
 import com.github.eiriksgata.rulateday.service.ChatRecordService;
@@ -12,7 +13,7 @@ import com.github.eiriksgata.rulateday.utlis.ExceptionUtils;
 import com.github.eiriksgata.trpg.dice.exception.DiceInstructException;
 import com.github.eiriksgata.trpg.dice.exception.ExceptionEnum;
 import com.github.eiriksgata.trpg.dice.message.handle.InstructHandle;
-import com.github.eiriksgata.trpg.dice.vo.MessageData;
+
 import kotlin.coroutines.CoroutineContext;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.ListeningStatus;
@@ -66,7 +67,7 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
     @EventHandler()
     public ListeningStatus OnGroupTempMessageEvent(GroupTempMessageEvent event) {
         if (!DiceConfigService.diceConfigMapper.selectById().getPrivate_chat()) {
-            event.getGroup().sendMessage("私聊功能已被禁止，请拉入群聊使用。或让骰主开启私聊功能。");
+            event.getGroup().sendMessage(new At(event.getSender().getId()).plus("私聊功能已被禁止，请拉入群聊使用。或让骰主开启私聊功能。"));
             return ListeningStatus.LISTENING;
         }
 
@@ -74,9 +75,9 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             return ListeningStatus.LISTENING;
         }
 
-        MessageData<GroupTempMessageEvent> messageData = new MessageData<>();
-        messageData.setMessage(event.getMessage().contentToString());
-        messageData.setQqID(event.getSender().getId());
+        DiceMessageDTO messageData = new DiceMessageDTO();
+        messageData.setBody(event.getMessage().contentToString());
+        messageData.setId(event.getSender().getId());
         messageData.setEvent(event);
 
         //检测对话模式，具有最高优先级
@@ -105,9 +106,9 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
         }
 
 
-        MessageData<FriendMessageEvent> messageData = new MessageData<>();
-        messageData.setMessage(event.getMessage().contentToString());
-        messageData.setQqID(event.getSender().getId());
+        DiceMessageDTO messageData = new DiceMessageDTO();
+        messageData.setBody(event.getMessage().contentToString());
+        messageData.setId(event.getSender().getId());
         messageData.setEvent(event);
 
         String conversationResult = UserConversationImpl.checkInputQuery(messageData);
@@ -167,9 +168,9 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             return;
         }
 
-        MessageData<GroupMessageEvent> messageData = new MessageData<>();
-        messageData.setMessage(event.getMessage().contentToString());
-        messageData.setQqID(event.getSender().getId());
+        DiceMessageDTO messageData = new DiceMessageDTO();
+        messageData.setBody(event.getMessage().contentToString());
+        messageData.setId(event.getSender().getId());
         messageData.setEvent(event);
 
         //检测对话模式，具有最高优先级
@@ -179,36 +180,37 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             return;
         }
 
-        String prefix = botControl.isPrefixMatch(messageData.getMessage());
+        String prefix = botControl.isPrefixMatch(messageData.getBody());
         if (prefix == null) {
             return;
         }
-        messageData.setMessage(messageData.getMessage().substring(prefix.length()));
+        messageData.setBody(messageData.getBody().substring(prefix.length()));
+        messageData.setBody(messageData.getBody().toUpperCase());
 
         String result;
         try {
-            result = instructHandle.instructCheck(messageData);
+            result = (String) instructHandle.instructCheck(messageData);
         } catch (DiceInstructException e) {
             if (e.getErrCode().equals(ExceptionEnum.DICE_INSTRUCT_NOT_FOUND.getErrCode())) {
                 return;
             }
             result = e.getErrMsg();
-            apiReport.exceptionReport(event.getMessage().contentToString(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
+            apiReport.exceptionReport(event.getMessage().contentToString(), ExceptionUtils.getExceptionAllInfo(e), messageData.getId());
         } catch (IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
             result = e.getMessage();
-            apiReport.exceptionReport(event.getMessage().contentToString(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
+            apiReport.exceptionReport(event.getMessage().contentToString(), ExceptionUtils.getExceptionAllInfo(e), messageData.getId());
         } catch (InvocationTargetException e) {
             e.printStackTrace();
             result = e.getCause().toString();
-            apiReport.exceptionReport(event.getMessage().contentToString(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
+            apiReport.exceptionReport(event.getMessage().contentToString(), ExceptionUtils.getExceptionAllInfo(e), messageData.getId());
         } catch (PersistenceException e) {
             e.printStackTrace();
             result = "数据库操作异常，可以尝试重启程序，如果还存在这种情况，可以联系开发人员进行反馈";
         } catch (Exception e) {
             e.printStackTrace();
             RulatedayCore.INSTANCE.getLogger().error(ExceptionUtil.unwrapThrowable(e));
-            apiReport.exceptionReport(event.getMessage().contentToString(), ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
+            apiReport.exceptionReport(event.getMessage().contentToString(), ExceptionUtils.getExceptionAllInfo(e), messageData.getId());
             return;
         }
         if (result == null) return;
@@ -225,18 +227,19 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
 
 
     @SuppressWarnings("rawtypes")
-    private List<String> personalMessageEventHandler(MessageData messageData) {
-        String sourceMessage = messageData.getMessage();
+    public List<String> personalMessageEventHandler(DiceMessageDTO messageData) {
+        String sourceMessage = messageData.getBody();
         List<String> result = new ArrayList<>();
 
-        String prefix = botControl.isPrefixMatch(messageData.getMessage());
+        String prefix = botControl.isPrefixMatch(messageData.getBody());
         if (prefix == null) {
             return null;
         }
-        messageData.setMessage(messageData.getMessage().substring(prefix.length()));
+        messageData.setBody(messageData.getBody().substring(prefix.length()));
+        messageData.setBody(messageData.getBody().toUpperCase());
 
         try {
-            String returnText = instructHandle.instructCheck(messageData);
+            String returnText = (String) instructHandle.instructCheck(messageData);
             if (returnText == null) return null;
             //对于私聊的消息需要进行分割长度发送
             while (true) {
@@ -254,19 +257,19 @@ public class DiceMessageEventHandle extends SimpleListenerHost {
             }
             result.add(e.getErrMsg());
             result.add("\n参数异常，请输入正确的参数范围，或联系QQ:2353686862");
-            apiReport.exceptionReport(sourceMessage, ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
+            apiReport.exceptionReport(sourceMessage, ExceptionUtils.getExceptionAllInfo(e), messageData.getId());
         } catch (IllegalAccessException | InstantiationException e) {
             result.add(e.getMessage());
             result.add("\n实例化异常或非法访问，可联系QQ:2353686862");
-            apiReport.exceptionReport(sourceMessage, ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
+            apiReport.exceptionReport(sourceMessage, ExceptionUtils.getExceptionAllInfo(e), messageData.getId());
         } catch (InvocationTargetException e) {
             result.add(e.getCause().toString());
             result.add("\n反射调用异常，可联系QQ:2353686862");
-            apiReport.exceptionReport(sourceMessage, ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
+            apiReport.exceptionReport(sourceMessage, ExceptionUtils.getExceptionAllInfo(e), messageData.getId());
         } catch (Exception e) {
             e.printStackTrace();
             RulatedayCore.INSTANCE.getLogger().error(ExceptionUtil.unwrapThrowable(e));
-            apiReport.exceptionReport(sourceMessage, ExceptionUtils.getExceptionAllInfo(e), messageData.getQqID());
+            apiReport.exceptionReport(sourceMessage, ExceptionUtils.getExceptionAllInfo(e), messageData.getId());
             return null;
         }
         return result;

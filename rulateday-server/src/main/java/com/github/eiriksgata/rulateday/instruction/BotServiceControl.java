@@ -15,7 +15,6 @@ import net.mamoe.mirai.event.events.GroupMessageEvent;
  * description: com.github.eiriksgata.rulateday.instruction
  * date: 2020/11/13
  **/
-
 public class BotServiceControl {
 
     public final static BotControlService botControl = new BotControlServiceImpl();

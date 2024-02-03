@@ -1,9 +1,10 @@
 package com.github.eiriksgata.rulateday.instruction;
 
+import com.github.eiriksgata.rulateday.dto.DiceMessageDTO;
 import com.github.eiriksgata.trpg.dice.injection.InstructReflex;
 import com.github.eiriksgata.trpg.dice.injection.InstructService;
 import com.github.eiriksgata.trpg.dice.reply.CustomText;
-import com.github.eiriksgata.trpg.dice.vo.MessageData;
+
 import com.github.eiriksgata.rulateday.DiceMessageEventHandle;
 import com.github.eiriksgata.rulateday.config.GlobalData;
 import com.github.eiriksgata.rulateday.dto.ChatRecordDTO;
@@ -19,7 +20,7 @@ import java.util.Date;
 public class MessageRecordController {
 
     @InstructReflex(value = {"logon", "log-on"}, priority = 2)
-    public String openGroupRecord(MessageData<?> data) {
+    public String openGroupRecord(DiceMessageDTO data) {
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
             public void group(GroupMessageEvent event) {
@@ -57,7 +58,7 @@ public class MessageRecordController {
     }
 
     @InstructReflex(value = {"logoff", "log-off"}, priority = 2)
-    public String closeGroupRecord(MessageData<?> data) {
+    public String closeGroupRecord(DiceMessageDTO data) {
         EventUtils.eventCallback(data.getEvent(), new EventAdapter() {
             @Override
             public void group(GroupMessageEvent event) {
